@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User registration page</title>
+    <link href="../static/css/background.css" rel="stylesheet" type="text/css">
+    <link href="../static/css/main.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body class="stars">
+<div class="twinkling">
+    <table style="width: 100%">
+        <td>
+            <div class="menuMaineee">
+                <button class="margines" type="reset">HOME</button>
+                <br>
+                <button class="margines" type="reset">PROFILE</button>
+                <br>
+                <button class="margines" type="reset">OFFER</button>
+                <br>
+                <button class="margines" type="reset">ABOUT</button>
+                <br>
+                <button class="margines" type="reset">CONTACT</button>
+                <br>
+            </div>
+        </td>
+        <td style="width: 80%">
+            <div>
+                <form action="/register" method="post" th:object="${registrationObject}">
+                    <div class="center">
+                        <input class="form-control-sm widerTextFields" type="text" id="email" th:field="*{login}"
+                               placeholder="e-mail"><br>
+                        <input class="form-control-sm widerTextFields" type="password" id="pass" th:field="*{password}"
+                               placeholder="password"><br>
+                        <input class="form-control-sm widerTextFields" type="password" id="conf_pass" th:field="*{passwordConfirm}"
+                               placeholder="password"><br><br>
+                        <input class="form-control-sm widerTextFields" type="text" id="user_first_name"
+                               th:field="*{firstName}"
+                               placeholder="First name"><br>
+                        <input class="form-control-sm widerTextFields" type="text" id="user_last_name"
+                               th:field="*{lastName}"
+                               placeholder="Last name"><br>
+                        <input class="form-control-sm widerTextFields" type="text" id="user_street" th:field="*{street}"
+                               placeholder="Street and number"><br>
+                        <input class="form-control-sm widerTextFields" type="text" id="zip" th:field="*{zipCode}"
+                               placeholder="Zip-code"><br>
+                        <label class="smallText"  for="country">Country: </label><select class="form-control-sm widerTextFields" type="text" id="country" th:field="*{country}"
+                                                             th:placeholder="Country">
+                            <option class="form-control-sm widerTextFields" th:each="c : ${countries}"
+                                    th:text="${c.getPlName()}"
+                                    th:value="${c.getSymbol()}"></option>
+                        </select><br>
+                        <input class="form-control-sm widerTextFields" type="text" id="date_birth"
+                               th:field="*{birthDate}"
+                               placeholder="Date of birth: yyyy-MM-dd"><br>
+                        <input class="form-control-sm widerTextFields" type="text" id="pesel" th:field="*{pesel}"
+                               placeholder="only digits"><br>
+                        <input class="form-control-sm widerTextFields" type="text" id="phone" th:field="*{phoneNumber}"
+                               placeholder="Phone number"><br>
+                        <label class="paintWhite" for="prefer">Would you like to receive emails from us?</label>
+                        <input id="prefer" type="checkbox" th:field="*{preferEmails}"/><br>
+                        <button class="ui-button" type="submit">Register</button>
+                        <br><br>
+                        <button type="reset">Reset</button>
+                        <br>
+
+                    </div>
+                </form>
+
+            </div>
+        </td>
+    </table>
+</div>
+</body>
+</html>
