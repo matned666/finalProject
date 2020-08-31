@@ -19,6 +19,7 @@ import java.util.List;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String ADMIN_ADMIN_PL = "admin@admin.pl";
+    public static final String USER_USER_PL = "user@user.pl";
 
     @Autowired
     private DataSource dataSource;
@@ -29,13 +30,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers( "/register", "/register/*").permitAll()
+                .antMatchers("/register", "/register/*").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/about").permitAll()
                 .antMatchers("/account", "/account/*", "/account/**")
-                    .hasAnyRole(UserRole.Role.ADMIN.name(), UserRole.Role.USER.name())
+                .hasAnyRole(UserRole.Role.ADMIN.name(), UserRole.Role.USER.name())
                 .antMatchers("/users-list", "/users-list/*", "/users-list/**")
-                    .hasRole(UserRole.Role.ADMIN.name())
+                .hasRole(UserRole.Role.ADMIN.name())
                 .antMatchers("/nav").permitAll()
                 .antMatchers("/static/**").permitAll()
                 .antMatchers("/css/**").permitAll()
@@ -66,6 +67,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication()
                 .withUser(ADMIN_ADMIN_PL)
                 .password(passwordEncoder.encode("admin"))
+                .roles(UserRole.Role.ADMIN.name())
+                .and()
+                .withUser(USER_USER_PL)
+                .password(passwordEncoder.encode("user"))
                 .roles(UserRole.Role.ADMIN.name());
 
         auth.jdbcAuthentication()
@@ -98,7 +103,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 
 
 }
