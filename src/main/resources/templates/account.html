@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link href="../static/css/background.css" th:href="@{/css/background.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+
+<div th:insert="fragments/nav :: nav"></div>
+
+
+<div sec:authorize="hasRole('ROLE_USER')" th:object="${user}">
+    <br>
+    <h1>User data:</h1>
+    <span class="bolded">Name: </span><span th:text="*{firstName}"></span><br>
+    <span class="bolded">Surname: </span><span th:text="*{lastName}"></span><br>
+    <span class="bolded">Birth date: </span><span th:text="*{birthDate.toString()}"></span><br><br>
+    <span class="bolded">Address:</span><br>
+    <span class="bolded">Street: </span><span th:text="*{address.street}"></span><br>
+    <span class="bolded">Street: </span><span th:text="*{address.zipCode}"></span><br>
+    <span class="bolded">City: </span><span th:text="*{address.city}"></span><br>
+    <span class="bolded">Country: </span><span th:text="*{address.country.getPlName()}"></span><br><br>
+    <span class="bolded">Contact:</span><br>
+    <span class="bolded">Email: </span><span th:text="*{login}"></span><br>
+    <span class="bolded">Phone number: </span><span th:text="*{phoneNumber}"></span><br>
+</div>
+
+<div sec:authorize="hasRole('ROLE_ADMIN')">
+    <h1>WELCOME ADMIN</h1>
+    <div th:if="${userToSee != null}">
+        <div th:object="${userToSee}">
+            <br>
+            <h1>User data:</h1>
+            <span class="bolded">Name: </span><span th:text="*{firstName}"></span><br>
+            <span class="bolded">Surname: </span><span th:text="*{lastName}"></span><br>
+            <span class="bolded">Birth date: </span><span th:text="*{birthDate.toString()}"></span><br><br>
+            <span class="bolded">Address:</span><br>
+            <span class="bolded">Street: </span><span th:text="*{address.street}"></span><br>
+            <span class="bolded">Street: </span><span th:text="*{address.zipCode}"></span><br>
+            <span class="bolded">City: </span><span th:text="*{address.city}"></span><br>
+            <span class="bolded">Country: </span><span th:text="*{address.country.getPlName()}"></span><br><br>
+            <span class="bolded">Contact:</span><br>
+            <span class="bolded">Email: </span><span th:text="*{login}"></span><br>
+            <span class="bolded">Phone number: </span><span th:text="*{phoneNumber}"></span><br><br>
+            <span class="bolded">Password hash: </span><span th:text="*{password}"></span><br>
+        </div>
+    </div>
+    <div th:unless="${userToSee != null}">
+        <span>no such user</span>
+    </div>
+</div>
+
+<div th:insert="fragments/nav :: footer"></div>
+
+</body>
+</html>

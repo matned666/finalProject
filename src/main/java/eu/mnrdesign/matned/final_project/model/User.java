@@ -52,6 +52,8 @@ public class User extends BaseEntity {
         return roles != null && roles.stream().anyMatch(r -> r.getRoleName().equals(userRole.getRoleName()));
     }
 
+
+
     public String getFirstName() {
         return firstName;
     }

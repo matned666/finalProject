@@ -30,4 +30,10 @@ public class UserController {
         service.register(registrationDTO);
         return "redirect:/login";
     }
+
+    @GetMapping("/users-list")
+    public String getAllUsersList(Model model){
+        model.addAttribute("all_users", service.findAll());
+        return "users-list";
+    }
 }

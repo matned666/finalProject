@@ -1,26 +1,46 @@
 package eu.mnrdesign.matned.final_project.config;
 
+import eu.mnrdesign.matned.final_project.model.UserRole;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    public static final String ADMIN_ADMIN_PL = "admin@admin.pl";
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers( "/register/**", "/login")
-                .permitAll()
-                .antMatchers("/login")
-                .permitAll()
+                .antMatchers( "/register", "/register/*").permitAll()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/about").permitAll()
+                .antMatchers("/account", "/account/*", "/account/**")
+                    .hasAnyRole(UserRole.Role.ADMIN.name(), UserRole.Role.USER.name())
+                .antMatchers("/users-list", "/users-list/*", "/users-list/**")
+                    .hasRole(UserRole.Role.ADMIN.name())
+                .antMatchers("/nav").permitAll()
+                .antMatchers("/static/**").permitAll()
+                .antMatchers("/css/**").permitAll()
+                .antMatchers("/img/**").permitAll()
+                .antMatchers("/js/**").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -30,18 +50,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .usernameParameter("username")
                 .passwordParameter("password")
-                .loginProcessingUrl("login-process") //here goes login data
+                .loginProcessingUrl("/login-process") //here goes login data
                 .failureUrl("/login?error=1")
                 .defaultSuccessUrl("/")
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout=1");
-
+                .logoutSuccessUrl("/login")
+                .and()
+                .exceptionHandling().accessDeniedPage("/accessDenied");
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser(ADMIN_ADMIN_PL)
+                .password(passwordEncoder.encode("admin"))
+                .roles(UserRole.Role.ADMIN.name());
+
+        auth.jdbcAuthentication()
+                .usersByUsernameQuery("select u.LOGIN, u.PASSWORD, 1 from USER u where u.LOGIN = ?")
+                .authoritiesByUsernameQuery(
+                        "select u.LOGIN, r.ROLE_NAME from USER u " +
+                                "join USER_ROLES ur on u.ID = ur.USER_ID " +
+                                "join USER_ROLE r on ur.ROLES_ID = r.ID " +
+                                "where u.LOGIN = ?")
+                .dataSource(dataSource)
+                .passwordEncoder(passwordEncoder);
+
 
     }
 
@@ -62,4 +98,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+
+
 }

@@ -1,8 +1,6 @@
 package eu.mnrdesign.matned.final_project.model;
 
 import javax.persistence.Entity;
-import java.util.Objects;
-
 
 @Entity
 public class UserRole extends BaseEntity{
@@ -12,21 +10,20 @@ public class UserRole extends BaseEntity{
     public UserRole() {
     }
 
+    public UserRole(Role roleName){
+        this.roleName = "ROLE_"+roleName.name();
+    }
+
+    public static UserRole apply(Role roleName){
+        return new UserRole(roleName);
+    }
+
     public String getRoleName() {
         return roleName;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        UserRole userRole = (UserRole) o;
-        return Objects.equals(roleName, userRole.roleName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), roleName);
+    public enum Role {
+        ADMIN,
+        USER
     }
 }
