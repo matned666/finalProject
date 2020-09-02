@@ -3,10 +3,14 @@ package eu.mnrdesign.matned.final_project.model;
 import eu.mnrdesign.matned.final_project.dto.RegistrationDTO;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static eu.mnrdesign.matned.final_project.holder.Static.DATE_PATTERN;
 
 @Entity
 public class User extends BaseEntity {
@@ -17,7 +21,6 @@ public class User extends BaseEntity {
     @Embedded
     private Address address;
     private LocalDate birthDate;
-    private String pesel;
     private String login;
     private String password;
     private String phoneNumber;
@@ -33,8 +36,11 @@ public class User extends BaseEntity {
         user.firstName = registrationDTO.getFirstName();
         user.lastName = registrationDTO.getLastName();
         user.address = Address.apply(registrationDTO);
-        user.birthDate = LocalDate.parse(registrationDTO.getBirthDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        user.pesel = registrationDTO.getPesel();
+        try {
+            user.birthDate = LocalDate.parse(registrationDTO.getBirthDate(), DateTimeFormatter.ofPattern(DATE_PATTERN));
+        } catch (DateTimeParseException e) {
+            user.birthDate = null;
+        }
         user.login = registrationDTO.getLogin();
         user.password = passwordHash;
         user.phoneNumber = registrationDTO.getPhoneNumber();
@@ -84,14 +90,6 @@ public class User extends BaseEntity {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
-    }
-
-    public String getPesel() {
-        return pesel;
-    }
-
-    public void setPesel(String pesel) {
-        this.pesel = pesel;
     }
 
     public String getLogin() {

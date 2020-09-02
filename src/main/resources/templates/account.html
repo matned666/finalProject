@@ -18,48 +18,63 @@
 
 <div th:insert="fragments/nav :: nav"></div>
 
+<div id="content" class="center">
 
-<div sec:authorize="hasRole('ROLE_USER')" th:object="${user}">
-    <br>
-    <h1>User data:</h1>
-    <span class="bolded">Name: </span><span th:text="*{firstName}"></span><br>
-    <span class="bolded">Surname: </span><span th:text="*{lastName}"></span><br>
-    <span class="bolded">Birth date: </span><span th:text="*{birthDate.toString()}"></span><br><br>
-    <span class="bolded">Address:</span><br>
-    <span class="bolded">Street: </span><span th:text="*{address.street}"></span><br>
-    <span class="bolded">Street: </span><span th:text="*{address.zipCode}"></span><br>
-    <span class="bolded">City: </span><span th:text="*{address.city}"></span><br>
-    <span class="bolded">Country: </span><span th:text="*{address.country.getPlName()}"></span><br><br>
-    <span class="bolded">Contact:</span><br>
-    <span class="bolded">Email: </span><span th:text="*{login}"></span><br>
-    <span class="bolded">Phone number: </span><span th:text="*{phoneNumber}"></span><br>
-</div>
+    <div sec:authorize="hasRole('ROLE_USER')" th:object="${user}">
+        <br>
+        <h1>User data:</h1>
+        <span class="bolded">Name: </span><span th:text="*{firstName}"></span><br>
+        <span class="bolded">Surname: </span><span th:text="*{lastName}"></span><br>
+        <span class="bolded">Birth date: </span><span th:if="*{birthDate != null}" th:text="*{birthDate.toString()}"></span><br><br>
+        <span class="bolded">Address:</span><br>
+        <span class="bolded">Street: </span><span th:text="*{address.street}"></span><br>
+        <span class="bolded">Zip code: </span><span th:text="*{address.zipCode}"></span><br>
+        <span class="bolded">City: </span><span th:text="*{address.city}"></span><br>
+        <span class="bolded">Country: </span><span th:text="*{address.country.getPlName()}"></span><br><br>
+        <span class="bolded">Contact:</span><br>
+        <span class="bolded">Email: </span><span th:text="*{login}"></span><br>
+        <span class="bolded">Phone number: </span><span th:text="*{phoneNumber}"></span><br>
+        <a th:href="@{account/{id}(id = ${user.getId()})}">
+            <button type="button" class="btn btn-secondary btn-lg">Edit your data</button>
+        </a>
+    </div>
 
-<div sec:authorize="hasRole('ROLE_ADMIN')">
-    <h1>WELCOME ADMIN</h1>
-    <div th:if="${userToSee != null}">
-        <div th:object="${userToSee}">
-            <br>
-            <h1>User data:</h1>
-            <span class="bolded">Name: </span><span th:text="*{firstName}"></span><br>
-            <span class="bolded">Surname: </span><span th:text="*{lastName}"></span><br>
-            <span class="bolded">Birth date: </span><span th:text="*{birthDate.toString()}"></span><br><br>
-            <span class="bolded">Address:</span><br>
-            <span class="bolded">Street: </span><span th:text="*{address.street}"></span><br>
-            <span class="bolded">Street: </span><span th:text="*{address.zipCode}"></span><br>
-            <span class="bolded">City: </span><span th:text="*{address.city}"></span><br>
-            <span class="bolded">Country: </span><span th:text="*{address.country.getPlName()}"></span><br><br>
-            <span class="bolded">Contact:</span><br>
-            <span class="bolded">Email: </span><span th:text="*{login}"></span><br>
-            <span class="bolded">Phone number: </span><span th:text="*{phoneNumber}"></span><br><br>
-            <span class="bolded">Password hash: </span><span th:text="*{password}"></span><br>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+
+        <h1>WELCOME ADMIN</h1>
+        <div th:if="${userToSee != null}">
+            <div th:object="${userToSee}">
+                <br>
+                <h1>User data:</h1>
+                <span class="bolded">Name: </span><span th:text="*{firstName}"></span><br>
+                <span class="bolded">Surname: </span><span th:text="*{lastName}"></span><br>
+                <span class="bolded">Birth date: </span><span th:if="*{birthDate != null}" th:text="*{birthDate.toString()}"></span><br><br>
+                <span class="bolded">Address:</span><br>
+                <span class="bolded">Street: </span><span th:text="*{address.street}"></span><br>
+                <span class="bolded">Zip code: </span><span th:text="*{address.zipCode}"></span><br>
+                <span class="bolded">City: </span><span th:text="*{address.city}"></span><br>
+                <span class="bolded">Country: </span><span th:text="*{address.country.getPlName()}"></span><br><br>
+                <span class="bolded">Contact:</span><br>
+                <span class="bolded">Email: </span><span th:text="*{login}"></span><br>
+                <span class="bolded">Phone number: </span><span th:text="*{phoneNumber}"></span><br><br>
+                <span class="bolded">Password hash: </span><span th:text="*{password}"></span><br>
+            </div>
+            <a th:href="@{account/{id}(id = ${userToSee.getId()})}">
+                <button type="button" class="btn btn-secondary btn-lg">
+                    Edit user data
+                </button>
+            </a>
+            <a th:href="@{account-delete/{id}(id = ${userToSee.getId()})}">
+                <button type="button" class="btn btn-secondary btn-lg">
+                    Delete user data
+                </button>
+            </a>
+        </div>
+        <div th:unless="${userToSee != null}">
+            <span>no such user</span>
         </div>
     </div>
-    <div th:unless="${userToSee != null}">
-        <span>no such user</span>
-    </div>
 </div>
-
 <div th:insert="fragments/nav :: footer"></div>
 
 </body>

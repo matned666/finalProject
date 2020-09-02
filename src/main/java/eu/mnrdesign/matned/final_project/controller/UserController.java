@@ -5,6 +5,8 @@ import eu.mnrdesign.matned.final_project.model.Countries;
 import eu.mnrdesign.matned.final_project.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -18,7 +20,7 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String getRegistration(Model model){
+    public String getRegistration( Model model){
         RegistrationDTO registrationDTO = new RegistrationDTO();
         model.addAttribute("countries", Countries.values());
         model.addAttribute("registrationObject", registrationDTO);
@@ -26,10 +28,13 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String postRegistration(RegistrationDTO registrationDTO){
-        service.register(registrationDTO);
-        return "redirect:/login";
+    public String postRegistration(@Validated RegistrationDTO registrationDTO,
+                                   BindingResult bindingResult,
+                                   Model model){
+        return service.userValidRegistrationRedirect(registrationDTO, bindingResult, model);
     }
+
+
 
     @GetMapping("/users-list")
     public String getAllUsersList(Model model){

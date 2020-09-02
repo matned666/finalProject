@@ -14,32 +14,44 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
 
 </head>
 <body>
 
-<div class="tree">
+
     <div th:insert="fragments/nav :: nav"></div>
+    <div id="content">
 
-
-    <div class="center">
-        <br><br>
-        <form action="/login-process" method="post">
-            <input class="form-control-sm widerTextFields" type="email" name="username"
-                   placeholder="e-mail"><br>
-            <input class="form-control-sm widerTextFields" type="password" name="password"
-                   placeholder="password"><br>
+        <div class="center">
+            <br><br>
+            <form action="/login-process" method="post">
+                <input class="form-control-sm widerTextFields" type="email" name="username"
+                       placeholder="e-mail"><br>
+                <input class="form-control-sm widerTextFields" type="password" name="password"
+                       placeholder="password"><br>
+                <br>
+                <div style="
+                margin-right: 40%;
+                margin-left: 40%;">
+                    <div class="g-recaptcha"
+                         th:attr="data-sitekey=${@captchaSettings.getSite()}">
+                    </div>
+                    <span id="captchaError" class="alert alert-danger col-sm-4"
+                          style="display:none"></span>
+                </div>
+                <br>
+                <button class="ui-button" type="submit">Login</button>
+                <button type="reset">Reset</button>
+                <br>
+            </form>
             <br>
-            <button class="ui-button" type="submit">Login</button>
-            <button type="reset">Reset</button><br>
-        </form>
-        <br>
-        <a href="/register">
-            <button type="button">Register</button>
-        </a>
+            <a href="/register">
+                <button type="button">Register</button>
+            </a>
+        </div>
     </div>
-</div>
-
 <div th:insert="fragments/nav :: footer"></div>
 
 </body>

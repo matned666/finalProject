@@ -1,6 +1,8 @@
 /* Style the header with a grey background and some padding */
 .header {
     overflow: hidden;
+    position: fixed;
+    width: 100%;
     background-color: #ffffff;
     padding: 1px 1px;
     -webkit-box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.3);
@@ -56,4 +58,8 @@
     .header-right {
         float: none;
     }
+}
+
+.footer-down{
+    margin-top: 95%;
 }

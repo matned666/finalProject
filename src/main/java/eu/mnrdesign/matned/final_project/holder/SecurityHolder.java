@@ -1,11 +1,11 @@
-package eu.mnrdesign.matned.final_project.data_access;
+package eu.mnrdesign.matned.final_project.holder;
 
 import eu.mnrdesign.matned.final_project.model.User;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.security.Principal;
 
-public class SecurityAccess {
+public class SecurityHolder {
 
     public static String actualUserName() {
         String username;

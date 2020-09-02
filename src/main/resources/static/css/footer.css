@@ -1,14 +1,9 @@
 #footer {
-    bottom: 0;
-    alignment: bottom;
-    font-size: 14px;
-    width: 100%;
-    padding:  10px 10px 10px 10px;
-    position: fixed;
+    position : relative;
+    bottom : 0;
+    height : 40px;
+    margin-top : 40px;
     z-index: 9999;
-    -webkit-box-shadow: 10px 10px 10px 10px rgba(0,0,0,0.3);
-    -moz-box-shadow: 10px 10px 10px 10px rgba(0,0,0,0.3);
-    box-shadow: 10px 10px 10px 10px rgba(0,0,0,0.3);
 }
 
 #copyright {

@@ -1,6 +1,6 @@
 .center{
     text-align: center;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.8);
     border-width: thick;
     border-color: rgba(69, 69, 69, 0.7);
     padding: 10px;
@@ -39,10 +39,31 @@ button{
     z-index: 15;
     margin: 4%;
 }
+html {
+    height: 100%;
+}
+
+#content {
+    margin-top: 40px;
+    flex: 1;
+    padding: 20px;
+}
 
 body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
     background-image: url('../img/Tremendous.png');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
+}
+
+
+
+#errorRedirectView form label:not(#mailsFromUsLabel):not(#countryLabel)  {
+    font-size: 14px;
+    color: red;
+    font-weight: bold;
+
 }

@@ -16,18 +16,21 @@
 <body>
 
 <div th:insert="fragments/nav :: nav"></div>
+<div id="content">
 
-<table class="table center">
-    <th:block th:each="user : ${all_users}">
-        <tr>
-            <td th:text="${user.login}"></td>
-            <td th:text="${user.firstName}"></td>
-            <td th:text="${user.lastName}">...</td>
-            <td><a th:href="@{account/{id}(id = ${user.getId()})}"><button>Check profile</button></a></td>
-        </tr>
-    </th:block>
-</table>
-
+    <table class="table center">
+        <th:block th:each="user : ${all_users}">
+            <tr>
+                <td th:text="${user.login}"></td>
+                <td th:text="${user.firstName}"></td>
+                <td th:text="${user.lastName}">...</td>
+                <td><a th:href="@{account/{id}(id = ${user.getId()})}">
+                    <button>Check profile</button>
+                </a></td>
+            </tr>
+        </th:block>
+    </table>
+</div>
 <div th:insert="fragments/nav :: footer"></div>
 
 </body>

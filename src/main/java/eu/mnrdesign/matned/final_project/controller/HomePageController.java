@@ -1,7 +1,5 @@
 package eu.mnrdesign.matned.final_project.controller;
 
-import eu.mnrdesign.matned.final_project.config.WebSecurityConfig;
-import eu.mnrdesign.matned.final_project.model.User;
 import eu.mnrdesign.matned.final_project.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,8 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static eu.mnrdesign.matned.final_project.data_access.SecurityAccess.actualUserName;
 
 @Controller
 public class HomePageController {
