@@ -1,6 +1,7 @@
 package eu.mnrdesign.matned.final_project.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @MappedSuperclass
@@ -11,6 +12,10 @@ public class BaseEntity {
 
     @Version
     private Long version;
+
+    // Audit
+    private LocalDateTime creationDate;
+    private LocalDateTime updateDate;
 
     @Override
     public boolean equals(Object o) {
@@ -35,5 +40,15 @@ public class BaseEntity {
 
     public Long getVersion() {
         return version;
+    }
+
+    @Override
+    public String toString() {
+        return "BaseEntity{" +
+                "id=" + id +
+                ", version=" + version +
+                ", creationDate=" + creationDate +
+                ", updateDate=" + updateDate +
+                '}';
     }
 }
