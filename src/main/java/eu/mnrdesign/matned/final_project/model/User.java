@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static eu.mnrdesign.matned.final_project.holder.Static.DATE_PATTERN;
 
@@ -131,4 +132,5 @@ public class User extends BaseEntity {
     public void setRoles(List<UserRole> roles) {
         this.roles = roles;
     }
+
 }

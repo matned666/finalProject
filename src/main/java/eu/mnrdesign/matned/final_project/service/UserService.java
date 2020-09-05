@@ -1,22 +1,14 @@
 package eu.mnrdesign.matned.final_project.service;
 
 import eu.mnrdesign.matned.final_project.dto.RegistrationDTO;
-import eu.mnrdesign.matned.final_project.model.Countries;
 import eu.mnrdesign.matned.final_project.model.User;
 import eu.mnrdesign.matned.final_project.model.UserRole;
 import eu.mnrdesign.matned.final_project.repository.UserRepository;
 import eu.mnrdesign.matned.final_project.repository.UserRoleRepository;
-import eu.mnrdesign.matned.final_project.validation.DateValidatorUsingDateFormat;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import static eu.mnrdesign.matned.final_project.holder.Static.DATE_PATTERN;
 
 @Service
 public class UserService {
@@ -24,26 +16,24 @@ public class UserService {
     private final UserRepository repo;
     private final UserRoleRepository userRoleRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    private String roleName;
+    private final PasswordEncoder passwordEncoder;
     private String passwordEncoded;
 
-    public UserService(UserRepository repo, UserRoleRepository userRoleRepository) {
+    public UserService(UserRepository repo, UserRoleRepository userRoleRepository, PasswordEncoder passwordEncoder) {
         this.repo = repo;
         this.userRoleRepository = userRoleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User register(RegistrationDTO registrationDTO){
         passwordEncoded = passwordEncoder.encode(registrationDTO.getPassword());
-        String login = registrationDTO.getLogin();
         User userToSave = getUser(registrationDTO);
         return repo.save(userToSave);
     }
 
     private User getUser(RegistrationDTO registrationDTO) {
         User userToSave = User.apply(registrationDTO, passwordEncoded);
-        roleName = "ROLE_"+UserRole.Role.USER.name();
+        String roleName = "ROLE_" + UserRole.Role.USER.name();
         userToSave.addRole(userRoleRepository.findByRoleName(roleName));
         return userToSave;
     }
@@ -82,25 +72,4 @@ public class UserService {
         repo.save(user);
     }
 
-    public String userValidRegistrationRedirect(RegistrationDTO registrationDTO, BindingResult bindingResult, Model model) {
-        boolean isDateOK = new DateValidatorUsingDateFormat(DateTimeFormatter.ofPattern(DATE_PATTERN))
-                .isValid(registrationDTO.getBirthDate());
-        boolean arePasswordsEqual = registrationDTO.getPassword().equals(registrationDTO.getPasswordConfirm());
-        boolean isUserExisting = userWithEmailExists(registrationDTO.getLogin());
-        if(bindingResult.hasErrors() || !isDateOK || !arePasswordsEqual || isUserExisting){
-            model.addAttribute("error", "error");
-            if (isUserExisting) model.addAttribute("userExists", "A user with the same login exists.");
-            else model.addAttribute("userExists", "no");
-            if (!isDateOK) model.addAttribute("dateError", "Wrong date format - should be yyyy-MM-dd");
-            else model.addAttribute("dateError", "no");
-            if (!arePasswordsEqual) model.addAttribute("passwordError", "The passwords should be equal");
-            else model.addAttribute("passwordError", "no");
-            model.addAttribute("binding", bindingResult);
-            model.addAttribute("countries", Countries.values());
-            model.addAttribute("registrationObject", registrationDTO);
-            return "registrationPage";
-        }
-        register(registrationDTO);
-        return "redirect:/login";
-    }
 }

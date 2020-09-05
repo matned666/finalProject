@@ -1,12 +1,12 @@
 package eu.mnrdesign.matned.final_project.dto;
 
-import eu.mnrdesign.matned.final_project.validation.NoValidation;
-import eu.mnrdesign.matned.final_project.validation.ValidationInController;
+import eu.mnrdesign.matned.final_project.validation.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+@PasswordMatches
 public class RegistrationDTO {
 
     @NotNull(message = "The login cannot be empty")
@@ -15,13 +15,15 @@ public class RegistrationDTO {
             regexp = ".{1,}@.{1,}[.].{2,3}",
             message = "It should be a valid email address"
     )
+    @UniqueEmail
     private String login;
 
     @NotNull(message = "The password field cannot be empty")
     @Size(min = 3, message = "The password must be at least {min} signs long")
     private String password;
 
-    @ValidationInController
+    @NotNull(message = "This field cannot be empty")
+    @Size(min = 3, message = "The password must be at least {min} signs long")
     private String passwordConfirm;
 
     @Pattern(regexp = "[A-z]{0,}", message = "Name should contain only letters")
@@ -42,7 +44,7 @@ public class RegistrationDTO {
     @NoValidation
     private String country;
 
-    @ValidationInController
+    @DateMatchesPattern
     private String birthDate;
 
     @Pattern(regexp = "([+][0-9]{9,})|([0-9]{7,})|", message = "Proper format - only numbers or '+' and numbers")

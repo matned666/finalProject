@@ -12,110 +12,75 @@
     <link href="../static/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src='https://www.google.com/recaptcha/api.js'></script>
 
 </head>
 <body>
 
 <div th:insert="fragments/nav :: nav"></div>
 <div id="content">
-    <div class="center" th:if="${error == null}">
+
+    <div id="errorRedirectView" class="center">
         <br>
         <form action="/register" method="post" th:object="${registrationObject}">
             <div>
-                <input class="form-control-sm widerTextFields" type="text" id="email" th:field="*{login}"
-                       placeholder="e-mail"><br>
-                <input class="form-control-sm widerTextFields" type="password" id="pass" th:field="*{password}"
-                       placeholder="password"><br>
-                <input class="form-control-sm widerTextFields" type="password" id="conf_pass"
-                       th:field="*{passwordConfirm}"
-                       placeholder="password"><br><br>
-                <input class="form-control-sm widerTextFields" type="text" id="user_first_name"
-                       th:field="*{firstName}"
-                       placeholder="First name"><br>
-                <input class="form-control-sm widerTextFields" type="text" id="user_last_name"
-                       th:field="*{lastName}"
-                       placeholder="Last name"><br>
-                <input class="form-control-sm widerTextFields" type="text" id="user_street" th:field="*{street}"
-                       placeholder="Street and number"><br>
-                <input class="form-control-sm widerTextFields" type="text" id="zip" th:field="*{zipCode}"
-                       placeholder="Zip-code"><br>
-                <input class="form-control-sm widerTextFields" type="text" id="city1" th:field="*{city}"
-                       placeholder="City"><br>
-                <label for="country" style="font-weight: bold;">Country: </label>
-                <br><select class="form-control-sm widerTextFields"
-                            type="text" id="country"
-                            th:field="*{country}">
-                <option class="form-control-sm widerTextFields" th:each="c : ${countries}"
-                        th:text="${c.getPlName()}"
-                        th:value="${c.getSymbol()}"></option>
-            </select><br>
-                <input class="form-control-sm widerTextFields" type="text" id="date_birth"
-                       th:field="*{birthDate}"
-                       placeholder="Date of birth: yyyy-MM-dd"><br>
-                <input class="form-control-sm widerTextFields" type="text" id="phone" th:field="*{phoneNumber}"
-                       placeholder="Phone number"><br>
-                <label class="paintWhite" style="font-weight: bold;" for="prefer">Would you like to receive emails from us?</label>
-                <input id="prefer" type="checkbox" th:field="*{preferEmails}"/><br>
-                <div style="
-                margin-right: 40%;
-                margin-left: 40%;">
-                    <div class="g-recaptcha"
-                         th:attr="data-sitekey=${@captchaSettings.getSite()}">
+                <div th:if="${error != null}">
+                    <div th:each="error : ${binding.getFieldErrors('login')}">
+                        <label th:text="${error.getDefaultMessage()}"></label>
+                        <br>
                     </div>
-                    <span id="captchaError1" class="alert alert-danger col-sm-4"
-                          style="display:none"></span>
                 </div>
-                <button class="ui-button" type="submit">Register</button>
-                <br><br>
-                <button type="reset">Reset</button>
-                <br>
-
-            </div>
-        </form>
-
-    </div>
-
-    <div id="errorRedirectView" class="center" th:if="${error != null}">
-        <br>
-        <form action="/register" method="post" th:object="${registrationObject}">
-            <div>
-                <label th:if="${!userExists.equals('no')}" th:text="${userExists}"></label>
-                <br th:if="${!userExists.equals('no')}">
-                <label th:if="${binding.hasFieldErrors('login')}"
-                       th:text="${binding.getFieldError('login').getDefaultMessage()}"></label>
-                <br th:if="${binding.hasFieldErrors('login')}">
                 <input class="form-control-sm widerTextFields" type="text" th:field="*{login}"
                        placeholder="e-mail"><br>
-                <label th:if="${binding.hasFieldErrors('password')}" for="pass2">
-                    <span th:text="${binding.getFieldError('password').getDefaultMessage()}"></span></label>
-                <br th:if="${binding.hasFieldErrors('password')}">
+                <div th:if="${error != null}">
+                    <div th:each="error : ${binding.getGlobalErrors()}">
+                        <label th:text="${error.getDefaultMessage()}"></label>
+                        <br>
+                    </div>
+                </div>
+                <div th:if="${error != null}">
+                    <div th:each="error : ${binding.getFieldErrors('password')}">
+                        <label th:text="${error.getDefaultMessage()}"></label>
+                        <br>
+                    </div>
+                </div>
                 <input class="form-control-sm widerTextFields" type="password" id="pass2" th:field="*{password}"
                        placeholder="password"><br>
-                <label th:if="${!passwordError.equals('no')}" for="date_birth2" th:text="${passwordError}"></label>
-                <br th:if="${!passwordError.equals('no')}">
+                <div th:if="${error != null}">
+                    <div th:each="error : ${binding.getFieldErrors('passwordConfirm')}">
+                        <label th:text="${error.getDefaultMessage()}"></label>
+                        <br>
+                    </div>
+                </div>
                 <input class="form-control-sm widerTextFields" type="password" id="conf_pass2"
                        th:field="*{passwordConfirm}"
-                       placeholder="password"><br><br th:if="${!binding.hasFieldErrors('firstName')}">
-                <label th:if="${binding.hasFieldErrors('firstName')}" for="user_first_name2">
-                    <span th:text="${binding.getFieldError('firstName').getDefaultMessage()}"></span></label>
-                <br th:if="${binding.hasFieldErrors('firstName')}">
+                       placeholder="password"><br>
+                <div th:if="${error != null}">
+                    <div th:each="error : ${binding.getFieldErrors('firstName')}">
+                        <label th:text="${error.getDefaultMessage()}"></label>
+                        <br>
+                    </div>
+                </div>
                 <input class="form-control-sm widerTextFields" type="text" id="user_first_name2"
                        th:field="*{firstName}"
                        placeholder="First name"><br>
-                <label th:if="${binding.hasFieldErrors('lastName')}" for="user_last_name2">
-                    <span th:text="${binding.getFieldError('lastName').getDefaultMessage()}"></span></label>
-                <br th:if="${binding.hasFieldErrors('lastName')}">
+                <div th:if="${error != null}">
+                    <div th:each="error : ${binding.getFieldErrors('lastName')}">
+                        <label th:text="${error.getDefaultMessage()}"></label>
+                        <br>
+                    </div>
+                </div>
                 <input class="form-control-sm widerTextFields" type="text" id="user_last_name2"
                        th:field="*{lastName}"
                        placeholder="Last name"><br>
-                <input class="form-control-sm widerTextFields" type="text" id="user_street2" th:field="*{street}"
+                <input class="form-control-sm widerTextFields" type="text" id="user_street2"
+                       th:field="*{street}"
                        placeholder="Street and number"><br>
-                <input class="form-control-sm widerTextFields" type="text" id="zip2" th:field="*{zipCode}"
+                <input class="form-control-sm widerTextFields" type="text" id="zip2"
+                       th:field="*{zipCode}"
                        placeholder="Zip-code"><br>
                 <input class="form-control-sm widerTextFields" type="text" id="city2" th:field="*{city}"
                        placeholder="City"><br>
-                <label id="countryLabel" style="font-weight: bold;" for="country">Country: </label>
+                <label id="countryLabel" style="font-weight: bold;" for="country2">Country: </label>
                 <br><select class="form-control-sm widerTextFields"
                             type="text" id="country2"
                             th:field="*{country}">
@@ -123,28 +88,29 @@
                         th:text="${c.getPlName()}"
                         th:value="${c.getSymbol()}"></option>
             </select><br>
-                <label th:if="${!dateError.equals('no')}" for="date_birth2" th:text="${dateError}"></label>
-                <br th:if="${!dateError.equals('no')}">
+                <div th:if="${error != null}">
+                    <div th:each="error : ${binding.getFieldErrors('birthDate')}">
+                        <label th:text="${error.getDefaultMessage()}"></label>
+                        <br>
+                    </div>
+                </div>
                 <input class="form-control-sm widerTextFields" type="text" id="date_birth2"
                        th:field="*{birthDate}"
                        placeholder="Date of birth: yyyy-MM-dd"><br>
-                <label th:if="${binding.hasFieldErrors('phoneNumber')}" for="phone2">
-                    <span th:text="${binding.getFieldError('phoneNumber').getDefaultMessage()}"></span></label>
-                <br th:if="${binding.hasFieldErrors('phoneNumber')}">
-                <input class="form-control-sm widerTextFields" type="text" id="phone2" th:field="*{phoneNumber}"
+                <div th:if="${error != null}">
+                    <div th:each="error : ${binding.getFieldErrors('phoneNumber')}">
+                        <label th:text="${error.getDefaultMessage()}"></label>
+                        <br>
+                    </div>
+                </div>
+                <input class="form-control-sm widerTextFields" type="text" id="phone2"
+                       th:field="*{phoneNumber}"
                        placeholder="Phone number"><br>
-                <label id="mailsFromUsLabel" style="font-weight: bold;" class="paintWhite" for="prefer">Would you like to receive emails from
+                <label id="mailsFromUsLabel" style="font-weight: bold;" class="paintWhite"
+                       for="prefer2">Would you like
+                    to receive emails from
                     us?</label>
                 <input id="prefer2" type="checkbox" th:field="*{preferEmails}"/><br>
-                <div style="
-                margin-right: 40%;
-                margin-left: 40%;">
-                    <div class="g-recaptcha"
-                         th:attr="data-sitekey=${@captchaSettings.getSite()}">
-                    </div>
-                    <span id="captchaError2" class="alert alert-danger col-sm-4"
-                          style="display:none"></span>
-                </div>
                 <button class="ui-button" type="submit">Register</button>
                 <br><br>
                 <button type="reset">Reset</button>

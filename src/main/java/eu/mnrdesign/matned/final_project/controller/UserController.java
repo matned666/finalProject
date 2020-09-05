@@ -31,7 +31,15 @@ public class UserController {
     public String postRegistration(@Validated RegistrationDTO registrationDTO,
                                    BindingResult bindingResult,
                                    Model model){
-        return service.userValidRegistrationRedirect(registrationDTO, bindingResult, model);
+        if(bindingResult.hasErrors()){
+            model.addAttribute("error", "error");
+            model.addAttribute("binding", bindingResult);
+            model.addAttribute("countries", Countries.values());
+            model.addAttribute("registrationObject", registrationDTO);
+            return "registrationPage";
+        }
+        service.register(registrationDTO);
+        return "redirect:/login";
     }
 
 
