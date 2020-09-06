@@ -9,6 +9,7 @@ public class TaskDetails{;
 
 
     private Integer timeInMinutes;
+    @Column(length = 1000)
     private String imageUrl;
     private BigDecimal price;
     @ManyToOne

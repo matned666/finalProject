@@ -9,7 +9,7 @@
         <a href="/">Home</a>
         <a class="left-header" th:if="${#request.isUserInRole('ROLE_ADMIN')}" href="/users-list">Users</a>
         <a class="left-header" href="/about">About</a>
-        <a class="left-header" href="/tasks">Tasks</a>
+        <a class="left-header" sec:authorize="isAuthenticated()"  href="/tasks">Tasks</a>
         <a class="right-header" th:if="${#request.isUserInRole('ROLE_USER')}" href="/account">
             <span class="right-header">User:</span>
             <span sec:authentication="name"></span></a>

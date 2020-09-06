@@ -20,67 +20,43 @@
 
 <div id="content" class="center">
 
-    <div th:object="${task}">
-        <br>
-        <h1><span class="bolded">User data, id: </span><span th:text="*{id}"></span></h1>
-        <span class="bolded">Task name: </span><span th:text="*{taskName}"></span><br>
-        <span class="bolded">Description: </span><span th:text="*{description}"></span><br>
-        <span class="bolded">Task time: </span><span th:if="*{timeInMinutes != null}"></span><br><br>
-        <span class="bolded">Address:</span><br>
-        <span class="bolded">Street: </span><span th:text="*{address.street}"></span><br>
-        <span class="bolded">Zip code: </span><span th:text="*{address.zipCode}"></span><br>
-        <span class="bolded">City: </span><span th:text="*{address.city}"></span><br>
-        <span class="bolded">Country: </span><span th:text="*{address.country.getPlName()}"></span><br><br>
-        <span class="bolded">Contact:</span><br>
-        <span class="bolded">Email: </span><span th:text="*{login}"></span><br>
-        <span class="bolded">Phone number: </span><span th:text="*{phoneNumber}"></span><br>
-        <span class="bolded">Creation time: </span><span th:text="*{creationTime}"></span><br><br>
-        <a th:href="@{account/{id}(id = ${user.getId()})}">
-            <button type="button" class="btn btn-secondary btn-lg">Edit your data</button>
+    <div th:if="${task != null}">
+        <div th:object="${task}">
+            <br>
+            <h1>User data:</h1>
+            <span class="bolded">Name: </span><span th:text="*{taskName}"></span><br>
+            <span class="bolded">Description: </span><br><span th:text="*{description}"></span><br>
+            <span class="bolded">Task time: </span><span th:text="*{timeInMinutes}"></span><span> minutes</span><br>
+            <span class="bolded">Price: </span><span th:text="*{price}"></span><br>
+            <span class="bolded">Category: </span><span th:text="*{category}"></span><br>
+            <span class="bolded">Complicity: </span><span th:text="*{complicity}"></span><br>
+            <span class="bolded">Audit:</span><br>
+            <span class="bolded">Id: </span><span th:text="*{id}"></span><br>
+            <span class="bolded">Deployment time: </span><span th:if="*{creationTime != null}"
+                                                               th:text="*{creationTime.toString()}"></span><br>
+            <span class="bolded">Update time: </span><span th:if="*{updateTime != null}"
+                                                           th:text="*{updateTime.toString()}"></span><br><br>
+        </div>
+        <a th:href="@{tasks/edit/{id}(id = ${task.getId()})}">
+            <button type="button" class="btn btn-secondary btn-lg">
+                Edit task data
+            </button>
         </a>
+        <a th:href="@{tasks/delete/{id}(id = ${task.getId()})}">
+            <button type="button" class="btn btn-secondary btn-lg">
+                Delete task
+            </button>
+        </a>
+
+
+    </div>
+    <div th:unless="${task != null}">
+        <span>no such task</span>
     </div>
 
-    <div sec:authorize="hasRole('ROLE_ADMIN')">
+    <div th:insert="fragments/nav :: footer">
 
-        <h1>WELCOME ADMIN</h1>
-        <div th:if="${userToSee != null}">
-            <div th:object="${userToSee}">
-                <br>
-                <h1>User data:</h1>
-                <span class="bolded">Name: </span><span th:text="*{firstName}"></span><br>
-                <span class="bolded">Surname: </span><span th:text="*{lastName}"></span><br>
-                <span class="bolded">Birth date: </span><span th:if="*{birthDate != null}" th:text="*{birthDate.toString()}"></span><br><br>
-                <span class="bolded">Address:</span><br>
-                <span class="bolded">Street: </span><span th:text="*{address.street}"></span><br>
-                <span class="bolded">Zip code: </span><span th:text="*{address.zipCode}"></span><br>
-                <span class="bolded">City: </span><span th:text="*{address.city}"></span><br>
-                <span class="bolded">Country: </span><span th:text="*{address.country.getPlName()}"></span><br><br>
-                <span class="bolded">Contact:</span><br>
-                <span class="bolded">Email: </span><span th:text="*{login}"></span><br>
-                <span class="bolded">Phone number: </span><span th:text="*{phoneNumber}"></span><br><br>
-                <span class="bolded">Password hash: </span><span th:text="*{password}"></span><br>
-            </div>
-            <a th:href="@{account/{id}(id = ${userToSee.getId()})}">
-                <button type="button" class="btn btn-secondary btn-lg">
-                    Edit user data
-                </button>
-            </a>
-            <a th:href="@{account-delete/{id}(id = ${userToSee.getId()})}">
-                <button type="button" class="btn btn-secondary btn-lg">
-                    Delete user data
-                </button>
-            </a>
-        </div>
-        <div th:unless="${userToSee != null}">
-            <span>no such user</span>
-        </div>
     </div>
 </div>
-
-
-<div th:insert="fragments/nav :: footer">
-
-</div>
-
 </body>
 </html>

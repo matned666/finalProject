@@ -3,6 +3,7 @@ package eu.mnrdesign.matned.final_project.model;
 import eu.mnrdesign.matned.final_project.dto.TaskDTO;
 import eu.mnrdesign.matned.final_project.holder.AccountHolder;
 
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ public class Task extends BaseEntity{
 
 
     private String taskName;
+    @Column(length = 1000)
     private String description;
     @Embedded
     private TaskDetails taskDetails;

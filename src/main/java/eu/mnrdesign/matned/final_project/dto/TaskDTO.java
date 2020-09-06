@@ -20,6 +20,7 @@ public class TaskDTO {
 
     @NotNull(message = "The field cannot be empty")
     private Integer timeInMinutes;
+    @Size(max = 1000, message = "Url can have max {max} signs")
     private String imageUrl;
     private BigDecimal price;
     private String category;

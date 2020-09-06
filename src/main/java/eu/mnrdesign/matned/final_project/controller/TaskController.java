@@ -68,7 +68,7 @@ public class TaskController {
         return "redirect:/tasks";
     }
 
-    @PostMapping("/tasks/{id}")
+    @GetMapping("/task/{id}")
     public String showTaskData(@PathVariable Long id, Model model){
         TaskDTO dto = service.findById(id);
         model.addAttribute("task", dto);
