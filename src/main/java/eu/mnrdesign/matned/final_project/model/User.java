@@ -14,6 +14,7 @@ import java.util.Objects;
 import static eu.mnrdesign.matned.final_project.holder.Static.DATE_PATTERN;
 
 @Entity
+@Table(name = "USER_ENTITY")
 public class User extends BaseEntity {
 
 
