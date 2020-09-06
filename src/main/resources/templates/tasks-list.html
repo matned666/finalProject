@@ -41,7 +41,7 @@
 
         <br>
         <div>Drag your todo:</div>
-        <div id="div1" class="framewith-semi-transparent-backgroung" th:ondrop="" ondrop="drop(event)"
+        <div id="div1" class="framewith-semi-transparent-backgroung height-adaptive" ondrop="drop(event)"
              ondragover="allowDrop(event)">
 
         </div>
@@ -68,40 +68,42 @@
     <div class="split right center">
         <div class="grid-layout">
 
-            <div id="div2" th:each="task : ${tasks}" draggable="true" ondragstart="drag(event)">
-                <a th:href="@{task/{id}(id = ${task.getId()})}">
-                    <div class="task-tile">
-                        <div class="tile-title-txt">
-                            <span style="font-weight: bold">Title: </span>
-                            <span th:text="${task.taskName}"></span>
+            <div  th:each="task : ${tasks}" >
+                <div id="drag1" draggable="true" ondragstart="drag(event)">
+                    <a th:href="@{task/{id}(id = ${task.getId()})}">
+                        <div class="task-tile">
+                            <div class="tile-title-txt">
+                                <span style="font-weight: bold">Title: </span>
+                                <span th:text="${task.taskName}"></span>
+                            </div>
+                            <br>
+                            <div class="tile-txt">
+                                <span style="font-weight: bold">Time TODO: </span>
+                                <span th:text="${task.timeInMinutes}"></span>
+                                <span> minutes</span>
+                            </div>
+                            <br>
+                            <div class="tile-txt">
+                                <span style="font-weight: bold">Price: </span>
+                                <span th:text="${task.price}"></span>
+                                <span> EUR </span>
+                            </div>
+                            <br>
+                            <div class="tile-txt">
+                                <span style="font-weight: bold">Category: </span>
+                                <span th:text="${task.category}"></span>
+                            </div>
+                            <br>
+                            <div class="tile-txt">
+                                <span style="font-weight: bold">Description:  </span>
+                                <span th:text="${task.description}"></span>
+                            </div>
+                            <div class="tile-txt">
+                                <img th:src="@{${task.imageUrl}}" alt="task image" height="100">
+                            </div>
                         </div>
-                        <br>
-                        <div class="tile-txt">
-                            <span style="font-weight: bold">Time TODO: </span>
-                            <span th:text="${task.timeInMinutes}"></span>
-                        </div>
-                        <br>
-                        <div class="tile-txt">
-                            <span style="font-weight: bold">Price: </span>
-                            <span th:text="${task.price}"></span>
-                            <span> EUR </span>
-                        </div>
-                        <br>
-                        <div class="tile-txt">
-                            <span style="font-weight: bold">Category: </span>
-                            <span th:text="${task.category}"></span>
-                        </div>
-                        <br>
-                        <div class="tile-txt">
-                            <span style="font-weight: bold">Description:  </span>
-                            <span th:text="${task.description}"></span>
-                        </div>
-                        <div class="tile-txt">
-                            <img th:src="@{${task.imageUrl}}" alt="task image" height="100">
-                        </div>
-                    </div>
-                </a>
-                <br>
+                    </a>
+                </div>
             </div>
 
         </div>

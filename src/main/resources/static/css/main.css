@@ -8,6 +8,7 @@
     -moz-box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.3);
     box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.3);
     transition: 0.3s;
+    border-radius: 10px;
 
 }
 
@@ -111,6 +112,7 @@ body {
 }
 
 .button-darken{
+    width: 90%;
     margin: 10px;
     border-width: 3px;
     border-radius: 10px;
@@ -134,7 +136,6 @@ body {
 /* Split the screen in half */
 .split {
     height: 100%;
-    width: 80%;
     position: fixed;
     z-index: 1;
     overflow-x: hidden;
@@ -143,11 +144,15 @@ body {
 
 .left {
     left: 0;
+    width: 20%;
+
 }
 
 /* Control the right side */
 .right {
     right: 0;
+    width: 80%;
+
 }
 
 .framewith-semi-transparent-backgroung{
@@ -155,13 +160,13 @@ body {
     border-width: 5px;
     border-color: rgba(0, 0, 0, 0.7);
     padding: 10px;
-    width: 20%;
     height: 50%;
     margin: 10px;
     -webkit-box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.3);
     -moz-box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.3);
     box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.3);
     transition: 0.3s;
+    border-radius: 10px;
 }
 
 .frame-pages{
@@ -169,7 +174,6 @@ body {
     border-width: 5px;
     border-color: rgba(0, 0, 0, 0.7);
     padding: 5px;
-    width: 20%;
     -webkit-box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.3);
     -moz-box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.3);
     box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.3);
@@ -178,10 +182,11 @@ body {
     grid-template-columns: repeat(5, 1fr);
     grid-gap: 10px;
     alignment: center;
+    border-radius: 10px;
 }
 
 .btn-wth-auto{
-    width: fit-content;
+    width: 100%;
     margin: 2px;
     border-width: 3px;
     border-radius: 10px;
@@ -192,4 +197,8 @@ body {
 .btn-wth-auto:hover{
     color: white;
     background-color: #7e7e7e;
+}
+
+.height-adaptive{
+    height: fit-content;
 }

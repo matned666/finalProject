@@ -18,10 +18,10 @@
 
 <div th:insert="fragments/nav :: nav"></div>
 <div id="content">
+    <div class="center">
 
-    <div id="errorRedirectView" class="center">
         <br>
-        <form action="/tasks/add" method="post" th:object="${new_task}">
+        <form th:action="@{/task/edit/{id}(id = ${edited_task.getId()})}" method="post" th:object="${edited_task}">
             <div>
                 <div th:if="${error != null}">
 
@@ -72,8 +72,7 @@
                        placeholder="Price"><br>
 
 
-
-                <label  style="font-weight: bold;" for="category">Category: </label>
+                <label style="font-weight: bold;" for="category">Category: </label>
                 <br><select class="form-control-sm widerTextFields"
                             type="text" id="category"
                             th:field="*{category}">
@@ -96,7 +95,6 @@
 
             </div>
         </form>
-
     </div>
 </div>
 <div th:insert="fragments/nav :: footer"></div>

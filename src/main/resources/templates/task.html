@@ -13,6 +13,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+    <script>
+        $( "#target" ).click(function() {
+            alert( "Handler for .click() called." );
+        });
+    </script>
 </head>
 <body>
 
@@ -37,26 +42,27 @@
             <span class="bolded">Update time: </span><span th:if="*{updateTime != null}"
                                                            th:text="*{updateTime.toString()}"></span><br><br>
         </div>
-        <a th:href="@{tasks/edit/{id}(id = ${task.getId()})}">
+        <a id="target" th:href="@{edit/{id}(id = ${task.getId()})}">
             <button type="button" class="btn btn-secondary btn-lg">
                 Edit task data
             </button>
         </a>
-        <a th:href="@{tasks/delete/{id}(id = ${task.getId()})}">
+        <a th:href="@{delete/{id}(id = ${task.getId()})}">
             <button type="button" class="btn btn-secondary btn-lg">
                 Delete task
             </button>
         </a>
 
-
+        <div th:unless="${task != null}">
+            <span>no such task</span>
+        </div>
     </div>
-    <div th:unless="${task != null}">
-        <span>no such task</span>
-    </div>
 
-    <div th:insert="fragments/nav :: footer">
 
-    </div>
+</div>
+
+<div th:insert="fragments/nav :: footer">
+
 </div>
 </body>
 </html>

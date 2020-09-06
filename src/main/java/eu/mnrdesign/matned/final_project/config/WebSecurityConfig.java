@@ -76,10 +76,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .roles(UserRole.Role.ADMIN.name());
 
         auth.jdbcAuthentication()
-                .usersByUsernameQuery("select u.LOGIN, u.PASSWORD, 1 from USER u where u.LOGIN = ?")
+                .usersByUsernameQuery("select u.LOGIN, u.PASSWORD, 1 from USER_ENTITY u where u.LOGIN = ?")
                 .authoritiesByUsernameQuery(
-                        "select u.LOGIN, r.ROLE_NAME from USER u " +
-                                "join USER_ROLES ur on u.ID = ur.USER_ID " +
+                        "select u.LOGIN, r.ROLE_NAME from USER_ENTITY u " +
+                                "join USER_ENTITY_ROLES ur on u.ID = ur.USER_ID " +
                                 "join USER_ROLE r on ur.ROLES_ID = r.ID " +
                                 "where u.LOGIN = ?")
                 .dataSource(dataSource)

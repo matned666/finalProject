@@ -19,6 +19,7 @@ public class Task extends BaseEntity{
     private TaskDetails taskDetails;
 
     public Task() {
+        setCreationDate(LocalDateTime.now());
     }
 
     public static Task apply(TaskDTO taskDTO){
@@ -31,7 +32,6 @@ public class Task extends BaseEntity{
         task.taskDetails.setImageUrl(taskDTO.getImageUrl());
         task.taskDetails.setTimeInMinutes(taskDTO.getTimeInMinutes());
         task.taskDetails.setPrice(taskDTO.getPrice());
-        task.setCreationDate(LocalDateTime.now());
         return task;
 
     }

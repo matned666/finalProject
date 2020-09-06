@@ -50,21 +50,6 @@ public class UserService {
         return repo.findById(id).orElse(null);
     }
 
-    public RegistrationDTO createDTO(User user){
-        return new RegistrationDTO.RTDOBuilder()
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .login(user.getLogin())
-                .street(user.getAddress().getStreet())
-                .city(user.getAddress().getCity())
-                .zipCode(user.getAddress().getZipCode())
-                .country(user.getAddress().getCountry().name())
-                .birthDate(user.getBirthDate().toString())
-                .phoneNumber(user.getPhoneNumber())
-                .preferEmails(user.isPreferEmails())
-                .build();
-    }
-
     public void update(Long id, RegistrationDTO registrationDTO) {
         passwordEncoded = passwordEncoder.encode(registrationDTO.getPassword());
         User user = User.apply(registrationDTO, passwordEncoded);
