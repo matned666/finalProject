@@ -5,7 +5,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <title>User account</title>
     <link href="../static/css/background.css" th:href="@{/css/background.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" type="text/css">
@@ -32,7 +32,7 @@
         <span class="bolded">City: </span><span th:text="*{address.city}"></span><br>
         <span class="bolded">Country: </span><span th:text="*{address.country.getPlName()}"></span><br><br>
         <span class="bolded">Contact:</span><br>
-        <span class="bolded">Email: </span><span th:text="*{login}"></span><br>
+        <span class="bolded">Email: </span><span th:text="${user.login}"></span><br>
         <span class="bolded">Phone number: </span><span th:text="*{phoneNumber}"></span><br>
         <a th:href="@{account/{id}(id = ${user.getId()})}">
             <button type="button" class="btn btn-secondary btn-lg">Edit your data</button>
@@ -50,21 +50,21 @@
                 <span class="bolded">Surname: </span><span th:text="*{lastName}"></span><br>
                 <span class="bolded">Birth date: </span><span th:if="*{birthDate != null}" th:text="*{birthDate.toString()}"></span><br><br>
                 <span class="bolded">Address:</span><br>
-                <span class="bolded">Street: </span><span th:text="*{address.street}"></span><br>
-                <span class="bolded">Zip code: </span><span th:text="*{address.zipCode}"></span><br>
-                <span class="bolded">City: </span><span th:text="*{address.city}"></span><br>
-                <span class="bolded">Country: </span><span th:text="*{address.country.getPlName()}"></span><br><br>
+                <span class="bolded">Street: </span><span th:text="*{street}"></span><br>
+                <span class="bolded">Zip code: </span><span th:text="*{zipCode}"></span><br>
+                <span class="bolded">City: </span><span th:text="*{city}"></span><br>
+                <span class="bolded">Country: </span><span th:text="*{country}"></span><br><br>
                 <span class="bolded">Contact:</span><br>
                 <span class="bolded">Email: </span><span th:text="*{login}"></span><br>
                 <span class="bolded">Phone number: </span><span th:text="*{phoneNumber}"></span><br><br>
                 <span class="bolded">Password hash: </span><span th:text="*{password}"></span><br>
             </div>
-            <a th:href="@{account/{id}(id = ${userToSee.getId()})}">
+            <a th:href="@{/user/edit/{id}(id = ${userToSee.getId()})}">
                 <button type="button" class="btn btn-secondary btn-lg">
                     Edit user data
                 </button>
             </a>
-            <a th:href="@{account-delete/{id}(id = ${userToSee.getId()})}">
+            <a  th:href="@{/user/delete/{id}(id = ${userToSee.getId()})}" onclick="return confirm('Are you sure you want to delete this user?');">
                 <button type="button" class="btn btn-secondary btn-lg">
                     Delete user data
                 </button>

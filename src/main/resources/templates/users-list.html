@@ -5,7 +5,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <title>All users list</title>
     <link href="../static/css/background.css" th:href="@{/css/background.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" type="text/css">
@@ -17,19 +17,22 @@
 
 <div th:insert="fragments/nav :: nav"></div>
 <div id="content">
+    <div class="grid-layout6">
 
-    <table class="table center">
-        <th:block th:each="user : ${all_users}">
-            <tr>
-                <td th:text="${user.login}"></td>
-                <td th:text="${user.firstName}"></td>
-                <td th:text="${user.lastName}">...</td>
-                <td><a th:href="@{account/{id}(id = ${user.getId()})}">
-                    <button>Check profile</button>
-                </a></td>
-            </tr>
+        <th:block th:each="user : ${all_users}" >
+            <div class="center">
+                <span style="font-weight: bold">Login: </span>
+                <span class="frame" th:text="${user.login}"></span><br>
+                <span style="font-weight: bold">First name: </span>
+                <span class="frame"th:text="${user.firstName}"></span><br>
+                <span style="font-weight: bold">Last name: </span>
+                <span class="frame"th:text="${user.lastName}">...</span><br>
+                <a th:href="@{account/{id}(id = ${user.getId()})}">
+                    <button style="width: fit-content;">Check profile</button>
+                </a>
+            </div>
         </th:block>
-    </table>
+    </div>
 </div>
 <div th:insert="fragments/nav :: footer"></div>
 

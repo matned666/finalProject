@@ -1,7 +1,10 @@
 package eu.mnrdesign.matned.final_project.dto;
 
 import eu.mnrdesign.matned.final_project.model.User;
-import eu.mnrdesign.matned.final_project.validation.*;
+import eu.mnrdesign.matned.final_project.validation.DateMatchesPattern;
+import eu.mnrdesign.matned.final_project.validation.NoValidation;
+import eu.mnrdesign.matned.final_project.validation.PasswordMatches;
+import eu.mnrdesign.matned.final_project.validation.UniqueEmail;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -9,27 +12,9 @@ import javax.validation.constraints.Size;
 
 import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTER_BIRTHDAY;
 
-@PasswordMatches
-public class RegistrationDTO {
+public class UserDTO {
 
     private Long id;
-
-    @NotNull(message = "The login cannot be empty")
-    @Size(min = 5, message = "The login must be at least {min} signs long")
-    @Pattern(
-            regexp = ".{1,}@.{1,}[.].{2,3}",
-            message = "It should be a valid email address"
-    )
-    @UniqueEmail
-    private String login;
-
-    @NotNull(message = "The password field cannot be empty")
-    @Size(min = 3, message = "The password must be at least {min} signs long")
-    private String password;
-
-    @NotNull(message = "This field cannot be empty")
-    @Size(min = 3, message = "The password must be at least {min} signs long")
-    private String passwordConfirm;
 
     @Pattern(regexp = "[A-z]{0,}", message = "Name should contain only letters")
     private String firstName;
@@ -58,10 +43,10 @@ public class RegistrationDTO {
     @NoValidation
     private boolean preferEmails;
 
-    public RegistrationDTO() {
+    public UserDTO() {
     }
 
-    private RegistrationDTO(RTDOBuilder builder){
+    private UserDTO(RTDOBuilder builder){
         id = builder.id;
         firstName = builder.firstName;
         lastName = builder.lastName;
@@ -70,21 +55,15 @@ public class RegistrationDTO {
         city = builder.city;
         country = builder.country;
         birthDate = builder.birthDate;
-        login = builder.login;
-        password = builder.password;
-        passwordConfirm = builder.passwordConfirm;
         phoneNumber = builder.phoneNumber;
         preferEmails = builder.preferEmails;
     }
 
-    public static RegistrationDTO apply(User user) {
-        RegistrationDTO registrationDTO = new RTDOBuilder()
+    public static UserDTO apply(User user) {
+        UserDTO registrationDTO = new RTDOBuilder()
                 .id(user.getId())
-                .login(user.getLogin())
-                .password(user.getPassword())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .phoneNumber(user.getPhoneNumber())
                 .street(user.getAddress().getStreet())
                 .zipCode(user.getAddress().getZipCode())
                 .city(user.getAddress().getCity())
@@ -155,30 +134,6 @@ public class RegistrationDTO {
         this.birthDate = birthDate;
     }
 
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -206,9 +161,6 @@ public class RegistrationDTO {
         private String city;
         private String country;
         private String birthDate;
-        private String login;
-        private String password;
-        private String passwordConfirm;
         private String phoneNumber;
         private boolean preferEmails;
 
@@ -255,21 +207,6 @@ public class RegistrationDTO {
             return this;
         }
 
-        public RTDOBuilder login(String login) {
-            this.login = login;
-            return this;
-        }
-
-        public RTDOBuilder password(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public RTDOBuilder passwordConfirm(String passwordConfirm) {
-            this.passwordConfirm = passwordConfirm;
-            return this;
-        }
-
         public RTDOBuilder phoneNumber(String phoneNumber) {
             this.phoneNumber = phoneNumber;
             return this;
@@ -280,8 +217,8 @@ public class RegistrationDTO {
             return this;
         }
 
-        public RegistrationDTO build() {
-            return new RegistrationDTO(this);
+        public UserDTO build() {
+            return new UserDTO(this);
         }
     }
 

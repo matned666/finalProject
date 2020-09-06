@@ -1,6 +1,8 @@
 package eu.mnrdesign.matned.final_project.service;
 
 import eu.mnrdesign.matned.final_project.dto.RegistrationDTO;
+import eu.mnrdesign.matned.final_project.dto.UserDTO;
+import eu.mnrdesign.matned.final_project.model.Countries;
 import eu.mnrdesign.matned.final_project.model.User;
 import eu.mnrdesign.matned.final_project.model.UserRole;
 import eu.mnrdesign.matned.final_project.repository.UserRepository;
@@ -8,7 +10,12 @@ import eu.mnrdesign.matned.final_project.repository.UserRoleRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+
+import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTER_BIRTHDAY;
 
 @Service
 public class UserService {
@@ -46,15 +53,29 @@ public class UserService {
         return repo.existsByLogin(login);
     }
 
-    public User findById(Long id) {
-        return repo.findById(id).orElse(null);
+    public RegistrationDTO findById(Long id) {
+        return RegistrationDTO.apply(repo.findById(id).orElseThrow(() -> new RuntimeException("User with id: "+id+" has not been found")));
     }
 
-    public void update(Long id, RegistrationDTO registrationDTO) {
-        passwordEncoded = passwordEncoder.encode(registrationDTO.getPassword());
-        User user = User.apply(registrationDTO, passwordEncoded);
-        user.setId(id);
+    public UserDTO findById(Long id, boolean isUserDTO) {
+        return UserDTO.apply(repo.findById(id).orElseThrow(() -> new RuntimeException("User with id: "+id+" has not been found")));
+    }
+
+    public void update(Long id, UserDTO userDTO) {
+        User user = repo.findById(id).orElseThrow(() -> new RuntimeException("User of "+id+" id has not been found"));
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        if (userDTO.getBirthDate() != null) if (!userDTO.getBirthDate().trim().equals(""))user.setBirthDate(LocalDate.parse(userDTO.getBirthDate(),DATE_TIME_FORMATTER_BIRTHDAY));
+        user.setPhoneNumber(userDTO.getPhoneNumber());
+        user.setPreferEmails(userDTO.isPreferEmails());
+        user.getAddress().setStreet(userDTO.getStreet());
+        user.getAddress().setZipCode(userDTO.getZipCode());
+        user.getAddress().setCity(userDTO.getCity());
+        if (userDTO.getCountry() != null) if (!userDTO.getCountry().trim().equals("")) user.getAddress().setCountry(Countries.valueOf(userDTO.getCountry()));
         repo.save(user);
     }
 
+    public void delete(Long id) {
+        repo.deleteById(id);
+    }
 }

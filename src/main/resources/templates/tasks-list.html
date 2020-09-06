@@ -5,7 +5,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <title>List of all tasks</title>
     <link href="../static/css/background.css" th:href="@{/css/background.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" type="text/css">
@@ -65,11 +65,11 @@
     </div>
 
 
-    <div class="split right center">
+    <div id="contented" class="split right center">
         <div class="grid-layout">
 
-            <div  th:each="task : ${tasks}" >
-                <div id="drag1" draggable="true" ondragstart="drag(event)">
+            <div th:each="task : ${tasks}" id="drag1" draggable="true" ondragstart="drag(event)">
+                <div>
                     <a th:href="@{task/{id}(id = ${task.getId()})}">
                         <div class="task-tile">
                             <div class="tile-title-txt">
@@ -94,12 +94,14 @@
                                 <span th:text="${task.category}"></span>
                             </div>
                             <br>
-                            <div class="tile-txt">
-                                <span style="font-weight: bold">Description:  </span>
-                                <span th:text="${task.description}"></span>
+                            <div style="height: 40px">
+                                <div class="tile-txt">
+                                    <span style="font-weight: bold">Description:  </span>
+                                    <span th:text="${task.description}"></span>
+                                </div>
                             </div>
                             <div class="tile-txt">
-                                <img th:src="@{${task.imageUrl}}" alt="task image" height="100">
+                                <img th:src="@{${task.imageUrl}}" alt="task image" height="100" src="">
                             </div>
                         </div>
                     </a>

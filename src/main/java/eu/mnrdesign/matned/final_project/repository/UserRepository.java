@@ -14,4 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User u where lower(u.login) = lower(?1)")
     Optional<User> findByLogin(String login);
 
+//    @Query("delete from User u where u.id = ?1")
+    void deleteById(Long id);
 }

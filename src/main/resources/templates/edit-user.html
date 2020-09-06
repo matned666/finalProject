@@ -2,16 +2,17 @@
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
->
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
-    <title>User registration page</title>
+    <title>User edit page</title>
     <link href="../static/css/background.css" th:href="@{/css/background.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -26,41 +27,10 @@
 <div th:insert="fragments/nav :: nav"></div>
 <div id="content">
 
-    <div id="errorRedirectView" class="center">
+    <div  id="errorRedirectView" class="center">
         <br>
-        <form action="/register" method="post" th:object="${registrationObject}">
+        <form th:action="@{/user/edit/{id}(id = ${editedUser.getId()})}" method="post" th:object="${editedUser}">
             <div>
-                <div th:if="${error != null}">
-                    <div th:each="error : ${binding.getFieldErrors('login')}">
-                        <label th:text="${error.getDefaultMessage()}"></label>
-                        <br>
-                    </div>
-                </div>
-                <input class="form-control-sm widerTextFields" type="text" th:field="*{login}"
-                       placeholder="e-mail"><br>
-                <div th:if="${error != null}">
-                    <div th:each="error : ${binding.getGlobalErrors()}">
-                        <label th:text="${error.getDefaultMessage()}"></label>
-                        <br>
-                    </div>
-                </div>
-                <div th:if="${error != null}">
-                    <div th:each="error : ${binding.getFieldErrors('password')}">
-                        <label th:text="${error.getDefaultMessage()}"></label>
-                        <br>
-                    </div>
-                </div>
-                <input class="form-control-sm widerTextFields" type="password" id="pass2" th:field="*{password}"
-                       placeholder="password"><br>
-                <div th:if="${error != null}">
-                    <div th:each="error : ${binding.getFieldErrors('passwordConfirm')}">
-                        <label th:text="${error.getDefaultMessage()}"></label>
-                        <br>
-                    </div>
-                </div>
-                <input class="form-control-sm widerTextFields" type="password" id="conf_pass2"
-                       th:field="*{passwordConfirm}"
-                       placeholder="password"><br>
                 <div th:if="${error != null}">
                     <div th:each="error : ${binding.getFieldErrors('firstName')}">
                         <label th:text="${error.getDefaultMessage()}"></label>

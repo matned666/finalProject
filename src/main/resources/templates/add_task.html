@@ -5,7 +5,7 @@
 >
 <head>
     <meta charset="UTF-8">
-    <title>User registration page</title>
+    <title>Add a new task</title>
     <link href="../static/css/background.css" th:href="@{/css/background.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" type="text/css">
@@ -73,7 +73,7 @@
 
 
 
-                <label  style="font-weight: bold;" for="category">Category: </label>
+                <label id="categoryLabel" style="font-weight: bold;" for="category">Category: </label>
                 <br><select class="form-control-sm widerTextFields"
                             type="text" id="category"
                             th:field="*{category}">
