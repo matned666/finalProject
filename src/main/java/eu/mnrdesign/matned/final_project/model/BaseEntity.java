@@ -8,14 +8,14 @@ import java.util.Objects;
 public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+    protected Long id;
 
     @Version
-    private Long version;
+    protected Long version;
 
     // Audit
-    private LocalDateTime creationDate;
-    private LocalDateTime updateDate;
+    protected LocalDateTime creationDate;
+    protected LocalDateTime updateDate;
 
     @Override
     public boolean equals(Object o) {
@@ -36,6 +36,26 @@ public class BaseEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDateTime creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public LocalDateTime getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(LocalDateTime updateDate) {
+        this.updateDate = updateDate;
     }
 
     public Long getVersion() {

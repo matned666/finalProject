@@ -8,6 +8,7 @@
     -webkit-box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.3);
     -moz-box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.3);
     box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.3);
+    transition: 0.3s;
 }
 
 /* Style the header links */

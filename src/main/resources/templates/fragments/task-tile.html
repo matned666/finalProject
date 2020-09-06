@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<header>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</header>
+<div class="header" th:fragment="task-tile">
+    <div class="row" style="border: black solid 1px">
+        <div th:text="${task.getTaskName()}" class="col-md-4 text-danger">
+            Sample task name
+        </div>
+        <div th:text="${task.getTimeInMinutes()}" class="col-md-4 text-danger">
+            45
+        </div>
+        <img class="col-md-4"
+             th:src="${task.getImageUrl()}"><br>
+        <div th:text="${task.getDescription()}" class="col-md-4">
+            Sample description of the task
+        </div>
+    </div>
+</div>
+
+
+</html>

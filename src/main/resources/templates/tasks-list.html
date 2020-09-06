@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link href="../static/css/background.css" th:href="@{/css/background.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script>
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+    </script>
+</head>
+<body>
+
+<div th:insert="fragments/nav :: nav"></div>
+<div id="content">
+
+
+    <div class="split left ">
+        <a href="/tasks/add">
+            <button class="ui-button button-darken">Add new task</button>
+        </a><br>
+
+        <br>
+        <div>Drag your todo:</div>
+        <div id="div1" class="framewith-semi-transparent-backgroung" th:ondrop="" ondrop="drop(event)"
+             ondragover="allowDrop(event)">
+
+        </div>
+
+        <div>
+            <span style="font-weight: bold">Pages:</span>
+            <div class="frame-pages">
+                <th:block th:each="i: ${#numbers.sequence(0, tasks.getTotalPages() - 1)}">
+                    <a th:href="@{/tasks(page=${i})}">
+                        <button class="btn-wth-auto" th:text="${i+1}"></button>
+                    </a>
+                </th:block>
+            </div>
+
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+
+    <div class="split right center">
+        <div class="grid-layout">
+
+            <div id="div2" th:each="task : ${tasks}" draggable="true" ondragstart="drag(event)">
+                <div class="task-tile">
+                    <div class="tile-title-txt">
+                        <span style="font-weight: bold">Title: </span>
+                        <span th:text="${task.taskName}"></span>
+                    </div>
+                    <br>
+                    <div class="tile-txt">
+                        <span style="font-weight: bold">Time TODO: </span>
+                        <span th:text="${task.timeInMinutes}"></span>
+                    </div>
+                    <br>
+                    <div class="tile-txt">
+                        <span style="font-weight: bold">Price: </span>
+                        <span th:text="${task.price}"></span>
+                        <span> EUR </span>
+                    </div>
+                    <br>
+                    <div class="tile-txt">
+                        <span style="font-weight: bold">Category: </span>
+                        <span th:text="${task.category}"></span>
+                    </div>
+                    <br>
+                    <div class="tile-txt">
+                        <span style="font-weight: bold">Description:  </span>
+                        <span th:text="${task.description}"></span>
+                    </div>
+                    <div class="tile-txt">
+                        <img th:src="@{${task.imageUrl}}" alt="task image"  height="100">
+                    </div>
+                </div>
+                <br>
+            </div>
+
+        </div>
+        <div>
+            <br>
+            <br>
+        </div>
+    </div>
+
+</div>
+
+<div th:insert="fragments/nav :: footer">
+
+</div>
+
+</body>
+</html>

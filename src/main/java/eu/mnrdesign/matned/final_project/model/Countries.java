@@ -3,10 +3,11 @@ package eu.mnrdesign.matned.final_project.model;
 import java.util.Arrays;
 
 public enum Countries {
-    POLAND("Polska", "PL"),
-    GERMANY("Niemcy", "DE"),
-    SPAIN("Hiszpania", "ES"),
-    FRANCE("Francja", "FR");
+    POLAND("Poland", "PL"),
+    GERMANY("Germany", "DE"),
+    SPAIN("Spain", "ES"),
+    FRANCE("France", "FR"),
+    UKRAINE("Ukraine", "UK");
 
     private final String plName;
     private final String symbol;
