@@ -64,6 +64,7 @@ public class RestrictedRegistrationDTO implements UserDTOInterface<RestrictedReg
                 .zipCode(user.getAddress().getZipCode())
                 .city(user.getAddress().getCity())
                 .country(user.getAddress().getCountry().name())
+                .phoneNumber(user.getPhoneNumber())
                 .preferEmails(user.isPreferEmails())
                 .build();
         if (user.getBirthDate() != null) registrationDTO.setBirthDate(user.getBirthDate().format(DATE_TIME_FORMATTER_BIRTHDAY));
