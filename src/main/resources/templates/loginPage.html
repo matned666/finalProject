@@ -25,6 +25,9 @@
 
         <div class="center">
             <br><br>
+            <div th:if="${param.error}">
+                    <label style="color: red; font-weight: bold;">Wrong username or password</label>
+            </div>
             <form action="/login-process" method="post">
                 <input class="form-control-sm widerTextFields" type="email" name="username"
                        placeholder="e-mail"><br>

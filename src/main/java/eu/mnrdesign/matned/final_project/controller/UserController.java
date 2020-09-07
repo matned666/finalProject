@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import static eu.mnrdesign.matned.final_project.holder.SecurityHolder.actualUserName;
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 
 @Controller
 public class UserController {
@@ -51,42 +52,55 @@ public class UserController {
 
 
     @GetMapping("/users-list")
-    public String getAllUsersList(Model model) {
-        model.addAttribute("all_users", service.findAll());
-        return "users-list";
+    public String getAllUsersList(Model model, HttpServletRequest request) {
+        if(request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+            model.addAttribute("all_users", service.findAll());
+            return "users-list";
+        }else return "accessDenied";
     }
 
     @GetMapping("/account")
-    public String accountShow(Model model) {
-        String actualUserLogin = actualUserName();
-        if (!actualUserLogin.equals(WebSecurityConfig.ADMIN_ADMIN_PL)) {
-            RegistrationDTO actualUser = service.findByLogin(actualUserLogin);
+    public String accountShow(Model model, Principal principal, HttpServletRequest request) {
+        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+            RestrictedRegistrationDTO actualUser = service.findByLoginRestricted(principal.getName());
             model.addAttribute("userToSee", actualUser);
             AccountHolder.getInstance().setSelectedAccountId(actualUser.getId());
+            return "account";
+        }else {
+            return "redirect:/users-list";
         }
-        return "account";
     }
 
     @GetMapping("/account/{id}")
-    public String accountShow(@PathVariable Long id, Model model) {
-        AccountHolder.getInstance().setSelectedAccountId(id);
-        RegistrationDTO user = service.findById(id);
-        model.addAttribute("userToSee", user);
-        return "account";
+    public String accountShow(@PathVariable Long id,
+                              Model model,
+                              HttpServletRequest request) {
+        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN))
+        {
+            return "accessDenied";
+        }
+        else {
+            AccountHolder.getInstance().setSelectedAccountId(id);
+            RegistrationDTO user = service.findById(id);
+            model.addAttribute("userToSee", user);
+            return "account";
+        }
     }
 
     @GetMapping("/user/edit/{id}")
-    public String accountEditionPage(@PathVariable Long id, Model model) {
+    public String accountEditionPage(@PathVariable Long id,
+                                     Model model,
+                                     HttpServletRequest request) {
         UserDTOInterface<?> user;
-        if (!actualUserName().equals(WebSecurityConfig.ADMIN_ADMIN_PL))
+        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN))
         {
-            user = service.findByLogin(actualUserName(), true);
+            return "accessDenied";
         }
         else {
             user = service.findById(id);
+            model.addAttribute("editedUser", user);
+            return "edit-user";
         }
-        model.addAttribute("editedUser", user);
-        return "edit-user";
 
     }
 
@@ -94,22 +108,34 @@ public class UserController {
     public String editUserProcess(@PathVariable Long id,
                                   @Validated RestrictedRegistrationDTO restrictedRegistrationDTO,
                                   BindingResult bindingResult,
-                                  Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("error", "error");
-            model.addAttribute("binding", bindingResult);
-            model.addAttribute("countries", Countries.values());
-            model.addAttribute("registrationObject", restrictedRegistrationDTO);
-            return "edit-user";
+                                  Model model,
+                                  HttpServletRequest request) {
+        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN))
+        {
+            return "accessDenied";
+        }else {
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("error", "error");
+                model.addAttribute("binding", bindingResult);
+                model.addAttribute("countries", Countries.values());
+                model.addAttribute("registrationObject", restrictedRegistrationDTO);
+                return "edit-user";
+            }
+            service.update(id, restrictedRegistrationDTO);
+            return "redirect:/account/" + id;
         }
-        service.update(id, restrictedRegistrationDTO);
-        return "redirect:/account/" + id;
     }
 
     @GetMapping("/user/delete/{id}")
-    public String accountDelete(@PathVariable Long id, Model model) {
-        service.delete(id);
-        return "redirect:/users-list";
+    public String accountDelete(@PathVariable Long id,
+                                HttpServletRequest request) {
+        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN))
+        {
+            return "accessDenied";
+        }else {
+            service.delete(id);
+            return "redirect:/users-list";
+        }
     }
 
 

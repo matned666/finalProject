@@ -48,7 +48,7 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User with login: "+login+" cannot be found.")));
     }
 
-    public RestrictedRegistrationDTO findByLogin(String login, boolean isUserDTO) {
+    public RestrictedRegistrationDTO findByLoginRestricted(String login) {
         return RestrictedRegistrationDTO.apply(repo.findByLogin(login)
                 .orElseThrow(() -> new RuntimeException("User with login: "+login+" cannot be found.")));
     }
@@ -63,7 +63,7 @@ public class UserService {
         return RegistrationDTO.apply(repo.findById(id).orElseThrow(() -> new RuntimeException("User with id: "+id+" has not been found")));
     }
 
-    public RestrictedRegistrationDTO findById(Long id, boolean isUserDTO) {
+    public RestrictedRegistrationDTO findByIdRestricted(Long id) {
         return RestrictedRegistrationDTO.apply(repo.findById(id).orElseThrow(() -> new RuntimeException("User with id: "+id+" has not been found")));
     }
 
@@ -84,4 +84,6 @@ public class UserService {
     public void delete(Long id) {
         repo.deleteById(id);
     }
+
+
 }

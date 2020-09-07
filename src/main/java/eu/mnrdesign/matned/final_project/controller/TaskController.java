@@ -1,11 +1,10 @@
 package eu.mnrdesign.matned.final_project.controller;
 
+import eu.mnrdesign.matned.final_project.config.WebSecurityConfig;
 import eu.mnrdesign.matned.final_project.dto.TaskDTO;
 import eu.mnrdesign.matned.final_project.model.Complicity;
 import eu.mnrdesign.matned.final_project.service.CategoryService;
 import eu.mnrdesign.matned.final_project.service.TaskService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,20 +13,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class TaskController {
 
 
-    public static final int DEFAULT_START_PAGE = 0;
-    public static final int DEFAULT_TASKS_PER_PAGE = 30;
     private final TaskService service;
     private final CategoryService categoryService;
 
@@ -73,31 +65,48 @@ public class TaskController {
 
     @GetMapping("/task/edit/{id}")
     public String editTaskData(@PathVariable Long id,
-                               Model model) {
-        TaskDTO taskDTO = service.findById(id);
-        model.addAttribute("categories", categoryService.findAll());
-        model.addAttribute("complicities", Complicity.values());
-        model.addAttribute("edited_task", taskDTO);
-        return "edit_task";
+                               Model model,
+                               HttpServletRequest request) {
+        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN))
+        {
+            return "accessDenied";
+        }else {
+            TaskDTO taskDTO = service.findById(id);
+            model.addAttribute("categories", categoryService.findAll());
+            model.addAttribute("complicities", Complicity.values());
+            model.addAttribute("edited_task", taskDTO);
+            return "edit_task";
+        }
     }
 
     @PostMapping("/task/edit/{id}")
     public String editTaskDataPost(@PathVariable Long id,
                                    @Validated TaskDTO taskDTO,
                                    BindingResult bindingResult,
-                                   Model model) {
-        if (errorHandler(bindingResult, model)) {
-            model.addAttribute("edited_task", taskDTO);
-            return "task";
+                                   Model model,
+                                   HttpServletRequest request) {
+        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN))
+        {
+            return "accessDenied";
+        }else {
+            if (errorHandler(bindingResult, model)) {
+                model.addAttribute("edited_task", taskDTO);
+                return "task";
+            }
+            service.update(id, taskDTO);
+            return "redirect:/task/" + id;
         }
-        service.update(id, taskDTO);
-        return "redirect:/task/" + id;
     }
 
     @GetMapping("/task/delete/{id}")
-    public String editTaskDataPost(@PathVariable Long id) {
-        service.delete(id);
-        return "redirect:/tasks";
+    public String editTaskDataPost(@PathVariable Long id, HttpServletRequest request) {
+        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN))
+        {
+            return "accessDenied";
+        }else {
+            service.delete(id);
+            return "redirect:/tasks";
+        }
     }
 
     private boolean errorHandler(BindingResult bindingResult, Model model) {
@@ -110,6 +119,8 @@ public class TaskController {
         }
         return false;
     }
+
+
 
 
 }

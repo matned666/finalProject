@@ -15,12 +15,12 @@ public class TaskDTO {
     private String taskName;
 
     @NotNull(message = "The field cannot be empty")
-    @Size(min = 15, max = 1000, message = "Write at between {min} and {max} signs")
+    @Size(min = 5, max = 1000, message = "Write at between {min} and {max} signs")
     private String description;
 
     @NotNull(message = "The field cannot be empty")
     private Integer timeInMinutes;
-    @Size(max = 1000, message = "Url can have max {max} signs")
+    @Size(max = 1500, message = "Url can have max {max} signs")
     private String imageUrl;
     private BigDecimal price;
     private String category;

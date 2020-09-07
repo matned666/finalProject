@@ -1,7 +1,6 @@
 package eu.mnrdesign.matned.final_project.config;
 
 import eu.mnrdesign.matned.final_project.model.UserRole;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,7 +18,8 @@ import java.util.List;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String ADMIN_ADMIN_PL = "admin@admin.pl";
-    public static final String USER_USER_PL = "user@user.pl";
+    public static final String DEFAULT_USER_PL = "guest@guest.pl";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     private final DataSource dataSource;
     private final PasswordEncoder passwordEncoder;
@@ -38,10 +38,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/tasks", "/tasks/*", "/tasks/**","/task", "/task/*", "/task/**")
                 .hasAnyRole(UserRole.Role.ADMIN.name(), UserRole.Role.USER.name())
                 .antMatchers("/about").permitAll()
-                .antMatchers("/account", "/account/*", "/account/**")
+                .antMatchers("/account")
                 .hasAnyRole(UserRole.Role.ADMIN.name(), UserRole.Role.USER.name())
+                .antMatchers("/account/*", "/account/**")
+                .hasRole(UserRole.Role.ADMIN.name())
                 .antMatchers("/user/edit", "/user/edit/*", "/user/edit/**")
-                .hasAnyRole(UserRole.Role.ADMIN.name(), UserRole.Role.USER.name())
+                .hasAnyRole(UserRole.Role.ADMIN.name())
                 .antMatchers("/users-list", "/users-list/*", "/users-list/**")
                 .hasRole(UserRole.Role.ADMIN.name())
                 .antMatchers("/user/delete", "/user/delete/*", "/user/delete/**")
@@ -80,9 +82,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .password(passwordEncoder.encode("admin"))
                 .roles(UserRole.Role.ADMIN.name())
                 .and()
-                .withUser(USER_USER_PL)
+                .withUser(DEFAULT_USER_PL)
                 .password(passwordEncoder.encode("user"))
-                .roles(UserRole.Role.ADMIN.name());
+                .roles(UserRole.Role.USER.name());
 
         auth.jdbcAuthentication()
                 .usersByUsernameQuery("select u.LOGIN, u.PASSWORD, 1 from USER_ENTITY u where u.LOGIN = ?")
