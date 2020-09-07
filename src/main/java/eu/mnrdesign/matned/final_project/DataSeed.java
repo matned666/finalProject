@@ -1,9 +1,11 @@
 package eu.mnrdesign.matned.final_project;
 
+import eu.mnrdesign.matned.final_project.dto.RegistrationDTO;
 import eu.mnrdesign.matned.final_project.model.*;
 import eu.mnrdesign.matned.final_project.repository.CategoryRepository;
 import eu.mnrdesign.matned.final_project.repository.TaskRepository;
 import eu.mnrdesign.matned.final_project.repository.UserRoleRepository;
+import eu.mnrdesign.matned.final_project.service.UserService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
@@ -13,17 +15,18 @@ import java.math.BigDecimal;
 public class DataSeed implements InitializingBean {
 
     private final UserRoleRepository roleRepository;
-
     private final CategoryRepository categoryRepository;
-
     private final TaskRepository taskRepository;
+    private final UserService userService;
 
     public DataSeed(UserRoleRepository roleRepository,
                     CategoryRepository categoryRepository,
-                    TaskRepository taskRepository) {
+                    TaskRepository taskRepository,
+                    UserService userService) {
         this.roleRepository = roleRepository;
         this.categoryRepository = categoryRepository;
         this.taskRepository = taskRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -34,12 +37,18 @@ public class DataSeed implements InitializingBean {
         for (Category.DefaultCategory defCat: Category.DefaultCategory.values()) {
             createCat(defCat);
         }
+        createDefaultTasks();
+        createDefaultUser();
+    }
+
+    private void createDefaultTasks() {
         createTask1();
         createTask2();
         createTask3();
         createTask4();
         createTask5();
         createTask6();
+        createTask7();
     }
 
     private void createRole(UserRole.Role role) {
@@ -55,7 +64,26 @@ public class DataSeed implements InitializingBean {
         }
     }
 
-
+    private void createDefaultUser(){
+        String login = "guest@guest.pl";
+        if (!userService.userWithEmailExists(login)) {
+            RegistrationDTO defaultUser = new RegistrationDTO.RTDOBuilder()
+                    .login(login)
+                    .password("user")
+                    .passwordConfirm("user")
+                    .birthDate("2020-09-01")
+                    .firstName("William")
+                    .lastName("Blake")
+                    .street("Zielińskiego 56")
+                    .zipCode("53-534")
+                    .city("Wrocław")
+                    .country(Countries.POLAND.getSymbol())
+                    .phoneNumber("+48785850868")
+                    .preferEmails(false)
+                    .build();
+            userService.register(defaultUser);
+        }
+    }
 
     private void createTask1() {
         String name = "Nerd talking with nerds";

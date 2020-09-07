@@ -27,7 +27,7 @@
 <div th:insert="fragments/nav :: nav"></div>
 <div id="content">
 
-    <div  id="errorRedirectView" class="center">
+    <div th:if="${#request.isUserInRole('ROLE_ADMIN')}"  id="errorRedirectView" class="center">
         <br>
         <form th:action="@{/user/edit/{id}(id = ${editedUser.getId()})}" method="post" th:object="${editedUser}">
             <div>
@@ -88,6 +88,76 @@
                     to receive emails from
                     us?</label>
                 <input id="prefer2" type="checkbox" th:field="*{preferEmails}"/><br>
+                <button class="ui-button" type="submit">Register</button>
+                <br><br>
+                <button type="reset">Reset</button>
+                <br>
+
+            </div>
+        </form>
+
+    </div>
+    <div th:if="${#request.isUserInRole('ROLE_USER')}" id="errorRedirectView2" class="center">
+        <br>
+        <form th:action="@{/user/edit-user}" method="post" th:object="${editedUser}">
+            <div>
+                <div th:if="${error != null}">
+                    <div th:each="error : ${binding.getFieldErrors('firstName')}">
+                        <label th:text="${error.getDefaultMessage()}"></label>
+                        <br>
+                    </div>
+                </div>
+                <input class="form-control-sm widerTextFields" type="text" id="user_first_name"
+                       th:field="*{firstName}"
+                       placeholder="First name"><br>
+                <div th:if="${error != null}">
+                    <div th:each="error : ${binding.getFieldErrors('lastName')}">
+                        <label th:text="${error.getDefaultMessage()}"></label>
+                        <br>
+                    </div>
+                </div>
+                <input class="form-control-sm widerTextFields" type="text" id="user_last_name"
+                       th:field="*{lastName}"
+                       placeholder="Last name"><br>
+                <input class="form-control-sm widerTextFields" type="text" id="user_street"
+                       th:field="*{street}"
+                       placeholder="Street and number"><br>
+                <input class="form-control-sm widerTextFields" type="text" id="zip"
+                       th:field="*{zipCode}"
+                       placeholder="Zip-code"><br>
+                <input class="form-control-sm widerTextFields" type="text" id="city" th:field="*{city}"
+                       placeholder="City"><br>
+                <label id="countryLabel2" style="font-weight: bold;" for="country">Country: </label>
+                <br><select class="form-control-sm widerTextFields"
+                            type="text" id="country"
+                            th:field="*{country}">
+                <option class="form-control-sm widerTextFields" th:each="c : ${countries}"
+                        th:text="${c.getPlName()}"
+                        th:value="${c.getSymbol()}"></option>
+            </select><br>
+                <div th:if="${error != null}">
+                    <div th:each="error : ${binding.getFieldErrors('birthDate')}">
+                        <label th:text="${error.getDefaultMessage()}"></label>
+                        <br>
+                    </div>
+                </div>
+                <input class="form-control-sm widerTextFields" type="text" id="date_birth"
+                       th:field="*{birthDate}"
+                       placeholder="Date of birth: yyyy-MM-dd"><br>
+                <div th:if="${error != null}">
+                    <div th:each="error : ${binding.getFieldErrors('phoneNumber')}">
+                        <label th:text="${error.getDefaultMessage()}"></label>
+                        <br>
+                    </div>
+                </div>
+                <input class="form-control-sm widerTextFields" type="text" id="phone"
+                       th:field="*{phoneNumber}"
+                       placeholder="Phone number"><br>
+                <label id="mailsFromUsLabel2" style="font-weight: bold;" class="paintWhite"
+                       for="prefer">Would you like
+                    to receive emails from
+                    us?</label>
+                <input id="prefer" type="checkbox" th:field="*{preferEmails}"/><br>
                 <button class="ui-button" type="submit">Register</button>
                 <br><br>
                 <button type="reset">Reset</button>

@@ -69,20 +69,36 @@ public class UserService {
 
     public void update(Long id, RestrictedRegistrationDTO restrictedRegistrationDTO) {
         User user = repo.findById(id).orElseThrow(() -> new RuntimeException("User of "+id+" id has not been found"));
+        updateUser(restrictedRegistrationDTO, user);
+    }
+
+    public void updateByLogin(String login, RestrictedRegistrationDTO restrictedRegistrationDTO) {
+        User user = repo.findByLogin(login).orElseThrow(() -> new RuntimeException("User with login: "+login+" has not been found"));
+        updateUser(restrictedRegistrationDTO, user);
+    }
+
+    public void delete(Long id) {
+        repo.deleteById(id);
+    }
+
+
+
+
+    private void updateUser(RestrictedRegistrationDTO restrictedRegistrationDTO, User user) {
         user.setFirstName(restrictedRegistrationDTO.getFirstName());
         user.setLastName(restrictedRegistrationDTO.getLastName());
-        if (restrictedRegistrationDTO.getBirthDate() != null) if (!restrictedRegistrationDTO.getBirthDate().trim().equals(""))user.setBirthDate(LocalDate.parse(restrictedRegistrationDTO.getBirthDate(),DATE_TIME_FORMATTER_BIRTHDAY));
+        if (restrictedRegistrationDTO.getBirthDate() != null)
+            if (!restrictedRegistrationDTO.getBirthDate().trim().equals(""))
+                user.setBirthDate(LocalDate.parse(restrictedRegistrationDTO.getBirthDate(), DATE_TIME_FORMATTER_BIRTHDAY));
         user.setPhoneNumber(restrictedRegistrationDTO.getPhoneNumber());
         user.setPreferEmails(restrictedRegistrationDTO.isPreferEmails());
         user.getAddress().setStreet(restrictedRegistrationDTO.getStreet());
         user.getAddress().setZipCode(restrictedRegistrationDTO.getZipCode());
         user.getAddress().setCity(restrictedRegistrationDTO.getCity());
-        if (restrictedRegistrationDTO.getCountry() != null) if (!restrictedRegistrationDTO.getCountry().trim().equals("")) user.getAddress().setCountry(Countries.valueOf(restrictedRegistrationDTO.getCountry()));
+        if (restrictedRegistrationDTO.getCountry() != null)
+            if (!restrictedRegistrationDTO.getCountry().trim().equals(""))
+                user.getAddress().setCountry(Countries.fromSymbol(restrictedRegistrationDTO.getCountry()));
         repo.save(user);
-    }
-
-    public void delete(Long id) {
-        repo.deleteById(id);
     }
 
 

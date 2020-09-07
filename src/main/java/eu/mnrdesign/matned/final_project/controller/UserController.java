@@ -53,10 +53,10 @@ public class UserController {
 
     @GetMapping("/users-list")
     public String getAllUsersList(Model model, HttpServletRequest request) {
-        if(request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
             model.addAttribute("all_users", service.findAll());
             return "users-list";
-        }else return "accessDenied";
+        } else return "accessDenied";
     }
 
     @GetMapping("/account")
@@ -66,7 +66,7 @@ public class UserController {
             model.addAttribute("userToSee", actualUser);
             AccountHolder.getInstance().setSelectedAccountId(actualUser.getId());
             return "account";
-        }else {
+        } else {
             return "redirect:/users-list";
         }
     }
@@ -75,11 +75,9 @@ public class UserController {
     public String accountShow(@PathVariable Long id,
                               Model model,
                               HttpServletRequest request) {
-        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN))
-        {
+        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
             return "accessDenied";
-        }
-        else {
+        } else {
             AccountHolder.getInstance().setSelectedAccountId(id);
             RegistrationDTO user = service.findById(id);
             model.addAttribute("userToSee", user);
@@ -92,15 +90,41 @@ public class UserController {
                                      Model model,
                                      HttpServletRequest request) {
         UserDTOInterface<?> user;
-        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN))
-        {
+        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
             return "accessDenied";
-        }
-        else {
+        } else {
             user = service.findById(id);
+            model.addAttribute("countries", Countries.values());
             model.addAttribute("editedUser", user);
             return "edit-user";
         }
+
+    }
+
+    @GetMapping("/user/edit-user")
+    public String accountEditionPageForActualCommonUser(Model model,
+                                                        Principal principal) {
+        UserDTOInterface<?> user = service.findByLogin(principal.getName());
+        model.addAttribute("countries", Countries.values());
+        model.addAttribute("editedUser", user);
+        return "edit-user";
+
+    }
+
+    @PostMapping("/user/edit-user")
+    public String accountEditionPostPageForActualCommonUser(@Validated RestrictedRegistrationDTO restrictedRegistrationDTO,
+                                                            BindingResult bindingResult,
+                                                            Model model,
+                                                            Principal principal) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("error", "error");
+            model.addAttribute("binding", bindingResult);
+            model.addAttribute("countries", Countries.values());
+            model.addAttribute("registrationObject", restrictedRegistrationDTO);
+            return "edit-user";
+        }
+        service.updateByLogin(principal.getName(), restrictedRegistrationDTO);
+        return "redirect:/account";
 
     }
 
@@ -110,10 +134,9 @@ public class UserController {
                                   BindingResult bindingResult,
                                   Model model,
                                   HttpServletRequest request) {
-        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN))
-        {
+        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
             return "accessDenied";
-        }else {
+        } else {
             if (bindingResult.hasErrors()) {
                 model.addAttribute("error", "error");
                 model.addAttribute("binding", bindingResult);
@@ -129,10 +152,9 @@ public class UserController {
     @GetMapping("/user/delete/{id}")
     public String accountDelete(@PathVariable Long id,
                                 HttpServletRequest request) {
-        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN))
-        {
+        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
             return "accessDenied";
-        }else {
+        } else {
             service.delete(id);
             return "redirect:/users-list";
         }

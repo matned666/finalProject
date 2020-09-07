@@ -82,7 +82,7 @@ body {
 
 
 
-#errorRedirectView form label:not(#mailsFromUsLabel):not(#countryLabel):not(#categoryLabel)  {
+#errorRedirectView form label:not(#mailsFromUsLabel):not(#countryLabel):not(#categoryLabel), #errorRedirectView2 form label:not(#mailsFromUsLabel):not(#countryLabel2):not(#categoryLabel2) {
     font-size: 14px;
     color: red;
     font-weight: bold;

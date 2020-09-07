@@ -50,6 +50,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasRole(UserRole.Role.ADMIN.name())
                 .antMatchers("/task/delete","/task/delete/*", "/task/delete/**")
                 .hasRole(UserRole.Role.ADMIN.name())
+                .antMatchers("/user/edit-user","/user/edit-user/*", "/user/edit-user/**")
+                .hasAnyRole(UserRole.Role.ADMIN.name(), UserRole.Role.USER.name())
                 .antMatchers("/nav").permitAll()
                 .antMatchers("/static/**").permitAll()
                 .antMatchers("/css/**").permitAll()
@@ -80,11 +82,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication()
                 .withUser(ADMIN_ADMIN_PL)
                 .password(passwordEncoder.encode("admin"))
-                .roles(UserRole.Role.ADMIN.name())
-                .and()
-                .withUser(DEFAULT_USER_PL)
-                .password(passwordEncoder.encode("user"))
-                .roles(UserRole.Role.USER.name());
+                .roles(UserRole.Role.ADMIN.name());
 
         auth.jdbcAuthentication()
                 .usersByUsernameQuery("select u.LOGIN, u.PASSWORD, 1 from USER_ENTITY u where u.LOGIN = ?")
