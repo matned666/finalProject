@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTER_BIRTHDAY;
 
 @PasswordMatches
-public class RegistrationDTO {
+public class RegistrationDTO implements UserEnhancedDTOInterface<RegistrationDTO>{
 
     private Long id;
 

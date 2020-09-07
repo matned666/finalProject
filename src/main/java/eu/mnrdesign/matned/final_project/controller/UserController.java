@@ -2,10 +2,10 @@ package eu.mnrdesign.matned.final_project.controller;
 
 import eu.mnrdesign.matned.final_project.config.WebSecurityConfig;
 import eu.mnrdesign.matned.final_project.dto.RegistrationDTO;
-import eu.mnrdesign.matned.final_project.dto.UserDTO;
+import eu.mnrdesign.matned.final_project.dto.RestrictedRegistrationDTO;
+import eu.mnrdesign.matned.final_project.dto.UserDTOInterface;
 import eu.mnrdesign.matned.final_project.holder.AccountHolder;
 import eu.mnrdesign.matned.final_project.model.Countries;
-import eu.mnrdesign.matned.final_project.model.User;
 import eu.mnrdesign.matned.final_project.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String getRegistration( Model model){
+    public String getRegistration(Model model) {
         RegistrationDTO registrationDTO = new RegistrationDTO();
         model.addAttribute("countries", Countries.values());
         model.addAttribute("registrationObject", registrationDTO);
@@ -37,8 +37,8 @@ public class UserController {
     @PostMapping("/register")
     public String postRegistration(@Validated RegistrationDTO registrationDTO,
                                    BindingResult bindingResult,
-                                   Model model){
-        if(bindingResult.hasErrors()){
+                                   Model model) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("error", "error");
             model.addAttribute("binding", bindingResult);
             model.addAttribute("countries", Countries.values());
@@ -50,9 +50,8 @@ public class UserController {
     }
 
 
-
     @GetMapping("/users-list")
-    public String getAllUsersList(Model model){
+    public String getAllUsersList(Model model) {
         model.addAttribute("all_users", service.findAll());
         return "users-list";
     }
@@ -61,8 +60,8 @@ public class UserController {
     public String accountShow(Model model) {
         String actualUserLogin = actualUserName();
         if (!actualUserLogin.equals(WebSecurityConfig.ADMIN_ADMIN_PL)) {
-            User actualUser = service.findByLogin(actualUserLogin);
-            model.addAttribute("user", actualUser);
+            RegistrationDTO actualUser = service.findByLogin(actualUserLogin);
+            model.addAttribute("userToSee", actualUser);
             AccountHolder.getInstance().setSelectedAccountId(actualUser.getId());
         }
         return "account";
@@ -77,30 +76,38 @@ public class UserController {
     }
 
     @GetMapping("/user/edit/{id}")
-    public String accountEditionPage(@PathVariable Long id, Model model){
-        UserDTO user = service.findById(id, true);
+    public String accountEditionPage(@PathVariable Long id, Model model) {
+        UserDTOInterface<?> user;
+        if (!actualUserName().equals(WebSecurityConfig.ADMIN_ADMIN_PL))
+        {
+            user = service.findByLogin(actualUserName(), true);
+        }
+        else {
+            user = service.findById(id);
+        }
         model.addAttribute("editedUser", user);
         return "edit-user";
+
     }
 
     @PostMapping("/user/edit/{id}")
     public String editUserProcess(@PathVariable Long id,
-                                  @Validated UserDTO userDTO,
+                                  @Validated RestrictedRegistrationDTO restrictedRegistrationDTO,
                                   BindingResult bindingResult,
-                                  Model model){
-        if(bindingResult.hasErrors()){
+                                  Model model) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("error", "error");
             model.addAttribute("binding", bindingResult);
             model.addAttribute("countries", Countries.values());
-            model.addAttribute("registrationObject", userDTO);
+            model.addAttribute("registrationObject", restrictedRegistrationDTO);
             return "edit-user";
         }
-        service.update(id, userDTO);
-        return "redirect:/account/"+id;
+        service.update(id, restrictedRegistrationDTO);
+        return "redirect:/account/" + id;
     }
 
     @GetMapping("/user/delete/{id}")
-    public String accountDelete(@PathVariable Long id, Model model){
+    public String accountDelete(@PathVariable Long id, Model model) {
         service.delete(id);
         return "redirect:/users-list";
     }

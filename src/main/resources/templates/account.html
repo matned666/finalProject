@@ -20,22 +20,28 @@
 
 <div id="content" class="center">
 
-    <div sec:authorize="hasRole('ROLE_USER')" th:object="${user}">
+    <div sec:authorize="hasRole('ROLE_USER')" th:object="${userToSee}">
         <br>
         <h1>User data:</h1>
         <span class="bolded">Name: </span><span th:text="*{firstName}"></span><br>
         <span class="bolded">Surname: </span><span th:text="*{lastName}"></span><br>
         <span class="bolded">Birth date: </span><span th:if="*{birthDate != null}" th:text="*{birthDate.toString()}"></span><br><br>
         <span class="bolded">Address:</span><br>
-        <span class="bolded">Street: </span><span th:text="*{address.street}"></span><br>
-        <span class="bolded">Zip code: </span><span th:text="*{address.zipCode}"></span><br>
-        <span class="bolded">City: </span><span th:text="*{address.city}"></span><br>
-        <span class="bolded">Country: </span><span th:text="*{address.country.getPlName()}"></span><br><br>
+        <span class="bolded">Street: </span><span th:text="*{street}"></span><br>
+        <span class="bolded">Zip code: </span><span th:text="*{zipCode}"></span><br>
+        <span class="bolded">City: </span><span th:text="*{city}"></span><br>
+        <span class="bolded">Country: </span><span th:text="*{country}"></span><br><br>
         <span class="bolded">Contact:</span><br>
-        <span class="bolded">Email: </span><span th:text="${user.login}"></span><br>
+        <span class="bolded">Email: </span><span sec:authentication="name"></span><br>
         <span class="bolded">Phone number: </span><span th:text="*{phoneNumber}"></span><br>
-        <a th:href="@{account/{id}(id = ${user.getId()})}">
+        <a th:href="@{/user/edit/{id}(id = ${userToSee.getId()})}">
             <button type="button" class="btn btn-secondary btn-lg">Edit your data</button>
+        </a>
+        <a th:href="@{/user/change-login/{id}(id = ${userToSee.getId()})}">
+            <button type="button" class="btn btn-secondary btn-lg">Change login email</button>
+        </a>
+        <a th:href="@{/user/change-password/{id}(id = ${userToSee.getId()})}">
+            <button type="button" class="btn btn-secondary btn-lg">Change password</button>
         </a>
     </div>
 

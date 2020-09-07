@@ -1,7 +1,7 @@
 package eu.mnrdesign.matned.final_project.service;
 
 import eu.mnrdesign.matned.final_project.dto.RegistrationDTO;
-import eu.mnrdesign.matned.final_project.dto.UserDTO;
+import eu.mnrdesign.matned.final_project.dto.RestrictedRegistrationDTO;
 import eu.mnrdesign.matned.final_project.model.Countries;
 import eu.mnrdesign.matned.final_project.model.User;
 import eu.mnrdesign.matned.final_project.model.UserRole;
@@ -11,9 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTER_BIRTHDAY;
 
@@ -45,7 +43,15 @@ public class UserService {
         return userToSave;
     }
 
-    public User findByLogin(String login) {return repo.findByLogin(login).orElse(null);}
+    public RegistrationDTO findByLogin(String login) {
+        return RegistrationDTO.apply(repo.findByLogin(login)
+                .orElseThrow(() -> new RuntimeException("User with login: "+login+" cannot be found.")));
+    }
+
+    public RestrictedRegistrationDTO findByLogin(String login, boolean isUserDTO) {
+        return RestrictedRegistrationDTO.apply(repo.findByLogin(login)
+                .orElseThrow(() -> new RuntimeException("User with login: "+login+" cannot be found.")));
+    }
 
     public List<User> findAll() {return repo.findAll();}
 
@@ -57,21 +63,21 @@ public class UserService {
         return RegistrationDTO.apply(repo.findById(id).orElseThrow(() -> new RuntimeException("User with id: "+id+" has not been found")));
     }
 
-    public UserDTO findById(Long id, boolean isUserDTO) {
-        return UserDTO.apply(repo.findById(id).orElseThrow(() -> new RuntimeException("User with id: "+id+" has not been found")));
+    public RestrictedRegistrationDTO findById(Long id, boolean isUserDTO) {
+        return RestrictedRegistrationDTO.apply(repo.findById(id).orElseThrow(() -> new RuntimeException("User with id: "+id+" has not been found")));
     }
 
-    public void update(Long id, UserDTO userDTO) {
+    public void update(Long id, RestrictedRegistrationDTO restrictedRegistrationDTO) {
         User user = repo.findById(id).orElseThrow(() -> new RuntimeException("User of "+id+" id has not been found"));
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
-        if (userDTO.getBirthDate() != null) if (!userDTO.getBirthDate().trim().equals(""))user.setBirthDate(LocalDate.parse(userDTO.getBirthDate(),DATE_TIME_FORMATTER_BIRTHDAY));
-        user.setPhoneNumber(userDTO.getPhoneNumber());
-        user.setPreferEmails(userDTO.isPreferEmails());
-        user.getAddress().setStreet(userDTO.getStreet());
-        user.getAddress().setZipCode(userDTO.getZipCode());
-        user.getAddress().setCity(userDTO.getCity());
-        if (userDTO.getCountry() != null) if (!userDTO.getCountry().trim().equals("")) user.getAddress().setCountry(Countries.valueOf(userDTO.getCountry()));
+        user.setFirstName(restrictedRegistrationDTO.getFirstName());
+        user.setLastName(restrictedRegistrationDTO.getLastName());
+        if (restrictedRegistrationDTO.getBirthDate() != null) if (!restrictedRegistrationDTO.getBirthDate().trim().equals(""))user.setBirthDate(LocalDate.parse(restrictedRegistrationDTO.getBirthDate(),DATE_TIME_FORMATTER_BIRTHDAY));
+        user.setPhoneNumber(restrictedRegistrationDTO.getPhoneNumber());
+        user.setPreferEmails(restrictedRegistrationDTO.isPreferEmails());
+        user.getAddress().setStreet(restrictedRegistrationDTO.getStreet());
+        user.getAddress().setZipCode(restrictedRegistrationDTO.getZipCode());
+        user.getAddress().setCity(restrictedRegistrationDTO.getCity());
+        if (restrictedRegistrationDTO.getCountry() != null) if (!restrictedRegistrationDTO.getCountry().trim().equals("")) user.getAddress().setCountry(Countries.valueOf(restrictedRegistrationDTO.getCountry()));
         repo.save(user);
     }
 

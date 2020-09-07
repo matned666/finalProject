@@ -3,16 +3,12 @@ package eu.mnrdesign.matned.final_project.dto;
 import eu.mnrdesign.matned.final_project.model.User;
 import eu.mnrdesign.matned.final_project.validation.DateMatchesPattern;
 import eu.mnrdesign.matned.final_project.validation.NoValidation;
-import eu.mnrdesign.matned.final_project.validation.PasswordMatches;
-import eu.mnrdesign.matned.final_project.validation.UniqueEmail;
 
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTER_BIRTHDAY;
 
-public class UserDTO {
+public class RestrictedRegistrationDTO implements UserDTOInterface<RestrictedRegistrationDTO> {
 
     private Long id;
 
@@ -43,10 +39,10 @@ public class UserDTO {
     @NoValidation
     private boolean preferEmails;
 
-    public UserDTO() {
+    public RestrictedRegistrationDTO() {
     }
 
-    private UserDTO(RTDOBuilder builder){
+    private RestrictedRegistrationDTO(RTDOBuilder builder){
         id = builder.id;
         firstName = builder.firstName;
         lastName = builder.lastName;
@@ -59,8 +55,8 @@ public class UserDTO {
         preferEmails = builder.preferEmails;
     }
 
-    public static UserDTO apply(User user) {
-        UserDTO registrationDTO = new RTDOBuilder()
+    public static RestrictedRegistrationDTO apply(User user) {
+        RestrictedRegistrationDTO registrationDTO = new RTDOBuilder()
                 .id(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
@@ -137,6 +133,9 @@ public class UserDTO {
     public String getPhoneNumber() {
         return phoneNumber;
     }
+
+
+
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
@@ -217,8 +216,8 @@ public class UserDTO {
             return this;
         }
 
-        public UserDTO build() {
-            return new UserDTO(this);
+        public RestrictedRegistrationDTO build() {
+            return new RestrictedRegistrationDTO(this);
         }
     }
 
