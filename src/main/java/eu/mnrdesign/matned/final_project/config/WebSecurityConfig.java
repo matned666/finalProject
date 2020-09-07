@@ -21,11 +21,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String ADMIN_ADMIN_PL = "admin@admin.pl";
     public static final String USER_USER_PL = "user@user.pl";
 
-    @Autowired
-    private DataSource dataSource;
+    private final DataSource dataSource;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public WebSecurityConfig(DataSource dataSource, PasswordEncoder passwordEncoder) {
+        this.dataSource = dataSource;
+        this.passwordEncoder = passwordEncoder;
+    }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
