@@ -2,9 +2,10 @@ package eu.mnrdesign.matned.final_project.model;
 
 import javax.persistence.*;
 
+@Entity
 public class ProjectTask extends BaseEntity{
 
-    @OneToOne
+    @ManyToOne
     private Project project;
 
     @ManyToOne
