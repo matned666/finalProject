@@ -9,9 +9,22 @@
     <link href="../static/css/background.css" th:href="@{/css/background.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" type="text/css">
-    <link href="../stat ic/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $( function() {
+            $('#projectStart').datepicker({ dateFormat: 'yy-mm-dd' }).val();
+        } );
+    </script>
+    <script>
+        $( function() {
+            $('#projectDeadline').datepicker({ dateFormat: 'yy-mm-dd' }).val();
+        } );
+    </script>
 
 </head>
 <body>
@@ -51,6 +64,26 @@
                 </div>
                 <input class="form-control-sm widerTextFields" type="text" id="imageUrl" th:field="*{imageUrl}"
                        placeholder="Image url"><br>
+
+                <div th:if="${error != null}">
+                    <div th:each="error : ${binding.getFieldErrors('projectStart')}">
+                        <label th:text="${error.getDefaultMessage()}" for="projectStart"></label>
+                        <br>
+                    </div>
+                </div>
+                <input class="form-control-sm widerTextFields" type="text" id="projectStart"
+                       th:field="*{projectStart}"
+                       placeholder="Project start date: yyyy-MM-dd"><br>
+
+                <div th:if="${error != null}">
+                    <div th:each="error : ${binding.getFieldErrors('projectDeadline')}">
+                        <label th:text="${error.getDefaultMessage()}" for="projectDeadline"></label>
+                        <br>
+                    </div>
+                </div>
+                <input class="form-control-sm widerTextFields date" type="text" id="projectDeadline"
+                       th:field="*{projectDeadline}"
+                       placeholder="Project deadline: yyyy-MM-dd"><br>
 
                 <button class="ui-button" type="submit">Register project</button>
                 <br><br>

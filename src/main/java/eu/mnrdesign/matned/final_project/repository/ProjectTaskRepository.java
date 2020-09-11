@@ -21,7 +21,10 @@ public interface ProjectTaskRepository extends JpaRepository<ProjectTask, Long> 
     @Transactional
     @Modifying
     @Query("delete from ProjectTask pt where pt.id = ?1")
-    void deleteByPTId(Long projectTaskId);
+    void deleteByProjectTaskId(Long projectTaskId);
 
-
+    @Transactional
+    @Modifying
+    @Query("delete from ProjectTask pt where pt.project.id = ?1")
+    void deleteAllByProjectId(Long projectId);
 }

@@ -1,12 +1,15 @@
 package eu.mnrdesign.matned.final_project.dto;
 
 import eu.mnrdesign.matned.final_project.model.Project;
+import eu.mnrdesign.matned.final_project.validation.DateMatchesPattern;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
+import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTER_ONLY_DATE;
 import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTER_TASK;
 
 public class ProjectDTO {
@@ -17,6 +20,16 @@ public class ProjectDTO {
     private String name;
     private String description;
     private String imageUrl;
+
+    @NotNull(message = "Project start field cannot be empty")
+    @Size(min = 10, max = 10, message = "This field cannot be empty")
+    @DateMatchesPattern
+    private String projectStart;
+
+    @NotNull(message = "Deadline field cannot be empty")
+    @Size(min = 10, max = 10, message = "This field cannot be empty")
+    @DateMatchesPattern
+    private String projectDeadline;
 
 //    generated values
     private List<ProjectTaskDTO> tasks;
@@ -38,6 +51,8 @@ public class ProjectDTO {
         projectDTO.setUserLogin(project.getUser().getLogin());
         projectDTO.setTasks(ProjectTaskDTO.convertToDTOList(project.getTasks()));
         projectDTO.setCreationTime(project.getCreationDate().format(DATE_TIME_FORMATTER_TASK));
+        projectDTO.setProjectStart(project.getProjectStart().format(DATE_TIME_FORMATTER_ONLY_DATE));
+        projectDTO.setProjectDeadline(project.getProjectDeadline().format(DATE_TIME_FORMATTER_ONLY_DATE));
         if (project.getUpdateDate() != null) projectDTO.setUpdateTime(project.getUpdateDate().format(DATE_TIME_FORMATTER_TASK));
         projectDTO.setId(project.getId());
         return projectDTO;
@@ -49,6 +64,22 @@ public class ProjectDTO {
             result.add(ProjectDTO.apply(p));
         }
         return result;
+    }
+
+    public String getProjectStart() {
+        return projectStart;
+    }
+
+    public void setProjectStart(String projectStart) {
+        this.projectStart = projectStart;
+    }
+
+    public String getProjectDeadline() {
+        return projectDeadline;
+    }
+
+    public void setProjectDeadline(String projectDeadline) {
+        this.projectDeadline = projectDeadline;
     }
 
     public String getImageUrl() {

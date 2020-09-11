@@ -6,7 +6,7 @@ import eu.mnrdesign.matned.final_project.validation.NoValidation;
 
 import javax.validation.constraints.Pattern;
 
-import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTER_BIRTHDAY;
+import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTER_ONLY_DATE;
 
 public class RestrictedRegistrationDTO implements UserDTOInterface<RestrictedRegistrationDTO> {
 
@@ -67,7 +67,7 @@ public class RestrictedRegistrationDTO implements UserDTOInterface<RestrictedReg
                 .phoneNumber(user.getPhoneNumber())
                 .preferEmails(user.isPreferEmails())
                 .build();
-        if (user.getBirthDate() != null) registrationDTO.setBirthDate(user.getBirthDate().format(DATE_TIME_FORMATTER_BIRTHDAY));
+        if (user.getBirthDate() != null) registrationDTO.setBirthDate(user.getBirthDate().format(DATE_TIME_FORMATTER_ONLY_DATE));
         return registrationDTO;
     }
 

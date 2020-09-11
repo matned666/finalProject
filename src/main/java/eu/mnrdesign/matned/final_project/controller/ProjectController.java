@@ -131,7 +131,7 @@ public class ProjectController {
     @GetMapping("/projects/{projectId}/clear")
     public String projectClear(@PathVariable Long projectId){
         projectService.clearProject(projectId);
-        return "redirect:/projects";
+        return "redirect:/projects/"+projectId;
     }
 
 

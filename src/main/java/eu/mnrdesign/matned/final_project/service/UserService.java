@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 
-import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTER_BIRTHDAY;
+import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTER_ONLY_DATE;
 
 @Service
 public class UserService {
@@ -89,7 +89,7 @@ public class UserService {
         user.setLastName(restrictedRegistrationDTO.getLastName());
         if (restrictedRegistrationDTO.getBirthDate() != null)
             if (!restrictedRegistrationDTO.getBirthDate().trim().equals(""))
-                user.setBirthDate(LocalDate.parse(restrictedRegistrationDTO.getBirthDate(), DATE_TIME_FORMATTER_BIRTHDAY));
+                user.setBirthDate(LocalDate.parse(restrictedRegistrationDTO.getBirthDate(), DATE_TIME_FORMATTER_ONLY_DATE));
         user.setPhoneNumber(restrictedRegistrationDTO.getPhoneNumber());
         user.setPreferEmails(restrictedRegistrationDTO.isPreferEmails());
         user.getAddress().setStreet(restrictedRegistrationDTO.getStreet());

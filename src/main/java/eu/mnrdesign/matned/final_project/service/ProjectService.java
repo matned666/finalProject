@@ -123,7 +123,7 @@ public class ProjectService {
     }
 
     public void deleteTaskFromProject(Long projectId, Long projectTaskId) {
-        projectTaskRepository.deleteByPTId(projectTaskId);
+        projectTaskRepository.deleteByProjectTaskId(projectTaskId);
         List<ProjectTask> projectTasks = projectTaskRepository.findAllByProjectId(projectId);
         replanPositions(projectTasks);
 
@@ -161,8 +161,7 @@ public class ProjectService {
     }
 
     public void clearProject(Long projectId) {
-        List<ProjectTask> tasksToDelete = projectTaskRepository.findAllByProjectId(projectId);
-        tasksToDelete.forEach(projectTaskRepository::delete);
+        projectTaskRepository.deleteAllByProjectId(projectId);
     }
 
     private void replanPositions(List<ProjectTask> projectTasks) {

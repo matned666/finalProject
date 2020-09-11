@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTER_BIRTHDAY;
+import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTER_ONLY_DATE;
 
 @PasswordMatches
 public class RegistrationDTO implements UserEnhancedDTOInterface<RegistrationDTO>{
@@ -91,7 +91,7 @@ public class RegistrationDTO implements UserEnhancedDTOInterface<RegistrationDTO
                 .country(user.getAddress().getCountry().name())
                 .preferEmails(user.isPreferEmails())
                 .build();
-        if (user.getBirthDate() != null) registrationDTO.setBirthDate(user.getBirthDate().format(DATE_TIME_FORMATTER_BIRTHDAY));
+        if (user.getBirthDate() != null) registrationDTO.setBirthDate(user.getBirthDate().format(DATE_TIME_FORMATTER_ONLY_DATE));
         return registrationDTO;
     }
 
