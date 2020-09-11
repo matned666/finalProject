@@ -81,18 +81,18 @@ public class ProjectController {
     @GetMapping("/projects/{projectId}/delete/{projectTaskId}")
     public String postDeleteTaskFromProject(@PathVariable Long projectId,
                                             @PathVariable Long projectTaskId){
-        projectService.deleteTaskFromProject(projectTaskId);
+        projectService.deleteTaskFromProject(projectId, projectTaskId);
         return "redirect:/projects/"+projectId;
     }
 
-    @PostMapping("/projects/{projectId}/move-task-up/{taskId}")
+    @GetMapping("/projects/{projectId}/move-task-up/{taskId}")
     public String moveTaskUpInProject(@PathVariable Long projectId,
                                       @PathVariable Long taskId) {
         projectService.moveTaskUp(projectId, taskId);
         return "redirect:/projects/"+projectId;
     }
 
-    @PostMapping("/projects/{projectId}/move-task-down/{taskId}")
+    @GetMapping("/projects/{projectId}/move-task-down/{taskId}")
     public String moveTaskDownInProject(@PathVariable Long projectId,
                                         @PathVariable Long taskId){
         projectService.moveTaskDown(projectId, taskId);

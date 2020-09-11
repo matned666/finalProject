@@ -122,8 +122,11 @@ public class ProjectService {
 
     }
 
-    public void deleteTaskFromProject(Long projectTaskId) {
+    public void deleteTaskFromProject(Long projectId, Long projectTaskId) {
         projectTaskRepository.deleteByPTId(projectTaskId);
+        List<ProjectTask> projectTasks = projectTaskRepository.findAllByProjectId(projectId);
+        replanPositions(projectTasks);
+
     }
 
     public Page<ProjectTaskDTO> findAllProjectTasksByProject(Long id, Pageable pageable) {
@@ -151,6 +154,26 @@ public class ProjectService {
         projectTaskRepository.save(projectTask);
     }
 
+    public void removeProject(Long projectId) {
+        Project projectToDelete = projectRepository.findById(projectId)
+                .orElseThrow(()->new RuntimeException("No such project"));
+        projectRepository.delete(projectToDelete);
+    }
+
+    public void clearProject(Long projectId) {
+        List<ProjectTask> tasksToDelete = projectTaskRepository.findAllByProjectId(projectId);
+        tasksToDelete.forEach(projectTaskRepository::delete);
+    }
+
+    private void replanPositions(List<ProjectTask> projectTasks) {
+        Collections.sort(projectTasks);
+        for (int i = 0; i < projectTasks.size(); i++) {
+            ProjectTask pt = projectTasks.get(i);
+            pt.setPositionInProject(i+1);
+            updateProjectTask(pt);
+        }
+    }
+
     private void moveTask(Long projectId, Long projectTaskId, int positionsToMove){
         List<ProjectTask> list = projectTaskRepository.findAllByProjectId(projectId);
         ProjectTask movedTask = list.stream()
@@ -161,22 +184,13 @@ public class ProjectService {
         ProjectTask replacedTask = list.stream()
                 .filter(v -> v.getPositionInProject().equals(movedPosition+positionsToMove))
                 .findFirst()
-                .orElseThrow(()-> new RuntimeException("No such project task"));
-        Integer replacedPosition = replacedTask.getPositionInProject();
-        movedTask.setPositionInProject(replacedPosition);
-        replacedTask.setPositionInProject(movedPosition);
-        updateProjectTask(movedTask);
-        updateProjectTask(replacedTask);
-    }
-
-    public void removeProject(Long projectId) {
-        Project projectToDelete = projectRepository.findById(projectId)
-                .orElseThrow(()->new RuntimeException("No such project"));
-        projectRepository.delete(projectToDelete);
-    }
-
-    public void clearProject(Long projectId) {
-        List<ProjectTask> tasksToDelete = projectTaskRepository.findAllByProjectId(projectId);
-        tasksToDelete.forEach(projectTaskRepository::delete);
+                .orElse(null);
+        if (replacedTask != null) {
+            Integer replacedPosition = replacedTask.getPositionInProject();
+            movedTask.setPositionInProject(replacedPosition);
+            replacedTask.setPositionInProject(movedPosition);
+            updateProjectTask(movedTask);
+            updateProjectTask(replacedTask);
+        }
     }
 }
