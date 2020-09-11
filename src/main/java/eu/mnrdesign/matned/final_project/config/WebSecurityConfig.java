@@ -52,6 +52,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasRole(UserRole.Role.ADMIN.name())
                 .antMatchers("/user/edit-user","/user/edit-user/*", "/user/edit-user/**")
                 .hasAnyRole(UserRole.Role.ADMIN.name(), UserRole.Role.USER.name())
+                .antMatchers("/projects","/projects/*", "/projects/**")
+                .hasAnyRole(UserRole.Role.ADMIN.name(), UserRole.Role.USER.name())
                 .antMatchers("/nav").permitAll()
                 .antMatchers("/static/**").permitAll()
                 .antMatchers("/css/**").permitAll()
