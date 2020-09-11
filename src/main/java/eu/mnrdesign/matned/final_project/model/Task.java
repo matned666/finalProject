@@ -30,6 +30,9 @@ public class Task extends BaseEntity{
         task.taskDetails.setAuthorId(AccountHolder.getInstance().getSelectedAccountId());
         task.taskDetails.setComplicity(Complicity.valueOf(taskDTO.getComplicity()));
         task.taskDetails.setImageUrl(taskDTO.getImageUrl());
+        if (task.taskDetails.getImageUrl() == null || task.taskDetails.getImageUrl().trim().equals("")) {
+            task.taskDetails.setImageUrl("/img/task_report_hot.png");
+        }
         task.taskDetails.setTimeInMinutes(taskDTO.getTimeInMinutes());
         task.taskDetails.setPrice(taskDTO.getPrice());
         return task;

@@ -53,13 +53,14 @@ public class TaskController {
         model.addAttribute("where", where);
         if (errorHandler(bindingResult, model)) {
             model.addAttribute("new_task", taskDTO);
+            model.addAttribute("binding", bindingResult);
+            return "add_task";
         }
         service.add(taskDTO);
         if (where.equals("inTask")) {
-        return "redirect:/tasks";
-        }
-        else {
-            return "redirect:/projects/"+where;
+            return "redirect:/tasks";
+        } else {
+            return "redirect:/projects/" + where;
         }
     }
 
@@ -74,10 +75,9 @@ public class TaskController {
     public String editTaskData(@PathVariable Long id,
                                Model model,
                                HttpServletRequest request) {
-        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN))
-        {
+        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
             return "accessDenied";
-        }else {
+        } else {
             TaskDTO taskDTO = service.findById(id);
             model.addAttribute("categories", categoryService.findAll());
             model.addAttribute("complicities", Complicity.values());
@@ -92,10 +92,9 @@ public class TaskController {
                                    BindingResult bindingResult,
                                    Model model,
                                    HttpServletRequest request) {
-        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN))
-        {
+        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
             return "accessDenied";
-        }else {
+        } else {
             if (errorHandler(bindingResult, model)) {
                 model.addAttribute("edited_task", taskDTO);
                 return "task";
@@ -107,10 +106,9 @@ public class TaskController {
 
     @GetMapping("/task/delete/{id}")
     public String editTaskDataPost(@PathVariable Long id, HttpServletRequest request) {
-        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN))
-        {
+        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
             return "accessDenied";
-        }else {
+        } else {
             service.delete(id);
             return "redirect:/tasks";
         }
@@ -126,8 +124,6 @@ public class TaskController {
         }
         return false;
     }
-
-
 
 
 }

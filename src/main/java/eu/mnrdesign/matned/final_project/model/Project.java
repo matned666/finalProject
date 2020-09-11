@@ -39,6 +39,8 @@ public class Project extends BaseEntity {
         project.setName(projectDTO.getName());
         project.setDescription(projectDTO.getDescription());
         project.setImageUrl(projectDTO.getImageUrl());
+        if (projectDTO.getImageUrl() == null || projectDTO.getImageUrl().trim().equals(""))
+            project.setImageUrl("/img/project.png");
         try {
             project.setProjectStart(LocalDate.parse(projectDTO.getProjectStart(), DateTimeFormatter.ofPattern(DATE_PATTERN)));
         } catch (DateTimeParseException e) {

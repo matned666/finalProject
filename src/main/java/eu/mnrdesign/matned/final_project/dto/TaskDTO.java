@@ -1,5 +1,6 @@
 package eu.mnrdesign.matned.final_project.dto;
 
+import eu.mnrdesign.matned.final_project.model.Category;
 import eu.mnrdesign.matned.final_project.model.ProjectTask;
 import eu.mnrdesign.matned.final_project.model.Task;
 
@@ -56,6 +57,9 @@ public class TaskDTO {
                 .timeInMinutes(task.getTaskDetails().getTimeInMinutes())
                 .description(task.getDescription())
                 .build();
+        if (task.getTaskDetails().getImageUrl() == null || task.getTaskDetails().getImageUrl().trim().equals("")) {
+            task.getTaskDetails().setImageUrl("/img/task_report_hot.png");
+        }
         if (task.getCreationDate() != null)
             dto.setCreationTime(task.getCreationDate().format(DATE_TIME_FORMATTER_TASK));
         if (task.getUpdateDate() != null)

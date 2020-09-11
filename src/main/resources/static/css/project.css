@@ -23,7 +23,7 @@
 
 .grid-task-element-project {
     display: grid;
-    grid-template-columns: 33% 33% 34%;
+    grid-template-columns: 30% 20% 50%;
     grid-gap: 2px;
     alignment: center;
     height: fit-content;

@@ -47,6 +47,8 @@ public class ProjectDTO {
         projectDTO.setName(project.getName());
         projectDTO.setDescription(project.getDescription());
         projectDTO.setImageUrl(project.getImageUrl());
+        if (projectDTO.getImageUrl() == null || projectDTO.getImageUrl().trim().equals(""))
+            projectDTO.setImageUrl("/img/project.png");
         projectDTO.setUserLogin(project.getUser().getLogin());
         projectDTO.setTasks(ProjectTaskDTO.convertToDTOList(project.getTasks()));
         projectDTO.setCreationTime(project.getCreationDate().format(DATE_TIME_FORMATTER_TASK));
