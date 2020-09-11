@@ -27,8 +27,10 @@ public class User extends BaseEntity {
     private String password;
     private String phoneNumber;
     private boolean preferEmails;
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<UserRole> roles;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Project> projects;
 
     public User() {
     }

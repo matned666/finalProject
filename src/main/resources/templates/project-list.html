@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>List of all projects</title>
+    <link href="../static/css/background.css" th:href="@{/css/background.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script>
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            var data = ev.dataTransfer.getData("text");
+            ev.target.appendChild(document.getElementById(data));
+        }
+    </script>
+</head>
+<body>
+
+<div th:insert="fragments/nav :: nav"></div>
+<div id="content">
+
+
+    <div class="split left ">
+        <a href="/projects/add">
+            <button class="ui-button button-darken">Create new project</button>
+        </a><br>
+
+        <br>
+<!--        <div>Drag your to do:</div>-->
+<!--        <div id="div1" class="framewith-semi-transparent-backgroung height-adaptive" ondrop="drop(event)"-->
+<!--             ondragover="allowDrop(event)">-->
+
+<!--        </div>-->
+
+        <div>
+            <span style="font-weight: bold">Pages:</span>
+            <div class="frame-pages">
+                <th:block th:each="i: ${#numbers.sequence(0, projects.getTotalPages() - 1)}">
+                    <a th:href="@{/projects(page=${i})}">
+                        <button class="btn-wth-auto" th:text="${i+1}"></button>
+                    </a>
+                </th:block>
+            </div>
+
+        </div>
+
+        <br>
+        <br>
+        <br>
+        <br>
+    </div>
+
+
+    <div id="contented" class="split right center">
+        <div class="grid-layout">
+
+            <div th:each="project : ${projects}" id="drag1" draggable="true" ondragstart="drag(event)">
+                <div>
+                    <a th:href="@{projects/{id}(id = ${project.getId()})}">
+                        <div class="task-tile">
+                            <div class="tile-title-txt">
+                                <span style="font-weight: bold">Title: </span>
+                                <span th:text="${project.name}"></span>
+                            </div>
+                            <br>
+                            <br>
+                            <div style="height: 40px">
+                                <div class="tile-txt">
+                                    <span style="font-weight: bold">Description:  </span>
+                                    <span th:text="${project.description}"></span>
+                                </div>
+                            </div>
+                            <div style="height: 40px" sec:authorize="hasRole('ADMIN')">
+                                <div class="tile-txt">
+                                    <span style="font-weight: bold">User:  </span>
+                                    <span th:text="${project.userLogin}"></span>
+                                </div>
+                            </div>
+                            <div style="height: 40px" >
+                                <div class="tile-txt">
+                                    <span style="font-weight: bold">Created:  </span>
+                                    <span th:text="${project.creationTime}"></span>
+                                </div>
+                            </div>
+                            <div class="tile-txt">
+                                <img th:src="@{${project.imageUrl}}" alt="task image" height="100" src="">
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        <div>
+            <br>
+            <br>
+        </div>
+    </div>
+
+</div>
+
+<div th:insert="fragments/nav :: footer">
+
+</div>
+
+</body>
+</html>

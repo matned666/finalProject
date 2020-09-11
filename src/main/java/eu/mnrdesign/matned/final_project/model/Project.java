@@ -1,9 +1,11 @@
 package eu.mnrdesign.matned.final_project.model;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import eu.mnrdesign.matned.final_project.dto.ProjectDTO;
+import org.springframework.security.core.parameters.P;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -11,14 +13,34 @@ public class Project extends BaseEntity{
 
     private String name;
     private String description;
+    private String imageUrl;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private User user;
 
-    @OneToMany
+    @OneToMany(mappedBy="project", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ProjectTask> tasks;
 
     public Project() {
+        tasks = new LinkedList<>();
+        this.creationDate = LocalDateTime.now();
+    }
+
+    public static Project apply(User user, ProjectDTO projectDTO) {
+        Project project = new Project();
+        project.setName(projectDTO.getName());
+        project.setDescription(projectDTO.getDescription());
+        project.setImageUrl(projectDTO.getImageUrl());
+        project.setUser(user);
+        return project;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getName() {

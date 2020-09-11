@@ -1,10 +1,12 @@
 package eu.mnrdesign.matned.final_project.dto;
 
+import eu.mnrdesign.matned.final_project.model.ProjectTask;
 import eu.mnrdesign.matned.final_project.model.Task;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.util.List;
 
 import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTER_TASK;
 

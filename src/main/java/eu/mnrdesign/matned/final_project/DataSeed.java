@@ -204,6 +204,11 @@ public class DataSeed implements InitializingBean {
         }
     }
 
+    private void createDefaultAdmin(){
+        User user = new User();
+
+    }
+
 
 
 }

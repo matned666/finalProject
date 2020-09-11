@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="UTF-8">
+    <title>Add a new project</title>
+    <link href="../static/css/background.css" th:href="@{/css/background.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" type="text/css">
+    <link href="../stat ic/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+
+<div th:insert="fragments/nav :: nav"></div>
+<div id="content">
+
+    <div id="errorRedirectView" class="center">
+        <br>
+        <form action="/projects/add" method="post" th:object="${project}">
+            <div>
+                <div th:if="${error != null}">
+
+                    <div th:each="error : ${binding.getFieldErrors('name')}">
+                        <label th:text="${error.getDefaultMessage()}" for="projectName"></label>
+                        <br>
+                    </div>
+                </div>
+                <input class="form-control-sm widerTextFields" type="text" id="projectName" th:field="*{name}"
+                       placeholder="Task name"><br>
+
+                <div th:if="${error != null}">
+                    <div th:each="error : ${binding.getFieldErrors('description')}">
+                        <label th:text="${error.getDefaultMessage()}" for="description"></label>
+                        <br>
+                    </div>
+                </div>
+                <input class="form-control-sm widerTextFields" type="text" id="description"
+                       th:field="*{description}"
+                       placeholder="Description"><br>
+
+                <div th:if="${error != null}">
+                    <div th:each="error : ${binding.getFieldErrors('imageUrl')}">
+                        <label th:text="${error.getDefaultMessage()}" for="imageUrl"></label>
+                        <br>
+                    </div>
+                </div>
+                <input class="form-control-sm widerTextFields" type="text" id="imageUrl" th:field="*{imageUrl}"
+                       placeholder="Image url"><br>
+
+                <button class="ui-button" type="submit">Register project</button>
+                <br><br>
+                <button type="reset">Reset</button>
+                <br>
+
+            </div>
+        </form>
+
+    </div>
+</div>
+<div th:insert="fragments/nav :: footer"></div>
+
+</body>
+</html>
