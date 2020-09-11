@@ -10,6 +10,7 @@
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/project.css" th:href="@{/css/project.css}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -17,21 +18,31 @@
 
 <div th:insert="fragments/nav :: nav"></div>
 <div id="content">
-    <div class="grid-layout6">
+    <div class="grid-layout-task">
+        <div class="center-project-panel center">
+            <br>
+            <span style="color: red">This is the administration panel.</span><br>
+            <span style="color: red">All the users data lay here</span><br>
+            <span style="color: red; font-weight: bold">Check'em out</span><br>
+        </div>
+        <div class="center-project-panel center">
+            <div class="grid-layout6">
 
-        <th:block th:each="user : ${all_users}" >
-            <div class="center">
-                <span style="font-weight: bold">Login: </span>
-                <span class="frame" th:text="${user.login}"></span><br>
-                <span style="font-weight: bold">First name: </span>
-                <span class="frame"th:text="${user.firstName}"></span><br>
-                <span style="font-weight: bold">Last name: </span>
-                <span class="frame"th:text="${user.lastName}">...</span><br>
-                <a th:href="@{account/{id}(id = ${user.getId()})}">
-                    <button style="width: fit-content;">Check profile</button>
-                </a>
+                <th:block th:each="user : ${all_users}">
+                    <div class="center">
+                        <span style="font-weight: bold">Login: </span>
+                        <span class="frame" th:text="${user.login}"></span><br>
+                        <span style="font-weight: bold">First name: </span>
+                        <span class="frame" th:text="${user.firstName}"></span><br>
+                        <span style="font-weight: bold">Last name: </span>
+                        <span class="frame" th:text="${user.lastName}">...</span><br>
+                        <a th:href="@{account/{id}(id = ${user.getId()})}">
+                            <button style="width: fit-content;">Check profile</button>
+                        </a>
+                    </div>
+                </th:block>
             </div>
-        </th:block>
+        </div>
     </div>
 </div>
 <div th:insert="fragments/nav :: footer"></div>

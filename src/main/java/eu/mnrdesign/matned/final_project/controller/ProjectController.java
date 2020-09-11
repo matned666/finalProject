@@ -1,5 +1,6 @@
 package eu.mnrdesign.matned.final_project.controller;
 
+import eu.mnrdesign.matned.final_project.config.WebSecurityConfig;
 import eu.mnrdesign.matned.final_project.dto.ProjectDTO;
 import eu.mnrdesign.matned.final_project.service.ProjectService;
 import eu.mnrdesign.matned.final_project.service.TaskService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 @Controller
@@ -60,8 +62,14 @@ public class ProjectController {
     @GetMapping("/projects/{id}")
     public String getChosenProject(@PathVariable Long id,
                                    Model model,
-                                   Pageable pageable){
+                                   Pageable pageable,
+                                   Principal principal,
+                                   HttpServletRequest request){
+
         ProjectDTO projectDTO = projectService.findProjectById(id);
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+            return "accessDenied";
+        }
         model.addAttribute("projectId", id);
         model.addAttribute("totalTime", projectService.getTotalTime(id));
         model.addAttribute("totalPrice", projectService.getTotalPrice(id));
@@ -69,46 +77,85 @@ public class ProjectController {
         model.addAttribute("projectTasks", projectService.findAllProjectTasksByProject(id, pageable));
         model.addAttribute("project", projectDTO);
         return "project";
+
     }
 
     @GetMapping("/projects/{projectId}/add/{taskId}")
     public String postAddTaskToProject(@PathVariable Long projectId,
-                                       @PathVariable Long taskId){
+                                       @PathVariable Long taskId,
+                                       Principal principal,
+                                       HttpServletRequest request){
+
+        ProjectDTO projectDTO = projectService.findProjectById(projectId);
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+            return "accessDenied";
+        }
         projectService.addTaskToProject(projectId, taskId);
         return "redirect:/projects/"+projectId;
     }
 
     @GetMapping("/projects/{projectId}/delete/{projectTaskId}")
     public String postDeleteTaskFromProject(@PathVariable Long projectId,
-                                            @PathVariable Long projectTaskId){
+                                            @PathVariable Long projectTaskId,
+                                            Principal principal,
+                                            HttpServletRequest request){
+
+        ProjectDTO projectDTO = projectService.findProjectById(projectId);
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+            return "accessDenied";
+        }
         projectService.deleteTaskFromProject(projectId, projectTaskId);
         return "redirect:/projects/"+projectId;
     }
 
     @GetMapping("/projects/{projectId}/move-task-up/{taskId}")
     public String moveTaskUpInProject(@PathVariable Long projectId,
-                                      @PathVariable Long taskId) {
+                                      @PathVariable Long taskId,
+                                      Principal principal,
+                                      HttpServletRequest request) {
+        ProjectDTO projectDTO = projectService.findProjectById(projectId);
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+            return "accessDenied";
+        }
         projectService.moveTaskUp(projectId, taskId);
         return "redirect:/projects/"+projectId;
     }
 
     @GetMapping("/projects/{projectId}/move-task-down/{taskId}")
     public String moveTaskDownInProject(@PathVariable Long projectId,
-                                        @PathVariable Long taskId){
+                                        @PathVariable Long taskId,
+                                        Principal principal,
+                                        HttpServletRequest request){
+        ProjectDTO projectDTO = projectService.findProjectById(projectId);
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+            return "accessDenied";
+        }
         projectService.moveTaskDown(projectId, taskId);
         return "redirect:/projects/"+projectId;
     }
 
     @GetMapping("/projects/{projectId}/setDone/{taskId}")
     public String setDoneTaskInProject(@PathVariable Long projectId,
-                                        @PathVariable Long taskId){
+                                        @PathVariable Long taskId,
+                                       Principal principal,
+                                       HttpServletRequest request){
+        ProjectDTO projectDTO = projectService.findProjectById(projectId);
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+            return "accessDenied";
+        }
         projectService.setDone(taskId);
         return "redirect:/projects/"+projectId;
     }
 
     @GetMapping("/projects/{projectId}/rename")
     public String getEditProjectData(@PathVariable Long projectId,
-                                     Model model){
+                                     Model model,
+                                     Principal principal,
+                                     HttpServletRequest request){
+        ProjectDTO projectDTO = projectService.findProjectById(projectId);
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+            return "accessDenied";
+        }
         model.addAttribute("project", projectService.findProjectById(projectId));
         return "project-edit";
     }
@@ -118,7 +165,11 @@ public class ProjectController {
                                       @PathVariable Long projectId,
                                       BindingResult bindingResult,
                                       Principal principal,
+                                      HttpServletRequest request,
                                       Model model){
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+            return "accessDenied";
+        }
         if (bindingResult.hasErrors()) {
             model.addAttribute("error", "error");
             model.addAttribute("binding", bindingResult);
@@ -130,18 +181,28 @@ public class ProjectController {
     }
 
     @GetMapping("/projects/{projectId}/delete")
-    public String projectDelete(@PathVariable Long projectId){
+    public String projectDelete(@PathVariable Long projectId,
+                                Principal principal,
+                                HttpServletRequest request){
+        ProjectDTO projectDTO = projectService.findProjectById(projectId);
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+            return "accessDenied";
+        }
         projectService.removeProject(projectId);
         return "redirect:/projects";
     }
 
     @GetMapping("/projects/{projectId}/clear")
-    public String projectClear(@PathVariable Long projectId){
+    public String projectClear(@PathVariable Long projectId,
+                               Principal principal,
+                               HttpServletRequest request){
+        ProjectDTO projectDTO = projectService.findProjectById(projectId);
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+            return "accessDenied";
+        }
         projectService.clearProject(projectId);
         return "redirect:/projects/"+projectId;
     }
-
-
 
 
 }

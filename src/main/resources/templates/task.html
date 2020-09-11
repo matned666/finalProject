@@ -10,54 +10,67 @@
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/project.css" th:href="@{/css/project.css}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
 
 <div th:insert="fragments/nav :: nav"></div>
-
-<div id="content" class="center">
-
-    <div th:if="${task != null}">
-        <div th:object="${task}">
+<div id="content">
+    <div class="grid-layout-task">
+        <div class="center-project-panel center">
             <br>
-            <h1>Task data:</h1>
-            <span class="bolded">Name: </span><span th:text="*{taskName}"></span><br>
-            <span class="bolded">Description: </span><br><span th:text="*{description}"></span><br>
-            <span class="bolded">Task time: </span><span th:text="*{timeInMinutes}"></span><span> minutes</span><br>
-            <span class="bolded">Price: </span><span th:text="*{price}"></span><span>€</span><br>
-            <span class="bolded">Category: </span><span th:text="*{category}"></span><br>
-            <span class="bolded">Complicity: </span><span th:text="*{complicity}"></span><br>
-            <span class="bolded">Audit:</span><br>
-            <span class="bolded">Id: </span><span th:text="*{id}"></span><br>
-            <span class="bolded">Deployment time: </span><span th:if="*{creationTime != null}"
-                                                               th:text="*{creationTime.toString()}"></span><br>
-            <span class="bolded">Update time: </span><span th:if="*{updateTime != null}"
-                                                           th:text="*{updateTime.toString()}"></span><br>
             <div class="tile-txt">
                 <img th:src="@{${task.imageUrl}}" alt="task image" height="100" src="">
-            </div><br><br>
-        </div>
-        <a sec:authorize="hasRole('ROLE_ADMIN')" id="target" th:href="@{edit/{id}(id = ${task.getId()})}">
-            <button type="button" class="btn btn-secondary btn-lg">
-                Edit task data
-            </button>
-        </a>
-        <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{delete/{id}(id = ${task.getId()})}" onclick="return confirm('Are you sure you want to delete this item?');">
-            <button type="button" class="btn btn-secondary btn-lg">
-                Delete task
-            </button>
-        </a>
+            </div>
+            <br>
+            <br>
+            <a sec:authorize="hasRole('ROLE_ADMIN')" id="target" th:href="@{edit/{id}(id = ${task.getId()})}">
+                <button type="button" class="ui-button button-darken">
+                    Edit task data
+                </button>
+            </a>
+            <br>
+            <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{delete/{id}(id = ${task.getId()})}"
+               onclick="return confirm('Are you sure you want to delete this item?');">
+                <button type="button" class="ui-button button-darken">
+                    Delete task
+                </button>
+            </a>
 
-        <div th:unless="${task != null}">
-            <span>no such task</span>
+        </div>
+        <div class="center-project-panel center">
+
+            <div th:if="${task != null}">
+                <div th:object="${task}">
+                    <br>
+                    <h1>Task data:</h1>
+                    <span class="bolded">Name: </span><span th:text="*{taskName}"></span><br>
+                    <span class="bolded">Description: </span><br><span th:text="*{description}"></span><br>
+                    <span class="bolded">Task time: </span><span th:text="*{timeInMinutes}"></span><span> minutes</span><br>
+                    <span class="bolded">Price: </span><span th:text="*{price}"></span><span>€</span><br>
+                    <span class="bolded">Category: </span><span th:text="*{category}"></span><br>
+                    <span class="bolded">Complicity: </span><span th:text="*{complicity}"></span><br>
+                    <span class="bolded">Audit:</span><br>
+                    <span class="bolded">Id: </span><span th:text="*{id}"></span><br>
+                    <span class="bolded">Deployment time: </span><span th:if="*{creationTime != null}"
+                                                                       th:text="*{creationTime.toString()}"></span><br>
+                    <span class="bolded">Update time: </span><span th:if="*{updateTime != null}"
+                                                                   th:text="*{updateTime.toString()}"></span><br>
+                    <br><br>
+                </div>
+
+
+                <div th:unless="${task != null}">
+                    <span>no such task</span>
+                </div>
+            </div>
+
+
         </div>
     </div>
-
-
 </div>
-
 <div th:insert="fragments/nav :: footer">
 
 </div>

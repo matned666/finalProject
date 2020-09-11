@@ -233,3 +233,9 @@ body {
     border-width: 2px;
     border-color: #888888;
 }
+
+.grid-layout-task {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    alignment: center;
+}

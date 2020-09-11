@@ -52,7 +52,6 @@
             <span>Tasks in the project:</span>
             <div th:each="projectTask : ${projectTasks}" id="drag0" draggable="true" ondragstart="drag(event)">
                 <div>
-                    <!--                    <a th:href="@{task/{id}(id = ${task.getId()})}">-->
                     <div class="task-tile grid-task-element-project">
                         <div>
                             <a th:href="@{/projects/{project_id}/move-task-up/{task_id}(project_id = ${projectId}, task_id = ${projectTask.id})}">
@@ -114,7 +113,6 @@
 
                         </div>
                     </div>
-                    <!--                    </a>-->
                 </div>
             </div>
         </div>
