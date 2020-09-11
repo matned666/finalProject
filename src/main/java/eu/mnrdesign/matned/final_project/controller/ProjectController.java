@@ -99,6 +99,13 @@ public class ProjectController {
         return "redirect:/projects/"+projectId;
     }
 
+    @GetMapping("/projects/{projectId}/setDone/{taskId}")
+    public String setDoneTaskInProject(@PathVariable Long projectId,
+                                        @PathVariable Long taskId){
+        projectService.setDone(taskId);
+        return "redirect:/projects/"+projectId;
+    }
+
     @GetMapping("/projects/{projectId}/rename")
     public String getEditProjectData(@PathVariable Long projectId,
                                      Model model){

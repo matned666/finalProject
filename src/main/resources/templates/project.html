@@ -20,7 +20,9 @@
     <div><span>PROJECT: </span><span th:text="${project.name}"></span></div>
     <div class="grid-layout-project">
         <div class="center-project-panel">
-            <a th:href="@{/projects/{projectId}/overview (projectId = ${project.id})}">
+            <a href="#">
+<!--                    th:href="@{/projects/{projectId}/overview (projectId = ${project.id})}"-->
+
                 <button class="ui-button button-darken">Project overview</button>
             </a><br><br><br>
             <a th:href="@{/projects/{projectId}/rename (projectId = ${project.id})}">
@@ -42,6 +44,8 @@
             <span style="font-weight: bold">Project time: </span><span th:text="${totalTime}"></span><span> minutes</span><br>
             <span style="font-weight: bold">Project Description: </span><span
                 th:text="${project.description}"></span><br>
+            <span style="font-weight: bold">Project start: </span><span th:text="${project.projectStart}"></span><br>
+            <span style="font-weight: bold">Project deadline: </span><span th:text="${project.projectDeadline}"></span><br>
         </div>
         <div class="center-project-panel">
             <span>Tasks in the project:</span>
@@ -54,6 +58,10 @@
                                 <a th:href="@{/projects/{project_id}/move-task-down/{task_id}(project_id = ${projectId}, task_id = ${projectTask.id})}"><button class="round-sm-button-add">Down</button></a>
                                 <br>
                                 <a th:href="@{/projects/{project_id}/delete/{task_id}(project_id = ${projectId}, task_id = ${projectTask.id})}"><button class="round-sm-button-add">Remove</button></a>
+                                <a th:href="@{/projects/{project_id}/setDone/{task_id}(project_id = ${projectId}, task_id = ${projectTask.id})}">
+                                    <button th:if="${projectTask.isDone()}" class="round-sm-button-add-alright">Done</button>
+                                    <button th:if="${!projectTask.isDone()}" class="round-sm-button-add-wrong">Not done</button>
+                                </a>
                             </div>
                             <div>
                                 <div class="tile-txt">
@@ -79,6 +87,7 @@
                                     <span th:text="${projectTask.price}"></span>
                                     <span> EUR </span>
                                 </div>
+
                             </div>
                         </div>
 <!--                    </a>-->
@@ -87,7 +96,7 @@
         </div>
         <div class="center-project-panel">
             <span>All available tasks:</span><br>
-            <a href="#">
+            <a th:href="@{/tasks/add/{where} (where = ${project.id})}">
                 <button class="ui-button button-darken">Add new task</button>
             </a><br>
             <div>

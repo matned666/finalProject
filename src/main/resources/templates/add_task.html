@@ -21,7 +21,7 @@
 
     <div id="errorRedirectView" class="center">
         <br>
-        <form action="/tasks/add" method="post" th:object="${new_task}">
+        <form th:action="@{/tasks/add/{where} (where = ${where}) }" method="post" th:object="${new_task}">
             <div>
                 <div th:if="${error != null}">
 

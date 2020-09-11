@@ -192,4 +192,10 @@ public class ProjectService {
             updateProjectTask(replacedTask);
         }
     }
+
+    public void setDone(Long taskId) {
+        ProjectTask pt = projectTaskRepository.findById(taskId).orElseThrow(()->new RuntimeException("No such project task"));
+        pt.setDone(!pt.isDone());
+        projectTaskRepository.save(pt);
+    }
 }

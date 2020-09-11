@@ -35,25 +35,32 @@ public class TaskController {
         return "tasks-list";
     }
 
-    @GetMapping("/tasks/add")
-    public String addProduct(Model model) {
+    @GetMapping("/tasks/add/{where}")
+    public String addProduct(Model model, @PathVariable String where) {
         model.addAttribute("complicities", Complicity.values());
         model.addAttribute("categories", categoryService.findAll());
+        model.addAttribute("where", where);
         model.addAttribute("new_task", new TaskDTO());
         return "add_task";
     }
 
-    @PostMapping("/tasks/add")
+    @PostMapping("/tasks/add/{where}")
     public String addProduct(@Validated TaskDTO taskDTO,
                              BindingResult bindingResult,
-                             Model model) {
+                             Model model,
+                             @PathVariable String where) {
         model.addAttribute("new_task", new TaskDTO());
+        model.addAttribute("where", where);
         if (errorHandler(bindingResult, model)) {
             model.addAttribute("new_task", taskDTO);
-            return "add_task";
         }
         service.add(taskDTO);
+        if (where.equals("inTask")) {
         return "redirect:/tasks";
+        }
+        else {
+            return "redirect:/projects/"+where;
+        }
     }
 
     @GetMapping("/task/{id}")

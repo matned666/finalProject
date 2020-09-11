@@ -29,6 +29,7 @@ public class ProjectTaskDTO implements Comparable<ProjectTaskDTO>{
     private BigDecimal price;
     private String category;
     private String complicity;
+    private boolean isDone;
 
     public ProjectTaskDTO() {
     }
@@ -55,7 +56,16 @@ public class ProjectTaskDTO implements Comparable<ProjectTaskDTO>{
         dto.price = p.getTask().getTaskDetails().getPrice();
         dto.category = p.getTask().getTaskDetails().getCategory().getCategoryName();
         dto.complicity = p.getTask().getTaskDetails().getComplicity().name();
+        dto.isDone = p.isDone();
         return dto;
+    }
+
+    public boolean isDone() {
+        return isDone;
+    }
+
+    public void setDone(boolean done) {
+        isDone = done;
     }
 
     public Integer getPositionInProject() {

@@ -16,6 +16,8 @@ public class ProjectTask extends BaseEntity implements Comparable<ProjectTask>{
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     private Task task;
 
+    private boolean isDone;
+
     private Integer positionInProject;
 
     public ProjectTask() {
@@ -26,6 +28,7 @@ public class ProjectTask extends BaseEntity implements Comparable<ProjectTask>{
         this.project = project;
         this.task = task;
         this.positionInProject = project.getTasks().size()+1;
+        this.isDone = false;
     }
 
     private static ProjectTask apply(Task task, Project project, ProjectTaskDTO pt) {
@@ -33,7 +36,16 @@ public class ProjectTask extends BaseEntity implements Comparable<ProjectTask>{
         projectTask.setPositionInProject(pt.getPositionInProject());
         projectTask.setTask(task);
         projectTask.setProject(project);
+        projectTask.setDone(pt.isDone());
         return null;
+    }
+
+    public boolean isDone() {
+        return isDone;
+    }
+
+    public void setDone(boolean done) {
+        isDone = done;
     }
 
     public Project getProject() {

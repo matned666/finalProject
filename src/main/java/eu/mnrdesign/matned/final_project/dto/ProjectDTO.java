@@ -5,7 +5,6 @@ import eu.mnrdesign.matned.final_project.validation.DateMatchesPattern;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
