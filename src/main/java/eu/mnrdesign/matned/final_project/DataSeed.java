@@ -38,7 +38,7 @@ public class DataSeed implements InitializingBean {
             createCat(defCat);
         }
         createDefaultTasks();
-        createDefaultUser();
+//        createDefaultUser();
     }
 
     private void createDefaultTasks() {
@@ -64,26 +64,26 @@ public class DataSeed implements InitializingBean {
         }
     }
 
-    private void createDefaultUser(){
-        String login = "guest@guest.pl";
-        if (!userService.userWithEmailExists(login)) {
-            RegistrationDTO defaultUser = new RegistrationDTO.RTDOBuilder()
-                    .login(login)
-                    .password("user")
-                    .passwordConfirm("user")
-                    .birthDate("2020-09-01")
-                    .firstName("William")
-                    .lastName("Blake")
-                    .street("Zielińskiego 56")
-                    .zipCode("53-534")
-                    .city("Wrocław")
-                    .country(Countries.POLAND.getSymbol())
-                    .phoneNumber("+48785850868")
-                    .preferEmails(false)
-                    .build();
-            userService.register(defaultUser);
-        }
-    }
+//    private void createDefaultUser(){
+//        String login = "guest@guest.pl";
+//        if (!userService.userWithEmailExists(login)) {
+//            RegistrationDTO defaultUser = new RegistrationDTO.RTDOBuilder()
+//                    .login(login)
+//                    .password("user")
+//                    .passwordConfirm("user")
+//                    .birthDate("2020-09-01")
+//                    .firstName("William")
+//                    .lastName("Blake")
+//                    .street("Zielińskiego 56")
+//                    .zipCode("53-534")
+//                    .city("Wrocław")
+//                    .country(Countries.POLAND.getSymbol())
+//                    .phoneNumber("+48785850868")
+//                    .preferEmails(false)
+//                    .build();
+//            userService.register(defaultUser);
+//        }
+//    }
 
     private void createTask1() {
         String name = "Nerd talking with nerds";
