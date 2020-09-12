@@ -137,8 +137,9 @@ public class ProjectService {
 
     public BigDecimal getTotalPrice(Long projectId) {
         List<BigDecimal> decimals = new LinkedList<>();
-        projectTaskRepository.findAllByProjectId(projectId)
-                .forEach(a->decimals.add(a.getTask().getTaskDetails().getPrice()));
+        for (ProjectTask pt : projectTaskRepository.findAllByProjectId(projectId)) {
+            decimals.add((pt.getTask().getTaskDetails()!= null)? pt.getTask().getTaskDetails().getPrice() : new BigDecimal(0));
+        }
         return decimals.stream()
                 .reduce(new BigDecimal(0), BigDecimal::add);
     }
