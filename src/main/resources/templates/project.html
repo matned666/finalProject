@@ -20,8 +20,9 @@
     <div class="grid-layout-project">
         <div class="center-project-panel">
             <h2>Project overview:</h2>
-            <br><br><br>
-            <span style="font-weight: bold">Project name: </span><h3 th:text="${project.name}"></h3><br>
+            <div class="tile-txt">
+                <img th:src="@{${project.imageUrl}}" alt="task image" height="100" src="">
+            </div>            <span style="font-weight: bold">Project name: </span><h3 th:text="${project.name}"></h3><br>
             <span style="font-weight: bold">Project owner: </span><span th:text="${project.userLogin}"></span><br>
             <span style="font-weight: bold">Project cost: </span><span th:text="${totalPrice}"></span><span>€</span><br>
             <span style="font-weight: bold">Project time: </span><span
