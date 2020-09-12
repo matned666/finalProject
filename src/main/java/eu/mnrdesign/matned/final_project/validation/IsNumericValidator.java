@@ -5,8 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
+import java.math.BigDecimal;
 
-public class IsNumericValidator implements ConstraintValidator<IsNumeric, String> {
+public class IsNumericValidator implements ConstraintValidator<IsNumeric, BigDecimal> {
 
     @Override
     public void initialize(IsNumeric constraintAnnotation) {
@@ -14,11 +15,11 @@ public class IsNumericValidator implements ConstraintValidator<IsNumeric, String
     }
 
     @Override
-    public boolean isValid(String value, ConstraintValidatorContext context) {
+    public boolean isValid(BigDecimal value, ConstraintValidatorContext context) {
         try{
-            long val = Long.parseLong(value);
+            BigDecimal b = new BigDecimal(0).add(value);
             return true;
-        }catch (NumberFormatException ignored){
+        }catch (Exception ignored){
             return false;
         }
     }

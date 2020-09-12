@@ -3,6 +3,7 @@ package eu.mnrdesign.matned.final_project.dto;
 import eu.mnrdesign.matned.final_project.model.Category;
 import eu.mnrdesign.matned.final_project.model.ProjectTask;
 import eu.mnrdesign.matned.final_project.model.Task;
+import eu.mnrdesign.matned.final_project.validation.IsNumeric;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -14,18 +15,23 @@ import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTE
 public class TaskDTO {
 
     @NotNull(message = "The field cannot be empty")
-    @Size(min = 5, max = 30, message = "Write at between {min} and {max} signs")
+    @Size(min = 2, max = 30, message = "Write at between {min} and {max} signs")
     private String taskName;
 
     @NotNull(message = "The field cannot be empty")
-    @Size(min = 5, max = 1000, message = "Write at between {min} and {max} signs")
+    @Size(min = 3, max = 1000, message = "Write at between {min} and {max} signs")
     private String description;
 
     @NotNull(message = "The field cannot be empty")
     private Integer timeInMinutes;
+
     @Size(max = 1500, message = "Url can have max {max} signs")
     private String imageUrl;
+
+    @NotNull(message = "The field cannot be empty")
+    @IsNumeric(message = "Must be a valid number")
     private BigDecimal price;
+
     private String category;
     private String complicity;
 
