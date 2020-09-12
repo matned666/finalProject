@@ -2,6 +2,7 @@ package eu.mnrdesign.matned.final_project.service;
 
 import eu.mnrdesign.matned.final_project.dto.RegistrationDTO;
 import eu.mnrdesign.matned.final_project.dto.RestrictedRegistrationDTO;
+import eu.mnrdesign.matned.final_project.model.Address;
 import eu.mnrdesign.matned.final_project.model.Countries;
 import eu.mnrdesign.matned.final_project.model.User;
 import eu.mnrdesign.matned.final_project.model.UserRole;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTER_ONLY_DATE;
@@ -85,6 +87,10 @@ public class UserService {
 
 
     private void updateUser(RestrictedRegistrationDTO restrictedRegistrationDTO, User user) {
+        if (user.getAddress() == null) {
+            user.setAddress(new Address());
+            user.getAddress().setCountry(Countries.POLAND);
+        }
         user.setFirstName(restrictedRegistrationDTO.getFirstName());
         user.setLastName(restrictedRegistrationDTO.getLastName());
         if (restrictedRegistrationDTO.getBirthDate() != null)
@@ -98,6 +104,7 @@ public class UserService {
         if (restrictedRegistrationDTO.getCountry() != null)
             if (!restrictedRegistrationDTO.getCountry().trim().equals(""))
                 user.getAddress().setCountry(Countries.fromSymbol(restrictedRegistrationDTO.getCountry()));
+            user.setUpdateDate(LocalDateTime.now());
         repo.save(user);
     }
 

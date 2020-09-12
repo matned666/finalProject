@@ -65,6 +65,8 @@
                 <span class="bolded">Email: </span><span th:text="*{login}"></span><br>
                 <span class="bolded">Phone number: </span><span th:text="*{phoneNumber}"></span><br><br>
                 <span class="bolded">Password hash: </span><span th:text="*{password}"></span><br>
+                <span class="bolded">Registration date: </span><span th:text="*{creationDateTime}"></span><br>
+                <span class="bolded">Update date: </span><span th:text="*{updateDateTime}"></span><br>
             </div>
             <a th:href="@{/user/edit/{id}(id = ${userToSee.getId()})}">
                 <button type="button" class="btn btn-secondary btn-lg">

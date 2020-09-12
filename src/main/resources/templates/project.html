@@ -22,7 +22,7 @@
             <h2>Project overview:</h2>
             <br><br><br>
             <span style="font-weight: bold">Project name: </span><h3 th:text="${project.name}"></h3><br>
-            <span style="font-weight: bold">Project owner: </span><span sec:authentication="name"></span><br>
+            <span style="font-weight: bold">Project owner: </span><span th:text="${project.userLogin}"></span><br>
             <span style="font-weight: bold">Project cost: </span><span th:text="${totalPrice}"></span><span>€</span><br>
             <span style="font-weight: bold">Project time: </span><span
                 th:text="${totalTime}"></span><span> minutes</span><br>

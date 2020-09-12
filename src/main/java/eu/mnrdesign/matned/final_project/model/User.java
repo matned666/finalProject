@@ -5,6 +5,7 @@ import eu.mnrdesign.matned.final_project.dto.RegistrationDTO;
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -35,8 +36,14 @@ public class User extends BaseEntity {
     public User() {
     }
 
+    public User(String login) {
+        this.login = login;
+        this.creationDate = LocalDateTime.now();
+
+    }
+
     public static User apply(RegistrationDTO registrationDTO, String passwordHash) {
-        User user = new User();
+        User user = new User(registrationDTO.getLogin());
         user.firstName = registrationDTO.getFirstName();
         user.lastName = registrationDTO.getLastName();
         user.address = Address.apply(registrationDTO);
@@ -45,7 +52,6 @@ public class User extends BaseEntity {
         } catch (DateTimeParseException e) {
             user.birthDate = null;
         }
-        user.login = registrationDTO.getLogin();
         user.password = passwordHash;
         user.phoneNumber = registrationDTO.getPhoneNumber();
         user.preferEmails = registrationDTO.isPreferEmails();

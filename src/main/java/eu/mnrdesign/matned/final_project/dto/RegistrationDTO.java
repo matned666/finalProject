@@ -1,5 +1,7 @@
 package eu.mnrdesign.matned.final_project.dto;
 
+import eu.mnrdesign.matned.final_project.model.Address;
+import eu.mnrdesign.matned.final_project.model.Countries;
 import eu.mnrdesign.matned.final_project.model.User;
 import eu.mnrdesign.matned.final_project.validation.*;
 
@@ -8,6 +10,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTER_ONLY_DATE;
+import static eu.mnrdesign.matned.final_project.holder.Static.DATE_TIME_FORMATTER_TASK;
 
 @PasswordMatches
 public class RegistrationDTO implements UserEnhancedDTOInterface<RegistrationDTO>{
@@ -58,6 +61,9 @@ public class RegistrationDTO implements UserEnhancedDTOInterface<RegistrationDTO
     @NoValidation
     private boolean preferEmails;
 
+    private String creationDateTime;
+    private String updateDateTime;
+
     public RegistrationDTO() {
     }
 
@@ -75,9 +81,14 @@ public class RegistrationDTO implements UserEnhancedDTOInterface<RegistrationDTO
         passwordConfirm = builder.passwordConfirm;
         phoneNumber = builder.phoneNumber;
         preferEmails = builder.preferEmails;
+
     }
 
     public static RegistrationDTO apply(User user) {
+        if (user.getAddress() == null) {
+            user.setAddress(new Address());
+            user.getAddress().setCountry(Countries.POLAND);
+        }
         RegistrationDTO registrationDTO = new RTDOBuilder()
                 .id(user.getId())
                 .login(user.getLogin())
@@ -91,8 +102,30 @@ public class RegistrationDTO implements UserEnhancedDTOInterface<RegistrationDTO
                 .country(user.getAddress().getCountry().name())
                 .preferEmails(user.isPreferEmails())
                 .build();
+        if (user.getCreationDate() != null) registrationDTO.setCreationDateTime(user.getCreationDate().format(DATE_TIME_FORMATTER_TASK));
+        if (user.getUpdateDate() != null) registrationDTO.setUpdateDateTime(user.getUpdateDate().format(DATE_TIME_FORMATTER_TASK));
         if (user.getBirthDate() != null) registrationDTO.setBirthDate(user.getBirthDate().format(DATE_TIME_FORMATTER_ONLY_DATE));
         return registrationDTO;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCreationDateTime() {
+        return creationDateTime;
+    }
+
+    public void setCreationDateTime(String creationDateTime) {
+        this.creationDateTime = creationDateTime;
+    }
+
+    public String getUpdateDateTime() {
+        return updateDateTime;
+    }
+
+    public void setUpdateDateTime(String updateDateTime) {
+        this.updateDateTime = updateDateTime;
     }
 
     public Long getId() {
@@ -210,6 +243,8 @@ public class RegistrationDTO implements UserEnhancedDTOInterface<RegistrationDTO
         private String password;
         private String passwordConfirm;
         private String phoneNumber;
+        private String updateDateTime;
+        private String creationDateTime;
         private boolean preferEmails;
 
         public RTDOBuilder() {
@@ -227,6 +262,16 @@ public class RegistrationDTO implements UserEnhancedDTOInterface<RegistrationDTO
 
         public RTDOBuilder lastName(String lastName) {
             this.lastName = lastName;
+            return this;
+        }
+
+        public RTDOBuilder creationDateTime(String creationDateTime) {
+            this.creationDateTime = creationDateTime;
+            return this;
+        }
+
+        public RTDOBuilder updateDateTime(String updateDateTime) {
+            this.updateDateTime = updateDateTime;
             return this;
         }
 
