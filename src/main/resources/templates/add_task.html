@@ -34,18 +34,18 @@
                        placeholder="Task name"><br>
 
                 <div th:if="${error != null}">
-                    <div th:each="error : ${binding.getFieldErrors('description')}">
-                        <label th:text="${error.getDefaultMessage()}" for="description"></label>
+                    <div th:each="err : ${binding.getFieldErrors('description')}">
+                        <label th:text="${err.getDefaultMessage()}" for="description"></label>
                         <br>
                     </div>
                 </div>
-                <input class="form-control-sm widerTextFields" type="text" id="description"
+                <textarea style="height: 200px" class="form-control-sm widerTextFields" type="text" id="description"
                        th:field="*{description}"
-                       placeholder="Description"><br>
+                          placeholder="Description"></textarea><br>
 
                 <div th:if="${error != null}">
-                    <div th:each="error : ${binding.getFieldErrors('timeInMinutes')}">
-                        <label th:text="${error.getDefaultMessage()}" for="timeInMinutes"></label>
+                    <div th:each="err : ${binding.getFieldErrors('timeInMinutes')}">
+                        <label th:text="${err.getDefaultMessage()}" for="timeInMinutes"></label>
                         <br>
                     </div>
                 </div>
@@ -54,8 +54,8 @@
                        placeholder="Time in minutes(only digits)"><br>
 
                 <div th:if="${error != null}">
-                    <div th:each="error : ${binding.getFieldErrors('imageUrl')}">
-                        <label th:text="${error.getDefaultMessage()}" for="imageUrl"></label>
+                    <div th:each="err : ${binding.getFieldErrors('imageUrl')}">
+                        <label th:text="${err.getDefaultMessage()}" for="imageUrl"></label>
                         <br>
                     </div>
                 </div>
@@ -63,8 +63,8 @@
                        placeholder="Image url"><br>
 
                 <div th:if="${error != null}">
-                    <div th:each="error : ${binding.getFieldErrors('price')}">
-                        <label th:text="${error.getDefaultMessage()}" for="price"></label>
+                    <div th:each="err : ${binding.getFieldErrors('price')}">
+                        <label th:text="${err.getDefaultMessage()}" for="price"></label>
                         <br>
                     </div>
                 </div>

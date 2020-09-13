@@ -6,17 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String> {
+public class EmailExistValidator implements ConstraintValidator<EmailExist, String> {
 
     @Autowired
     private UserService userService;
 
     @Override
-    public void initialize(UniqueEmail constraintAnnotation) {
+    public void initialize(EmailExist constraintAnnotation) {
     }
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return !userService.userWithEmailExists(value);
+        return userService.userWithEmailExists(value);
     }
 }

@@ -14,6 +14,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.security.Principal;
+
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
@@ -30,16 +32,19 @@ class ProjectControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @WithMockUser(value = "admin")
     @Test
     @DisplayName("GET /project/1 test - product found 200")
+    @WithMockUser(roles = "ADMIN")
     public void testGETProdFnd() throws Exception {
 
         ProjectDTO mockedProject = new ProjectDTO();
         doReturn(mockedProject).when(service).findProjectById(1L);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/projects/{id}", 1L))
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/projects/{id}", 1L)
+        )
                 .andExpect(status().isOk())
+                .andExpect(view().name("project"))
                 .andExpect(content().string(containsString("project")));
     }
 

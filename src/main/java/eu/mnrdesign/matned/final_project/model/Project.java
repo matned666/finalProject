@@ -17,6 +17,7 @@ import static eu.mnrdesign.matned.final_project.holder.Static.DATE_PATTERN;
 public class Project extends BaseEntity {
 
     private String name;
+    @Column(name = "description", length = 2000)
     private String description;
     private String imageUrl;
     private LocalDate projectStart;

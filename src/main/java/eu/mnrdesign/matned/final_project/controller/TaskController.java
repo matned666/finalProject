@@ -52,6 +52,7 @@ public class TaskController {
         model.addAttribute("new_task", new TaskDTO());
         model.addAttribute("where", where);
         if (errorHandler(bindingResult, model)) {
+            model.addAttribute("error", "error");
             model.addAttribute("new_task", taskDTO);
             model.addAttribute("binding", bindingResult);
             return "add_task";

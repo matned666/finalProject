@@ -1,5 +1,8 @@
 package eu.mnrdesign.matned.final_project.model;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -14,6 +17,7 @@ public class BaseEntity {
     protected Long version;
 
     // Audit
+    @CreationTimestamp
     protected LocalDateTime creationDate;
     protected LocalDateTime updateDate;
 

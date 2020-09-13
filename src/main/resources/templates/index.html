@@ -8,19 +8,20 @@
     <title>Index</title>
     <link href="../static/css/background.css" th:href="@{/css/background.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/flying-object.css" th:href="@{/css/flying-object.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" type="text/css">
     <link href="../static/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
 </head>
-<body>
 
+<body>
 <div th:insert="fragments/nav :: nav"></div>
 <div id="content">
     <h1>Welcome to task management app</h1><br>
     <p>Check instructions for more information: </p>
     <a href="/about">Instructions</a>
+    <div class="flier "><img th:src="@{/img/ufo.png}" src="../static/img/ufo.png" class="layer10" width="170" height="51" alt="Flying ufo"/></div>
 
 </div>
 <div th:insert="fragments/nav :: footer"></div>

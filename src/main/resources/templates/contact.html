@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:divth="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link href="../static/css/background.css" th:href="@{/css/background.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/project.css" th:href="@{/css/project.css}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+
+<div th:insert="fragments/nav :: nav"></div>
+<div id="content">
+    <div style="    display: grid;
+    grid-template-columns: 10% 80% 10%;
+    alignment: center;">
+        <div></div>
+        <div class="center center-project-panel">
+
+            <div id="errorRedirectView">
+                <form action="/contact-form-post" method="post" th:object="${message}">
+                    <div th:if="${err == 'error'}">
+
+                        <div th:each="error : ${binding.getFieldErrors('email')}">
+                            <label th:text="${error.getDefaultMessage()}" for="email"></label>
+                            <br>
+                        </div>
+                    </div>
+                    <input class="form-control-sm widerTextFields" type="text" id="email"
+                           th:field="*{email}"
+                           placeholder="Email"><br>
+
+                    <div th:if="${err == 'error'}">
+
+                        <div th:each="error : ${binding.getFieldErrors('subject')}">
+                            <label th:text="${error.getDefaultMessage()}" for="subject"></label>
+                            <br>
+                        </div>
+                    </div>
+                    <input class="form-control-sm widerTextFields" type="text" id="subject"
+                           th:field="*{subject}"
+                           placeholder="Subject"><br>
+
+                    <div th:if="${err == 'error'}">
+                        <div th:each="error : ${binding.getFieldErrors('message')}">
+                            <label th:text="${error.getDefaultMessage()}" for="message"></label>
+                            <br>
+                        </div>
+                    </div>
+                    <textarea rows="15" class="form-control-sm widerTextFields"
+                              style="vertical-align: text-top; line-height: 15px; height: 200px;" type="text"
+                              id="message"
+                              th:field="*{message}"
+                              placeholder="Message"></textarea><br>
+                    <div th:if="${sent == 1}">
+                        <span style="color: green">The message has been sent successfully</span>
+                    </div>
+                    <br>
+
+                    <button class="ui-button" type="submit">Send</button>
+                    <br>
+                    <button type="reset">Reset</button>
+                    <br>
+                </form>
+            </div>
+
+        </div>
+        <div></div>
+    </div>
+</div>
+<div th:insert="fragments/nav :: footer"></div>
+
+</body>
+</html>

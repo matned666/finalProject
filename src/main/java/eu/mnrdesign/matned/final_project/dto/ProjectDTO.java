@@ -17,6 +17,7 @@ public class ProjectDTO {
     @NotNull(message = "Name of the project cannot be empty")
     @Size(min = 2, max = 30 , message = "Name should be between {min} and {max} signs.")
     private String name;
+    @Size(max = 2000 , message = "Description can be max {max} signs.")
     private String description;
     private String imageUrl;
 
@@ -65,6 +66,10 @@ public class ProjectDTO {
             result.add(ProjectDTO.apply(p));
         }
         return result;
+    }
+
+    public String shortDescription(){
+        return this.description.substring(0,70) + "...";
     }
 
     public String getProjectStart() {

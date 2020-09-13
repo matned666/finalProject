@@ -52,9 +52,9 @@
                         <br>
                     </div>
                 </div>
-                <input class="form-control-sm widerTextFields" type="text" id="description"
+                <textarea style="height: 200px" class="form-control-sm widerTextFields" type="text" id="description"
                        th:field="*{description}"
-                       placeholder="Description"><br>
+                          placeholder="Description"></textarea><br>
 
                 <div th:if="${error != null}">
                     <div th:each="error : ${binding.getFieldErrors('imageUrl')}">

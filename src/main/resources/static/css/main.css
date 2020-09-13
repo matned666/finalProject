@@ -137,6 +137,10 @@ body {
     transition: 0.3s;
 }
 
+.width200{
+    width: 200px
+}
+
 .button-darken:hover{
     color: white;
     background-color: #7e7e7e;

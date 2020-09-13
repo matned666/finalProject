@@ -77,13 +77,13 @@
                                 <span th:text="${project.name}"></span>
                             </div>
                             <br>
-                            <br>
                             <div style="height: 40px">
                                 <div class="tile-txt">
                                     <span style="font-weight: bold">Description:  </span>
-                                    <span th:text="${project.description}"></span>
+                                    <span th:text="${project.shortDescription()}"></span>
                                 </div>
                             </div>
+                            <br>
                             <div style="height: 40px" sec:authorize="hasRole('ADMIN')">
                                 <div class="tile-txt">
                                     <span style="font-weight: bold">User:  </span>
