@@ -15,9 +15,9 @@ public class ProjectDTO {
 
 
     @NotNull(message = "Name of the project cannot be empty")
-    @Size(min = 2, max = 30 , message = "Name should be between {min} and {max} signs.")
+    @Size(min = 2, max = 30, message = "Name should be between {min} and {max} signs.")
     private String name;
-    @Size(max = 2000 , message = "Description can be max {max} signs.")
+    @Size(max = 2000, message = "Description can be max {max} signs.")
     private String description;
     private String imageUrl;
 
@@ -31,11 +31,11 @@ public class ProjectDTO {
     @DateMatchesPattern
     private String projectDeadline;
 
-//    generated values
+    //    generated values
     private List<ProjectTaskDTO> tasks;
     private String userLogin;
 
-//    audit
+    //    audit
     private Long id;
     private String creationTime;
     private String updateTime;
@@ -55,21 +55,24 @@ public class ProjectDTO {
         projectDTO.setCreationTime(project.getCreationDate().format(DATE_TIME_FORMATTER_TASK));
         projectDTO.setProjectStart(project.getProjectStart().format(DATE_TIME_FORMATTER_ONLY_DATE));
         projectDTO.setProjectDeadline(project.getProjectDeadline().format(DATE_TIME_FORMATTER_ONLY_DATE));
-        if (project.getUpdateDate() != null) projectDTO.setUpdateTime(project.getUpdateDate().format(DATE_TIME_FORMATTER_TASK));
+        if (project.getUpdateDate() != null)
+            projectDTO.setUpdateTime(project.getUpdateDate().format(DATE_TIME_FORMATTER_TASK));
         projectDTO.setId(project.getId());
         return projectDTO;
     }
 
     public static List<ProjectDTO> convertToDTOList(List<Project> all) {
         List<ProjectDTO> result = new LinkedList<>();
-        for (Project p: all) {
+        for (Project p : all) {
             result.add(ProjectDTO.apply(p));
         }
         return result;
     }
 
-    public String shortDescription(){
-        return this.description.substring(0,70) + "...";
+    public String shortDescription() {
+        if (this.description.length() > 73)
+            return this.description.substring(0, 70) + "...";
+        return this.description;
     }
 
     public String getProjectStart() {
