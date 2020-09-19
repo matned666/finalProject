@@ -21,18 +21,24 @@ public class MessageService {
     private final JavaMailSender javaMailSender;
     private final ResetPasswordRepository resetPasswordRepository;
     private final UserRepository userRepository;
+    private final String incomingMailBox;
 
-    public MessageService(String webUrl, JavaMailSender javaMailSender, ResetPasswordRepository resetPasswordRepository, UserRepository userRepository) {
+    public MessageService(String webUrl,
+                          JavaMailSender javaMailSender,
+                          ResetPasswordRepository resetPasswordRepository,
+                          UserRepository userRepository,
+                          String incomingMailBox) {
         this.webUrl = webUrl;
         this.javaMailSender = javaMailSender;
         this.resetPasswordRepository = resetPasswordRepository;
         this.userRepository = userRepository;
+        this.incomingMailBox = incomingMailBox;
     }
 
     public void send(Message message) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(message.getEmail());
-        simpleMailMessage.setTo("javawro27@gmail.com");
+        simpleMailMessage.setTo(incomingMailBox);
         simpleMailMessage.setSubject(message.getSubject());
         simpleMailMessage.setText(message.getMessage());
         simpleMailMessage.setSentDate(new Date());
@@ -65,7 +71,7 @@ public class MessageService {
     private String generateMessage(PasswordResetDTO dto) {
         PasswordReset passwordReset = saveResetPasswordToken(dto);
         StringBuilder message = new StringBuilder();
-        String link = "http://"+webUrl+"/"+passwordReset.getToken()+"";
+        String link = "http://"+webUrl+"/token/"+passwordReset.getToken()+"";
         message.append("Hello").append(System.getProperty("line.separator"))
                 .append("Here is the password reset token.").append(System.getProperty("line.separator"))
                 .append("Click the link below:").append(System.getProperty("line.separator"))

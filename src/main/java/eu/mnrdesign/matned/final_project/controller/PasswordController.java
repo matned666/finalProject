@@ -1,7 +1,9 @@
 package eu.mnrdesign.matned.final_project.controller;
 
+import eu.mnrdesign.matned.final_project.dto.PasswordDTO;
 import eu.mnrdesign.matned.final_project.dto.PasswordResetDTO;
 import eu.mnrdesign.matned.final_project.service.MessageService;
+import eu.mnrdesign.matned.final_project.service.PasswordService;
 import eu.mnrdesign.matned.final_project.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,12 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class PasswordController {
 
-    private final UserService userService;
     private final MessageService messageService;
+    private final PasswordService passWordService;
 
-    public PasswordController(UserService userService, MessageService messageService) {
-        this.userService = userService;
+    public PasswordController(MessageService messageService,
+                              PasswordService passWordService) {
         this.messageService = messageService;
+        this.passWordService = passWordService;
     }
 
     @GetMapping("/resetPassword")
@@ -41,28 +44,30 @@ public class PasswordController {
         return "loginPage";
     }
 
-    //    TODO
+
+    @GetMapping("/token/{token}")
+    public String changePasswordGet(@PathVariable String token, Model model){
+        PasswordDTO passwordDTO = passWordService.findByToken(token);
+        if(passwordDTO == null) {
+            model.addAttribute("tokenError", 1);
+            return "loginPage";
+        }
+        model.addAttribute("passwordDTO",passwordDTO);
+        return "change-password";
+    }
 
 
-//    @GetMapping("/change-password/{token}")
-//    public String changePasswordGet(@PathVariable String token, Model model){
-//        model.addAttribute("token", token);
-//        model.addAttribute("resetForm", new PasswordResetDTO());
-//        return "change-password";
-//    }
-
-//    TODO
-
-//    @PostMapping("/change-password/{token}")
-//    public String changePasswordPost(@PathVariable String token, @Validated PasswordResetDTO passwordResetDTO, BindingResult bindingResult, Model model){
-//        if (bindingResult.hasErrors()){
-//            model.addAttribute("err", "error");
-//            model.addAttribute("binding", bindingResult);
-//            model.addAttribute("resetForm", passwordResetDTO);
-//            return "change-password";
-//        }
-//        messageService.sendPasswordReset(passwordResetDTO);
-//        return "redirect:/login";
-//    }
+    @PostMapping("/token/{token}")
+    public String changePasswordPost(@PathVariable String token, @Validated PasswordDTO passwordDTO, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()){
+            model.addAttribute("err", "error");
+            model.addAttribute("binding", bindingResult);
+            model.addAttribute("passwordDTO", passwordDTO);
+            return "change-password";
+        }
+        model.addAttribute("passwordSet", 1);
+        passWordService.setPassword(passwordDTO, token);
+        return "loginPage";
+    }
 
 }

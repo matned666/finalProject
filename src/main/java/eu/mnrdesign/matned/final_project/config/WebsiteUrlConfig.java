@@ -9,6 +9,9 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:application.properties")
 public class WebsiteUrlConfig {
 
+    @Value("spring.mail.username")
+    private String incomingMailBox;
+
     @Value("${www.domain.url}")
     private String webUrl;
 
@@ -16,5 +19,8 @@ public class WebsiteUrlConfig {
     public String webUrl() {
         return this.webUrl;
     }
+
+    @Bean
+    public String incomingMailBox(){ return this.incomingMailBox; }
 
 }

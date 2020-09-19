@@ -1,6 +1,7 @@
 package eu.mnrdesign.matned.final_project.config;
 
 import eu.mnrdesign.matned.final_project.model.UserRole;
+import eu.mnrdesign.matned.final_project.repository.ResetPasswordRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -21,10 +22,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public static final String DEFAULT_USER_PL = "guest@guest.pl";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
+    private final ResetPasswordRepository resetPasswordRepository;
     private final DataSource dataSource;
     private final PasswordEncoder passwordEncoder;
 
-    public WebSecurityConfig(DataSource dataSource, PasswordEncoder passwordEncoder) {
+    public WebSecurityConfig(ResetPasswordRepository resetPasswordRepository,
+                             DataSource dataSource,
+                             PasswordEncoder passwordEncoder) {
+        this.resetPasswordRepository = resetPasswordRepository;
         this.dataSource = dataSource;
         this.passwordEncoder = passwordEncoder;
     }
@@ -37,6 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/resetPassword").permitAll()
                 .antMatchers("/contact-form", "/contact-form/*", "/contact-form/**").permitAll()
+                .antMatchers("/token", "/token/*", "/token/**").permitAll()
                 .antMatchers("/contact-form-post", "/contact-form-post/*", "/contact-form-post/**").permitAll()
                 .antMatchers("/tasks", "/tasks/*", "/tasks/**","/task", "/task/*", "/task/**")
                 .hasAnyRole(UserRole.Role.ADMIN.name(), UserRole.Role.USER.name())

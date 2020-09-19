@@ -1,5 +1,6 @@
 package eu.mnrdesign.matned.final_project.dto;
 
+import eu.mnrdesign.matned.final_project.model.PasswordReset;
 import eu.mnrdesign.matned.final_project.validation.EmailExist;
 
 import javax.validation.constraints.NotNull;
@@ -17,8 +18,12 @@ public class PasswordResetDTO {
     @EmailExist
     private String login;
 
-
     public PasswordResetDTO() {
+    }
+
+    public static PasswordResetDTO apply(PasswordReset byToken) {
+
+        return null;
     }
 
     public String getLogin() {
