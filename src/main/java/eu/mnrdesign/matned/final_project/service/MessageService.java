@@ -17,11 +17,13 @@ import java.util.Objects;
 @Service
 public class MessageService {
 
+    private final String webUrl;
     private final JavaMailSender javaMailSender;
     private final ResetPasswordRepository resetPasswordRepository;
     private final UserRepository userRepository;
 
-    public MessageService(JavaMailSender javaMailSender, ResetPasswordRepository resetPasswordRepository, UserRepository userRepository) {
+    public MessageService(String webUrl, JavaMailSender javaMailSender, ResetPasswordRepository resetPasswordRepository, UserRepository userRepository) {
+        this.webUrl = webUrl;
         this.javaMailSender = javaMailSender;
         this.resetPasswordRepository = resetPasswordRepository;
         this.userRepository = userRepository;
@@ -63,7 +65,7 @@ public class MessageService {
     private String generateMessage(PasswordResetDTO dto) {
         PasswordReset passwordReset = saveResetPasswordToken(dto);
         StringBuilder message = new StringBuilder();
-        String link = ""+passwordReset.getToken();
+        String link = "http://"+webUrl+"/"+passwordReset.getToken()+"";
         message.append("Hello").append(System.getProperty("line.separator"))
                 .append("Here is the password reset token.").append(System.getProperty("line.separator"))
                 .append("Click the link below:").append(System.getProperty("line.separator"))

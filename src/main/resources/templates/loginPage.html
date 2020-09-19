@@ -28,6 +28,9 @@
             <div th:if="${param.error}">
                     <label style="color: red; font-weight: bold;">Wrong username or password</label>
             </div>
+            <div th:if="${isTokenSent == 1}">
+                <label style="color: red; font-weight: bold;">The password token has been sent to your mail box, follow the instructions.</label>
+            </div>
             <form action="/login-process" method="post">
                 <input class="form-control-sm widerTextFields" type="email" name="username"
                        placeholder="e-mail"><br>

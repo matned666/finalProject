@@ -37,7 +37,8 @@ public class PasswordController {
             return "resetPassword";
         }
         messageService.sendPasswordReset(passwordResetDTO);
-        return "redirect:/login";
+        model.addAttribute("isTokenSent", 1);
+        return "loginPage";
     }
 
     //    TODO
