@@ -18,6 +18,11 @@ public class BasketController {
     @GetMapping("/basket-add/{projectId}")
     public String getProjectBasketAdd(@PathVariable Long projectId, Model model){
         basketService.addProjectToBasket(projectId);
+        return "redirect:/basket";
+    }
+
+    @GetMapping("/basket")
+    public String getBasket(Model model){
         model.addAttribute("basketItems", basketService.getProjects());
         return "basket";
     }
