@@ -8,6 +8,8 @@ import eu.mnrdesign.matned.final_project.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class PasswordService {
 
@@ -25,7 +27,14 @@ public class PasswordService {
     }
 
     public PasswordDTO findByToken(String token) {
-        return PasswordDTO.apply(resetPasswordRepository.findByToken(token).orElse(null));
+        PasswordReset passwordReset = resetPasswordRepository.findByToken(token).orElse(null);
+        if (passwordReset != null) {
+            if (passwordReset.getExpDate() != null) {
+                if (passwordReset.getExpDate().isAfter(LocalDateTime.now()) && !passwordReset.isUsed())
+                    return PasswordDTO.apply(passwordReset);
+            }
+        }
+        throw new RuntimeException("Wrong token");
     }
 
     public void setPassword(PasswordDTO passwordDTO, String token) {
@@ -34,6 +43,8 @@ public class PasswordService {
         String passwordEncoded = passwordEncoder.encode(passwordDTO.getPassword());
         user.setPassword(passwordEncoded);
         userRepository.save(user);
+        passwordReset.setUsed(true);
+        resetPasswordRepository.save(passwordReset);
     }
 
 }

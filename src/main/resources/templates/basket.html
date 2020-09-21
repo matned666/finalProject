@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Index</title>
+    <link href="../static/css/background.css" th:href="@{/css/background.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/main.css" th:href="@{/css/main.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/flying-object.css" th:href="@{/css/flying-object.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/menu.css" th:href="@{/css/menu.css}" rel="stylesheet" type="text/css">
+    <link href="../static/css/footer.css" th:href="@{/css/footer.css}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+<div th:insert="fragments/nav :: nav"></div>
+<div id="content">
+    <div></div>
+    <div class="center center-project-panel">
+        <div class="center">
+            <div th:each="basketItem : ${basketItems}">
+                <div class="grid-layout-basket">
+                    <div class="center">
+                        <span th:text="${basketItem.project.name}"></span>
+                    </div>
+                    <div class="center">
+                        <span th:text="${basketItem.amount}"></span>
+                    </div>
+                    <div class="center">
+                        <a th:href="@{/basket-deleteItem/{id}(id=${basketItem.project.id})}">
+                            <button class="round-sm-button-add">Remove</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div></div>
+
+</div>
+<div th:insert="fragments/nav :: footer"></div>
+
+</body>
+</html>

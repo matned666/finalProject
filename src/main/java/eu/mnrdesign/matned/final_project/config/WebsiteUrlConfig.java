@@ -9,11 +9,27 @@ import org.springframework.context.annotation.PropertySource;
 @PropertySource("classpath:application.properties")
 public class WebsiteUrlConfig {
 
-    @Value("spring.mail.username")
+    @Value("${spring.mail.username}")
     private String incomingMailBox;
 
     @Value("${www.domain.url}")
     private String webUrl;
+
+    @Value("${token.expiry.minutes}")
+    private Integer tokenExpMinutes;
+
+    @Value("${token.length.signs}")
+    private Integer tokenLength;
+
+    @Bean
+    public Integer tokenLength() {
+        return this.tokenLength;
+    }
+
+    @Bean
+    public Integer tokenExpMinutes() {
+        return this.tokenExpMinutes;
+    }
 
     @Bean
     public String webUrl() {
@@ -21,6 +37,6 @@ public class WebsiteUrlConfig {
     }
 
     @Bean
-    public String incomingMailBox(){ return this.incomingMailBox; }
+    public String incomingMailBox() { return this.incomingMailBox; }
 
 }

@@ -42,12 +42,15 @@
                     Clear project
                 </button>
             </a><br>
-            <a th:href="@{/projects/{projectId}/delete (projectId = ${project.id})}">
+            <a th:href="@{/basket-add/{projectId} (projectId = ${project.id})}">
                 <button class="ui-button button-darken"
                         onclick="return confirm('Are you sure you want to delete this project?');">
                     Delete project
                 </button>
-            </a>
+            </a><br>
+            <a th:href="@{/basket-add/{projectId} (projectId = ${project.id})}">
+                <button class="round-button-addToBasket">ADD PROJECT TO BASKET</button>
+            </a><br>
         </div>
         <div class="center-project-panel">
             <span>Tasks in the project:</span>

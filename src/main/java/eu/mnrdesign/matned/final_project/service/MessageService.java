@@ -22,24 +22,30 @@ public class MessageService {
     private final ResetPasswordRepository resetPasswordRepository;
     private final UserRepository userRepository;
     private final String incomingMailBox;
+    private final Integer tokenExpMinutes;
+    private final Integer tokenLength;
 
     public MessageService(String webUrl,
                           JavaMailSender javaMailSender,
                           ResetPasswordRepository resetPasswordRepository,
                           UserRepository userRepository,
-                          String incomingMailBox) {
+                          String incomingMailBox,
+                          Integer tokenExpMinutes,
+                          Integer tokenLength) {
         this.webUrl = webUrl;
         this.javaMailSender = javaMailSender;
         this.resetPasswordRepository = resetPasswordRepository;
         this.userRepository = userRepository;
         this.incomingMailBox = incomingMailBox;
+        this.tokenExpMinutes = tokenExpMinutes;
+        this.tokenLength = tokenLength;
     }
 
     public void send(Message message) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
         simpleMailMessage.setFrom(message.getEmail());
         simpleMailMessage.setTo(incomingMailBox);
-        simpleMailMessage.setSubject(message.getSubject());
+        simpleMailMessage.setSubject(message.getSubject()+" << from: "+message.getEmail());
         simpleMailMessage.setText(message.getMessage());
         simpleMailMessage.setSentDate(new Date());
         javaMailSender.send(simpleMailMessage);
@@ -60,7 +66,7 @@ public class MessageService {
 
     private SimpleMailMessage generateMailMessage(PasswordResetDTO dto) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setFrom("javawro27@gmail.com");
+        simpleMailMessage.setFrom(incomingMailBox);
         simpleMailMessage.setTo(dto.getLogin());
         simpleMailMessage.setSubject("Password reset token");
         simpleMailMessage.setText(Objects.requireNonNull(generateMessage(dto)));
@@ -83,7 +89,7 @@ public class MessageService {
 
     private PasswordReset saveResetPasswordToken(PasswordResetDTO dto) {
         PasswordReset passwordReset = new PasswordReset(
-                LocalDateTime.now().plusMinutes(10),
+                LocalDateTime.now().plusMinutes(tokenExpMinutes),
                 generateToken(),
                 userRepository.findByLogin(dto.getLogin()).orElseThrow(()->new RuntimeException("No such user"))
         );
@@ -92,6 +98,6 @@ public class MessageService {
     }
 
     private String generateToken(){
-        return new RandomString(20).nextString();
+        return new RandomString(tokenLength).nextString();
     }
 }

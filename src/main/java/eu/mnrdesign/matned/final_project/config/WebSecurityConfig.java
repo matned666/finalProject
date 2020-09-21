@@ -1,7 +1,6 @@
 package eu.mnrdesign.matned.final_project.config;
 
 import eu.mnrdesign.matned.final_project.model.UserRole;
-import eu.mnrdesign.matned.final_project.repository.ResetPasswordRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,17 +18,13 @@ import java.util.List;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String ADMIN_ADMIN_PL = "admin@admin.pl";
-    public static final String DEFAULT_USER_PL = "guest@guest.pl";
     public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
-    private final ResetPasswordRepository resetPasswordRepository;
     private final DataSource dataSource;
     private final PasswordEncoder passwordEncoder;
 
-    public WebSecurityConfig(ResetPasswordRepository resetPasswordRepository,
-                             DataSource dataSource,
+    public WebSecurityConfig(DataSource dataSource,
                              PasswordEncoder passwordEncoder) {
-        this.resetPasswordRepository = resetPasswordRepository;
         this.dataSource = dataSource;
         this.passwordEncoder = passwordEncoder;
     }
@@ -45,6 +40,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/token", "/token/*", "/token/**").permitAll()
                 .antMatchers("/contact-form-post", "/contact-form-post/*", "/contact-form-post/**").permitAll()
                 .antMatchers("/tasks", "/tasks/*", "/tasks/**","/task", "/task/*", "/task/**")
+                .hasAnyRole(UserRole.Role.ADMIN.name(), UserRole.Role.USER.name())
+                .antMatchers("/basket", "/basket/*", "/basket/**")
                 .hasAnyRole(UserRole.Role.ADMIN.name(), UserRole.Role.USER.name())
                 .antMatchers("/about").permitAll()
                 .antMatchers("/account")
@@ -72,7 +69,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .csrf().disable()
-//                .cors().disable()
                 .formLogin()
                 .loginPage("/login")
                 .usernameParameter("username")
@@ -115,11 +111,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.setAllowedOrigins(List.of("*"));
         configuration.setAllowedMethods(List.of("HEAD",
                 "GET", "POST", "PUT", "DELETE", "PATCH"));
-        // setAllowCredentials(true) is important, otherwise:
-        // The value of the 'Access-Control-Allow-Origin' header in the response must not be the wildcard '*' when the request's credentials mode is 'include'.
         configuration.setAllowCredentials(true);
-        // setAllowedHeaders is important! Without it, OPTIONS preflight request
-        // will fail with 403 Invalid CORS request
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

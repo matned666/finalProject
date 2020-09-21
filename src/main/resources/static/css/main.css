@@ -243,3 +243,9 @@ body {
     grid-template-columns: 30% 70%;
     alignment: center;
 }
+
+.grid-layout-basket {
+    display: grid;
+    grid-template-columns: 50% 25% 25% ;
+    alignment: center;
+}

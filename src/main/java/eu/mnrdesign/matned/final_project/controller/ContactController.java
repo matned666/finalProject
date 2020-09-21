@@ -33,8 +33,10 @@ public class ContactController {
             return "contact";
         }
         messageService.send(message);
+        message = new Message();
+        model.addAttribute("message", message);
         model.addAttribute("sent", 1);
-        return "redirect:/contact-form";
+        return "contact";
     }
 
 
