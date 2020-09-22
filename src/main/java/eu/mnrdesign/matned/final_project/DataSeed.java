@@ -4,9 +4,10 @@ import eu.mnrdesign.matned.final_project.dto.RegistrationDTO;
 import eu.mnrdesign.matned.final_project.model.*;
 import eu.mnrdesign.matned.final_project.repository.CategoryRepository;
 import eu.mnrdesign.matned.final_project.repository.TaskRepository;
+import eu.mnrdesign.matned.final_project.repository.UserRepository;
 import eu.mnrdesign.matned.final_project.repository.UserRoleRepository;
-import eu.mnrdesign.matned.final_project.service.UserService;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -17,28 +18,38 @@ public class DataSeed implements InitializingBean {
     private final UserRoleRepository roleRepository;
     private final CategoryRepository categoryRepository;
     private final TaskRepository taskRepository;
-    private final UserService userService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final String defaultAdminLogin;
+    private final String defaultAdminPassword;
+
 
     public DataSeed(UserRoleRepository roleRepository,
                     CategoryRepository categoryRepository,
                     TaskRepository taskRepository,
-                    UserService userService) {
+                    UserRepository userRepository,
+                    PasswordEncoder passwordEncoder,
+                    String defaultAdminLogin,
+                    String defaultAdminPassword) {
         this.roleRepository = roleRepository;
         this.categoryRepository = categoryRepository;
         this.taskRepository = taskRepository;
-        this.userService = userService;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.defaultAdminLogin = defaultAdminLogin;
+        this.defaultAdminPassword = defaultAdminPassword;
     }
 
     @Override
     public void afterPropertiesSet() {
-        for (UserRole.Role role: UserRole.Role.values()) {
+        for (UserRole.Role role : UserRole.Role.values()) {
             createRole(role);
         }
-        for (Category.DefaultCategory defCat: Category.DefaultCategory.values()) {
+        for (Category.DefaultCategory defCat : Category.DefaultCategory.values()) {
             createCat(defCat);
         }
         createDefaultTasks();
-//        createDefaultUser();
+        createDefaultUser();
     }
 
     private void createDefaultTasks() {
@@ -53,41 +64,36 @@ public class DataSeed implements InitializingBean {
 
     private void createRole(UserRole.Role role) {
         String roleCheck = "ROLE_" + role.name();
-        if (!roleRepository.roleExists(roleCheck)){
+        if (!roleRepository.roleExists(roleCheck)) {
             roleRepository.save(UserRole.apply(role));
         }
     }
 
     private void createCat(Category.DefaultCategory defCat) {
-        if (!categoryRepository.existsByCategoryName(defCat.name())){
+        if (!categoryRepository.existsByCategoryName(defCat.name())) {
             categoryRepository.save(new Category(defCat.name()));
         }
     }
 
-//    private void createDefaultUser(){
-//        String login = "guest@guest.pl";
-//        if (!userService.userWithEmailExists(login)) {
-//            RegistrationDTO defaultUser = new RegistrationDTO.RTDOBuilder()
-//                    .login(login)
-//                    .password("user")
-//                    .passwordConfirm("user")
-//                    .birthDate("2020-09-01")
-//                    .firstName("William")
-//                    .lastName("Blake")
-//                    .street("Zielińskiego 56")
-//                    .zipCode("53-534")
-//                    .city("Wrocław")
-//                    .country(Countries.POLAND.getSymbol())
-//                    .phoneNumber("+48785850868")
-//                    .preferEmails(false)
-//                    .build();
-//            userService.register(defaultUser);
-//        }
-//    }
+    private void createDefaultUser() {
+        String login = defaultAdminLogin;
+        if (userRepository.findByLogin(login).isEmpty()) {
+            RegistrationDTO defaultUserDTO = new RegistrationDTO.RTDOBuilder()
+                    .login(login)
+                    .country(Countries.POLAND.getSymbol())
+                    .preferEmails(true)
+                    .build();
+            String hashedPassword = passwordEncoder.encode(defaultAdminPassword);
+            User defaultUser = User.apply(defaultUserDTO, hashedPassword);
+            UserRole role = roleRepository.findByRoleName(UserRole.Role.ADMIN.roleName());
+//            defaultUser.getRoles().add(role);
+            userRepository.save(defaultUser);
+        }
+    }
 
     private void createTask1() {
         String name = "Nerd talking with nerds";
-        if(!taskRepository.existsByName(name)){
+        if (!taskRepository.existsByName(name)) {
             Task task = new Task();
             task.setTaskName(name);
             task.setDescription("Talking about bullshit with some beer and vodka");
@@ -104,7 +110,7 @@ public class DataSeed implements InitializingBean {
 
     private void createTask2() {
         String name = "Walk with a dog";
-        if(!taskRepository.existsByName(name)){
+        if (!taskRepository.existsByName(name)) {
             Task task = new Task();
             task.setTaskName(name);
             task.setDescription("Small walk with my pet");
@@ -121,7 +127,7 @@ public class DataSeed implements InitializingBean {
 
     private void createTask3() {
         String name = "Shopping with wife";
-        if(!taskRepository.existsByName(name)){
+        if (!taskRepository.existsByName(name)) {
             Task task = new Task();
             task.setTaskName(name);
             task.setDescription("A long walk around shops, a huge waste of time!!!");
@@ -138,7 +144,7 @@ public class DataSeed implements InitializingBean {
 
     private void createTask4() {
         String name = "Running activity";
-        if(!taskRepository.existsByName(name)){
+        if (!taskRepository.existsByName(name)) {
             Task task = new Task();
             task.setTaskName(name);
             task.setDescription("5000m run , must be fit in 40 mins");
@@ -155,7 +161,7 @@ public class DataSeed implements InitializingBean {
 
     private void createTask5() {
         String name = "Shopping";
-        if(!taskRepository.existsByName(name)){
+        if (!taskRepository.existsByName(name)) {
             Task task = new Task();
             task.setTaskName(name);
             task.setDescription("Walking around and searching for a grocery useless stuff");
@@ -172,7 +178,7 @@ public class DataSeed implements InitializingBean {
 
     private void createTask6() {
         String name = "Beer task";
-        if(!taskRepository.existsByName(name)){
+        if (!taskRepository.existsByName(name)) {
             Task task = new Task();
             task.setTaskName(name);
             task.setDescription("Go with friends to the city, drinking drinks and having fun");
@@ -189,7 +195,7 @@ public class DataSeed implements InitializingBean {
 
     private void createTask7() {
         String name = "SRUTUTUTU";
-        if(!taskRepository.existsByName(name)){
+        if (!taskRepository.existsByName(name)) {
             Task task = new Task();
             task.setTaskName(name);
             task.setDescription("majtki z drutu tutututu");

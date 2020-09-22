@@ -12,6 +12,9 @@ public class WebsiteUrlConfig {
     @Value("${spring.mail.username}")
     private String incomingMailBox;
 
+    @Value("${secret.key.for.session.token}")
+    private String secretKey;
+
     @Value("${www.domain.url}")
     private String webUrl;
 
@@ -21,9 +24,26 @@ public class WebsiteUrlConfig {
     @Value("${token.length.signs}")
     private Integer tokenLength;
 
+    @Value("${default.admin.username}")
+    private String defaultAdminLogin;
+
+    @Value("${default.admin.password}")
+    private String defaultAdminPassword;
+
+
+
+
+
+
+
     @Bean
     public Integer tokenLength() {
         return this.tokenLength;
+    }
+
+    @Bean
+    public String secretKey() {
+        return this.secretKey;
     }
 
     @Bean
@@ -38,5 +58,12 @@ public class WebsiteUrlConfig {
 
     @Bean
     public String incomingMailBox() { return this.incomingMailBox; }
+
+    @Bean
+    public String defaultAdminLogin() { return this.defaultAdminLogin; }
+
+    @Bean
+    public String defaultAdminPassword() { return this.defaultAdminPassword; }
+
 
 }

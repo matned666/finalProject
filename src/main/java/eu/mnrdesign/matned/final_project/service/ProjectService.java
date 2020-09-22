@@ -22,8 +22,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import static eu.mnrdesign.matned.final_project.config.WebSecurityConfig.ADMIN_ADMIN_PL;
-
 @Service
 public class ProjectService {
 
@@ -31,15 +29,17 @@ public class ProjectService {
     private final ProjectTaskRepository projectTaskRepository;
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
+    private final String defaultAdminLogin;
 
     public ProjectService(ProjectRepository projectRepository,
                           ProjectTaskRepository projectTaskRepository,
                           TaskRepository taskRepository,
-                          UserRepository userRepository) {
+                          UserRepository userRepository, String defaultAdminLogin) {
         this.projectRepository = projectRepository;
         this.projectTaskRepository = projectTaskRepository;
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
+        this.defaultAdminLogin = defaultAdminLogin;
     }
 
 
@@ -58,7 +58,7 @@ public class ProjectService {
     }
 
     public Page<ProjectDTO> findAllUserProjects(String userLogin, Pageable pageable){
-        if (!userLogin.equals(ADMIN_ADMIN_PL)) {
+        if (!userLogin.equals(defaultAdminLogin)) {
             Long userId = userRepository.findByLogin(userLogin).orElseThrow(() -> new RuntimeException("No such user")).getId();
             return new PageImpl<>(
                     ProjectDTO.convertToDTOList(projectRepository.findByUser(userId)),
@@ -78,13 +78,13 @@ public class ProjectService {
     public void createProject(String login, ProjectDTO projectDTO){
 
         User user;
-        if (!login.equals(ADMIN_ADMIN_PL)) {
+        if (!login.equals(defaultAdminLogin)) {
             user = userRepository
                     .findByLogin(login)
                     .orElseThrow(() -> new RuntimeException("User with login: " + login + " has not been found"));
         }else{
             user = new User();
-            user.setLogin(ADMIN_ADMIN_PL);
+            user.setLogin(defaultAdminLogin);
         }
         projectRepository.save(Objects.requireNonNull(Project.apply(user, projectDTO)));
     }

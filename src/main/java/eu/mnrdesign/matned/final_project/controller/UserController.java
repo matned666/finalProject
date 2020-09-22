@@ -6,6 +6,7 @@ import eu.mnrdesign.matned.final_project.dto.RestrictedRegistrationDTO;
 import eu.mnrdesign.matned.final_project.dto.UserDTOInterface;
 import eu.mnrdesign.matned.final_project.holder.AccountHolder;
 import eu.mnrdesign.matned.final_project.model.Countries;
+import eu.mnrdesign.matned.final_project.model.UserRole;
 import eu.mnrdesign.matned.final_project.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,7 +54,7 @@ public class UserController {
 
     @GetMapping("/users-list")
     public String getAllUsersList(Model model, HttpServletRequest request) {
-        if (request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             model.addAttribute("all_users", service.findAll());
             return "users-list";
         } else return "accessDenied";
@@ -61,7 +62,7 @@ public class UserController {
 
     @GetMapping("/account")
     public String accountShow(Model model, Principal principal, HttpServletRequest request) {
-        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             RestrictedRegistrationDTO actualUser = service.findByLoginRestricted(principal.getName());
             model.addAttribute("userToSee", actualUser);
             AccountHolder.getInstance().setSelectedAccountId(actualUser.getId());
@@ -75,7 +76,7 @@ public class UserController {
     public String accountShow(@PathVariable Long id,
                               Model model,
                               HttpServletRequest request) {
-        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             return "accessDenied";
         } else {
             AccountHolder.getInstance().setSelectedAccountId(id);
@@ -90,7 +91,7 @@ public class UserController {
                                      Model model,
                                      HttpServletRequest request) {
         UserDTOInterface<?> user;
-        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             return "accessDenied";
         } else {
             user = service.findById(id);
@@ -134,7 +135,7 @@ public class UserController {
                                   BindingResult bindingResult,
                                   Model model,
                                   HttpServletRequest request) {
-        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             return "accessDenied";
         } else {
             if (bindingResult.hasErrors()) {
@@ -152,7 +153,7 @@ public class UserController {
     @GetMapping("/user/delete/{id}")
     public String accountDelete(@PathVariable Long id,
                                 HttpServletRequest request) {
-        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             return "accessDenied";
         } else {
             service.delete(id);

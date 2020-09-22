@@ -17,22 +17,29 @@ import java.util.List;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    public static final String ADMIN_ADMIN_PL = "admin@admin.pl";
-    public static final String ROLE_ADMIN = "ROLE_ADMIN";
-
+    private final String secretKey;
     private final DataSource dataSource;
     private final PasswordEncoder passwordEncoder;
+    private final String defaultAdminLogin;
+    private final String defaultAdminPassword;
 
     public WebSecurityConfig(DataSource dataSource,
-                             PasswordEncoder passwordEncoder) {
+                             PasswordEncoder passwordEncoder,
+                             String secretKey,
+                             String defaultAdminLogin,
+                             String defaultAdminPassword) {
         this.dataSource = dataSource;
         this.passwordEncoder = passwordEncoder;
+        this.secretKey = secretKey;
+        this.defaultAdminLogin = defaultAdminLogin;
+        this.defaultAdminPassword = defaultAdminPassword;
     }
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+
                 .antMatchers("/register", "/register/*").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/resetPassword").permitAll()
@@ -67,6 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/js/**").permitAll()
                 .anyRequest()
                 .authenticated()
+
                 .and()
                 .csrf().disable()
                 .formLogin()
@@ -76,19 +84,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/login-process") //here goes login data
                 .failureUrl("/login?error=1")
                 .defaultSuccessUrl("/")
+
                 .and()
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/login")
+
                 .and()
-                .exceptionHandling().accessDeniedPage("/accessDenied");
+                .exceptionHandling().accessDeniedPage("/accessDenied")
+
+                .and()
+                .logout().deleteCookies("JSESSIONID")
+
+                .and()
+                .rememberMe().key(secretKey).tokenValiditySeconds(43200);  // token valid only 1/2 day :)
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser(ADMIN_ADMIN_PL)
-                .password(passwordEncoder.encode("admin"))
+                .withUser("admin@admin.com")
+                .password(passwordEncoder.encode(defaultAdminPassword))
                 .roles(UserRole.Role.ADMIN.name());
 
         auth.jdbcAuthentication()

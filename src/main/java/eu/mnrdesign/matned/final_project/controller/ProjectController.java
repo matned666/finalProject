@@ -1,7 +1,7 @@
 package eu.mnrdesign.matned.final_project.controller;
 
-import eu.mnrdesign.matned.final_project.config.WebSecurityConfig;
 import eu.mnrdesign.matned.final_project.dto.ProjectDTO;
+import eu.mnrdesign.matned.final_project.model.UserRole;
 import eu.mnrdesign.matned.final_project.service.ProjectService;
 import eu.mnrdesign.matned.final_project.service.TaskService;
 import org.springframework.data.domain.Page;
@@ -67,7 +67,7 @@ public class ProjectController {
                                    HttpServletRequest request){
 
         ProjectDTO projectDTO = projectService.findProjectById(id);
-        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             return "accessDenied";
         }
         model.addAttribute("projectId", id);
@@ -87,7 +87,7 @@ public class ProjectController {
                                        HttpServletRequest request){
 
         ProjectDTO projectDTO = projectService.findProjectById(projectId);
-        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             return "accessDenied";
         }
         projectService.addTaskToProject(projectId, taskId);
@@ -101,7 +101,7 @@ public class ProjectController {
                                             HttpServletRequest request){
 
         ProjectDTO projectDTO = projectService.findProjectById(projectId);
-        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             return "accessDenied";
         }
         projectService.deleteTaskFromProject(projectId, projectTaskId);
@@ -114,7 +114,7 @@ public class ProjectController {
                                       Principal principal,
                                       HttpServletRequest request) {
         ProjectDTO projectDTO = projectService.findProjectById(projectId);
-        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             return "accessDenied";
         }
         projectService.moveTaskUp(projectId, taskId);
@@ -127,7 +127,7 @@ public class ProjectController {
                                         Principal principal,
                                         HttpServletRequest request){
         ProjectDTO projectDTO = projectService.findProjectById(projectId);
-        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             return "accessDenied";
         }
         projectService.moveTaskDown(projectId, taskId);
@@ -140,7 +140,7 @@ public class ProjectController {
                                        Principal principal,
                                        HttpServletRequest request){
         ProjectDTO projectDTO = projectService.findProjectById(projectId);
-        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             return "accessDenied";
         }
         projectService.setDone(taskId);
@@ -153,7 +153,7 @@ public class ProjectController {
                                      Principal principal,
                                      HttpServletRequest request){
         ProjectDTO projectDTO = projectService.findProjectById(projectId);
-        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             return "accessDenied";
         }
         model.addAttribute("project", projectService.findProjectById(projectId));
@@ -167,7 +167,7 @@ public class ProjectController {
                                       Principal principal,
                                       HttpServletRequest request,
                                       Model model){
-        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             return "accessDenied";
         }
         if (bindingResult.hasErrors()) {
@@ -185,7 +185,7 @@ public class ProjectController {
                                 Principal principal,
                                 HttpServletRequest request){
         ProjectDTO projectDTO = projectService.findProjectById(projectId);
-        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             return "accessDenied";
         }
         projectService.removeProject(projectId);
@@ -197,7 +197,7 @@ public class ProjectController {
                                Principal principal,
                                HttpServletRequest request){
         ProjectDTO projectDTO = projectService.findProjectById(projectId);
-        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!principal.getName().equals(projectDTO.getUserLogin()) && !request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             return "accessDenied";
         }
         projectService.clearProject(projectId);

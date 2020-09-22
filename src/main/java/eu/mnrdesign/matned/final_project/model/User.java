@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +40,7 @@ public class User extends BaseEntity {
     public User(String login) {
         this.login = login;
         this.creationDate = LocalDateTime.now();
-
+        roles = new LinkedList<>();
     }
 
     public static User apply(RegistrationDTO registrationDTO, String passwordHash) {
@@ -49,7 +50,7 @@ public class User extends BaseEntity {
         user.address = Address.apply(registrationDTO);
         try {
             user.birthDate = LocalDate.parse(registrationDTO.getBirthDate(), DateTimeFormatter.ofPattern(DATE_PATTERN));
-        } catch (DateTimeParseException e) {
+        } catch (DateTimeParseException | NullPointerException e) {
             user.birthDate = null;
         }
         user.password = passwordHash;

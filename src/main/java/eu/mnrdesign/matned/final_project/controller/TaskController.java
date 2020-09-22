@@ -3,6 +3,7 @@ package eu.mnrdesign.matned.final_project.controller;
 import eu.mnrdesign.matned.final_project.config.WebSecurityConfig;
 import eu.mnrdesign.matned.final_project.dto.TaskDTO;
 import eu.mnrdesign.matned.final_project.model.Complicity;
+import eu.mnrdesign.matned.final_project.model.UserRole;
 import eu.mnrdesign.matned.final_project.service.CategoryService;
 import eu.mnrdesign.matned.final_project.service.TaskService;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +24,8 @@ public class TaskController {
     private final TaskService service;
     private final CategoryService categoryService;
 
-    public TaskController(TaskService service, CategoryService categoryService) {
+    public TaskController(TaskService service,
+                          CategoryService categoryService) {
         this.service = service;
         this.categoryService = categoryService;
     }
@@ -76,7 +78,7 @@ public class TaskController {
     public String editTaskData(@PathVariable Long id,
                                Model model,
                                HttpServletRequest request) {
-        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             return "accessDenied";
         } else {
             TaskDTO taskDTO = service.findById(id);
@@ -93,7 +95,7 @@ public class TaskController {
                                    BindingResult bindingResult,
                                    Model model,
                                    HttpServletRequest request) {
-        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             return "accessDenied";
         } else {
             if (errorHandler(bindingResult, model)) {
@@ -107,7 +109,7 @@ public class TaskController {
 
     @GetMapping("/task/delete/{id}")
     public String editTaskDataPost(@PathVariable Long id, HttpServletRequest request) {
-        if (!request.isUserInRole(WebSecurityConfig.ROLE_ADMIN)) {
+        if (!request.isUserInRole(UserRole.Role.ADMIN.roleName())) {
             return "accessDenied";
         } else {
             service.delete(id);

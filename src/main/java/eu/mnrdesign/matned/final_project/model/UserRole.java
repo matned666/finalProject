@@ -24,6 +24,10 @@ public class UserRole extends BaseEntity{
 
     public enum Role {
         ADMIN,
-        USER
+        USER;
+
+        public String roleName(){
+            return "ROLE_" + this.name();
+        }
     }
 }
