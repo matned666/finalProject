@@ -103,7 +103,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("admin@admin.com")
+                .withUser(defaultAdminLogin)
                 .password(passwordEncoder.encode(defaultAdminPassword))
                 .roles(UserRole.Role.ADMIN.name());
 
