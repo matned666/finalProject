@@ -1,47 +1,78 @@
 # Training project management kit
 <br>
-A simple webapp for tasks management and projects creation.
-
+A simple webapp for tasks management and projects creation for training purposes.  <br>
+You can create projects and sell them ;) I wish you good luck.  <br>
+Maybe it will be usefull some day :)  <br>
+<br>
 It is deployed at:
-https://the-final-project.herokuapp.com/
-
+<html><a href="https://the-final-project.herokuapp.com/">https://the-final-project.herokuapp.com/</a></html>
+<br>
+Check it out and dont forget to send a feedback !! ;-)
 
 ## Usage
 
 ```
 Just log in
-and try yourself
+and try it yourself
 You can register a user
-add tasks
+add tasks,
+create a project and manage tasks for it
+You can also add the project to the basket 
 
+While login you can check remember me, 
+to stay logged for some time even if the browser is closed
+
+As an admin you can additionally manage users.
+
+Check it out and send me feedback with a message form!!!
 
 ```
 
 In order for the program to work, with your own database
-yo kave to add application.properties file with all necessary data:
+you have to add to application.properties file all necessary data:
 
 ```
+*** Database connection ***
 spring.datasource.username
 spring.datasource.password
 spring.datasource.url
 spring.jpa.properties.hibernate.dialect
 spring.datasource.driver-class-name
-spring.jpa.show-sql
-spring.jpa.hibernate.ddl-auto
-spring.data.web.pageable.default-page-size=6  (by default i use 6)
+
+*** Mail data ***
+spring.mail.username
+spring.mail.password
+spring.mail.host
+spring.mail.port
+spring.mail.properties.mail.transport.protocol
+spring.mail.properties.mail.smtp.port
+spring.mail.properties.mail.smtp.auth
+spring.mail.properties.mail.smtp.starttls.enable
+spring.mail.properties.mail.smtp.starttls.required
+
+*** domain url or if locally - localhost:8080 (or with other port) ***
+www.domain.url
+
+*** secret key for session tokens ***
+secret.key.for.session.token
+
+*** default admin user ***
+default.admin.username
+default.admin.password
 ```
 
 It is in development stage, so look forward for future features:
 
 ```
-Future TODO is -> manage projects , 
-add tasks to it, project overview
+Future TODO is -> basket and sales management
 ```
 
 
 
 # License
   Copyright 2020 Mateusz Niedbał
+  
+  contact:  mat.niedbal6@gmail.com
 
 
 
