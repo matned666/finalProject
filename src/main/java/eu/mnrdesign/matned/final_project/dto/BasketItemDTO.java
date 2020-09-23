@@ -2,16 +2,27 @@ package eu.mnrdesign.matned.final_project.dto;
 
 import eu.mnrdesign.matned.final_project.model.Project;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
-public class BasketItemDTO {
+public class BasketItemDTO implements Serializable {
 
     private Project project;
     private Integer amount;
+    private BigDecimal totalPrice;
 
     public BasketItemDTO(Project project, Integer amount) {
         this.project = project;
         this.amount = amount;
+        totalPrice = project.getProjectCost().multiply(BigDecimal.valueOf(amount));
+    }
+
+    public BigDecimal getTotalPrice() {
+        return totalPrice;
+    }
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public Project getProject() {

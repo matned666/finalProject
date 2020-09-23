@@ -6,11 +6,11 @@ import eu.mnrdesign.matned.final_project.repository.ProjectRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@SessionScope
 public class BasketService {
     private final ProjectRepository projectRepository;
 
@@ -62,5 +62,19 @@ public class BasketService {
 
     public List<BasketItemDTO> getProjects() {
         return new ArrayList<>(projects.values());
+    }
+
+    public void increaseAmountProjectsInBasket(Integer amount, Long id) {
+        BasketItemDTO basketItem = projects.get(id);
+        Integer basketAmount = basketItem.getAmount() + amount;
+        changeAmountProjectsInBasket(basketAmount, id);
+    }
+
+
+    public BigDecimal getTotalAmount() {
+        return getProjects().stream()
+                .map(BasketItemDTO::getTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
     }
 }

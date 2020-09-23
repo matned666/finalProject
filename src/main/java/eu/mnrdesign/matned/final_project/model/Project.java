@@ -4,6 +4,7 @@ import eu.mnrdesign.matned.final_project.dto.ProjectDTO;
 import org.springframework.security.core.parameters.P;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -111,4 +112,27 @@ public class Project extends BaseEntity {
     public void setProjectDeadline(LocalDate projectDeadline) {
         this.projectDeadline = projectDeadline;
     }
+
+    public BigDecimal getProjectCost() {
+        List<BigDecimal> decimals = new LinkedList<>();
+        for (ProjectTask pt : tasks) {
+            decimals.add((pt.getTask().getTaskDetails() != null) ? pt.getTask().getTaskDetails().getPrice() : new BigDecimal(0));
+        }
+        return decimals.stream()
+                .reduce(new BigDecimal(0), BigDecimal::add);
+    }
+
+    public String shortDescription() {
+        if (this.description.length() > 73)
+            return this.description.substring(0, 70) + "...";
+        return this.description;
+    }
+
+    public Integer getTotalProjectTime(){
+        return tasks.stream()
+                .map(x->x.getTask().getTaskDetails().getTimeInMinutes())
+                .reduce(0, Integer::sum);
+    }
+
+
 }

@@ -86,7 +86,7 @@ public class DataSeed implements InitializingBean {
             String hashedPassword = passwordEncoder.encode(defaultAdminPassword);
             User defaultUser = User.apply(defaultUserDTO, hashedPassword);
             UserRole role = roleRepository.findByRoleName(UserRole.Role.ADMIN.roleName());
-//            defaultUser.getRoles().add(role);
+            defaultUser.getRoles().add(role);
             userRepository.save(defaultUser);
         }
     }

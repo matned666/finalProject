@@ -24,7 +24,33 @@ public class BasketController {
     @GetMapping("/basket")
     public String getBasket(Model model){
         model.addAttribute("basketItems", basketService.getProjects());
+        model.addAttribute("totalAmount", basketService.getTotalAmount());
         return "basket";
     }
+
+    @GetMapping("/basket-deleteItem/{id}")
+    public String deleteItem(@PathVariable Long id){
+        basketService.removeProjectFromBasket(id);
+        return "redirect:/basket";
+    }
+
+    @GetMapping("/basket-change-item-amount/{id}")
+    public String changeItemAmount(@PathVariable Long id, Integer amount){
+        basketService.changeAmountProjectsInBasket(amount, id);
+        return "redirect:/basket";
+    }
+
+    @GetMapping("/basket-increase-item-amount/{id}")
+    public String increaseItemAmount(@PathVariable Long id, Integer amount){
+        basketService.increaseAmountProjectsInBasket(amount, id);
+        return "redirect:/basket";
+    }
+
+    @GetMapping("/basket-clear")
+    public String clearBasket(){
+        basketService.clearBasket();
+        return "redirect:/basket";
+    }
+
 
 }
